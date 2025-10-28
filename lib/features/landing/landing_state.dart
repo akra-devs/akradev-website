@@ -15,6 +15,9 @@ class LandingState with _$LandingState {
     required PrimaryCta spotlight,
     @Default(false) bool isContactDialogVisible,
     ContactIntent? contactIntent,
+    @Default(LeadFormData()) LeadFormData formData,
+    @Default(FormSubmissionStatus.idle) FormSubmissionStatus formStatus,
+    String? formErrorMessage,
   }) = _LandingState;
 
   factory LandingState.initial() => LandingState(
@@ -255,3 +258,17 @@ class ContactInfo with _$ContactInfo {
 }
 
 enum ContactIntent { projectInquiry, portfolio }
+
+@freezed
+class LeadFormData with _$LeadFormData {
+  const factory LeadFormData({
+    @Default('') String name,
+    @Default('') String email,
+    @Default('') String company,
+    @Default('') String projectDescription,
+    @Default('') String budget,
+    @Default('') String timeline,
+  }) = _LeadFormData;
+}
+
+enum FormSubmissionStatus { idle, submitting, success, error }

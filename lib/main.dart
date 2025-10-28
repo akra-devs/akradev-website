@@ -5,6 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'features/landing/landing_cubit.dart';
 import 'features/landing/landing_state.dart';
+import 'shared/theme/app_colors.dart';
+import 'shared/utils/responsive.dart' as responsive;
+import 'shared/widgets/fade_in_up.dart';
+import 'shared/widgets/nav_item.dart';
 
 void main() {
   runApp(const MyApp());
@@ -63,16 +67,55 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AppColors {
-  static const background = Color(0xFF0B1120);
-  static const surface = Color(0xFF111C37);
-  static const accent = Color(0xFF38BDF8);
-  static const textPrimary = Colors.white;
-  static const textSecondary = Color(0xFF9CA3AF);
+class LandingPage extends StatefulWidget {
+  const LandingPage({super.key});
+
+  @override
+  State<LandingPage> createState() => _LandingPageState();
 }
 
-class LandingPage extends StatelessWidget {
-  const LandingPage({super.key});
+class _LandingPageState extends State<LandingPage> {
+  final ScrollController _scrollController = ScrollController();
+  final GlobalKey _servicesKey = GlobalKey();
+  final GlobalKey _processKey = GlobalKey();
+  final GlobalKey _contactKey = GlobalKey();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToSection(String sectionName) {
+    GlobalKey? targetKey;
+    switch (sectionName) {
+      case '서비스':
+        targetKey = _servicesKey;
+        break;
+      case '프로세스':
+        targetKey = _processKey;
+        break;
+      case '연락처':
+        targetKey = _contactKey;
+        break;
+    }
+
+    if (targetKey?.currentContext != null) {
+      final context = targetKey!.currentContext!;
+      final box = context.findRenderObject() as RenderBox?;
+      if (box != null) {
+        final position = box.localToGlobal(Offset.zero).dy;
+        final scrollOffset = _scrollController.offset;
+        final targetOffset = scrollOffset + position - 80; // 80px offset for navigation
+
+        _scrollController.animateTo(
+          targetOffset,
+          duration: const Duration(milliseconds: 800),
+          curve: Curves.easeInOutCubic,
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +139,7 @@ class LandingPage extends StatelessWidget {
 
           return Scaffold(
             body: SingleChildScrollView(
+              controller: _scrollController,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -104,6 +148,7 @@ class LandingPage extends StatelessWidget {
                     navItems: state.navItems,
                     onProjectInquiry: handleProjectInquiry,
                     onPortfolioRequest: handlePortfolioRequest,
+                    onNavItemClick: _scrollToSection,
                   ),
                   const SizedBox(height: 64),
                   CaseStudiesSection(
@@ -111,9 +156,15 @@ class LandingPage extends StatelessWidget {
                     onProjectInquiry: handleProjectInquiry,
                   ),
                   const SizedBox(height: 96),
-                  ProcessSection(steps: state.processSteps),
+                  ProcessSection(
+                    key: _processKey,
+                    steps: state.processSteps,
+                  ),
                   const SizedBox(height: 96),
-                  LandingServices(services: state.services),
+                  LandingServices(
+                    key: _servicesKey,
+                    services: state.services,
+                  ),
                   const SizedBox(height: 96),
                   SpotlightCtaSection(
                     data: state.spotlight,
@@ -121,7 +172,10 @@ class LandingPage extends StatelessWidget {
                     onSecondary: handlePortfolioRequest,
                   ),
                   const SizedBox(height: 96),
-                  FooterSection(content: state.footer),
+                  FooterSection(
+                    key: _contactKey,
+                    content: state.footer,
+                  ),
                 ],
               ),
             ),
@@ -139,12 +193,14 @@ class LandingHero extends StatelessWidget {
     required this.navItems,
     required this.onProjectInquiry,
     required this.onPortfolioRequest,
+    required this.onNavItemClick,
   });
 
   final HeroSection hero;
   final List<String> navItems;
   final VoidCallback onProjectInquiry;
   final VoidCallback onPortfolioRequest;
+  final void Function(String) onNavItemClick;
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +219,7 @@ class LandingHero extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final isDesktop = constraints.maxWidth >= 1024;
-          final horizontalPadding = _horizontalPadding(constraints.maxWidth);
+          final horizontalPadding = responsive.horizontalPadding(constraints.maxWidth);
           return Padding(
             padding: EdgeInsets.fromLTRB(horizontalPadding, 48, horizontalPadding, 96),
             child: Align(
@@ -177,6 +233,7 @@ class LandingHero extends StatelessWidget {
                       isDesktop: isDesktop,
                       navItems: navItems,
                       onProjectInquiry: onProjectInquiry,
+                      onNavItemClick: onNavItemClick,
                     ),
                     const SizedBox(height: 72),
                     if (isDesktop)
@@ -226,11 +283,13 @@ class LandingNavigation extends StatelessWidget {
     required this.isDesktop,
     required this.navItems,
     required this.onProjectInquiry,
+    required this.onNavItemClick,
   });
 
   final bool isDesktop;
   final List<String> navItems;
   final VoidCallback onProjectInquiry;
+  final void Function(String) onNavItemClick;
 
   @override
   Widget build(BuildContext context) {
@@ -250,16 +309,9 @@ class LandingNavigation extends StatelessWidget {
           Row(
             children: [
               for (final item in navItems)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(
-                    item,
-                    style: textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.3,
-                    ),
-                  ),
+                NavItem(
+                  label: item,
+                  onTap: () => onNavItemClick(item),
                 ),
               ElevatedButton(
                 onPressed: onProjectInquiry,
@@ -617,7 +669,7 @@ class LandingServices extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
-        final horizontalPadding = _horizontalPadding(width);
+        final horizontalPadding = responsive.horizontalPadding(width);
         final isWide = width >= 960;
         final double rawAvailable =
             (width - (horizontalPadding * 2)).clamp(0.0, width).toDouble();
@@ -664,10 +716,13 @@ class LandingServices extends StatelessWidget {
                     spacing: 24,
                     runSpacing: 24,
                     children: [
-                      for (final service in services)
+                      for (var i = 0; i < services.length; i++)
                         SizedBox(
                           width: isWide ? cardWidth : double.infinity,
-                          child: _ServiceCard(service: service),
+                          child: FadeInUp(
+                            delay: Duration(milliseconds: 100 * i),
+                            child: _ServiceCard(service: services[i]),
+                          ),
                         ),
                     ],
                   ),
@@ -783,7 +838,7 @@ class CaseStudiesSection extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final width = constraints.maxWidth;
-          final horizontalPadding = _horizontalPadding(width);
+          final horizontalPadding = responsive.horizontalPadding(width);
           final double rawAvailable =
               (width - (horizontalPadding * 2)).clamp(0.0, width).toDouble();
           final double contentWidth = math.min(rawAvailable, 1200.0);
@@ -829,10 +884,13 @@ class CaseStudiesSection extends StatelessWidget {
                       spacing: 24,
                       runSpacing: 24,
                       children: [
-                        for (final study in studies)
+                        for (var i = 0; i < studies.length; i++)
                           SizedBox(
                             width: cardWidth,
-                            child: _CaseStudyCard(study: study),
+                            child: FadeInUp(
+                              delay: Duration(milliseconds: 100 * i),
+                              child: _CaseStudyCard(study: studies[i]),
+                            ),
                           ),
                       ],
                     ),
@@ -976,7 +1034,7 @@ class ProcessSection extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
-        final horizontalPadding = _horizontalPadding(width);
+        final horizontalPadding = responsive.horizontalPadding(width);
         final double rawAvailable =
             (width - (horizontalPadding * 2)).clamp(0.0, width).toDouble();
         final double contentWidth = math.min(rawAvailable, 1200.0);
@@ -1029,10 +1087,13 @@ class ProcessSection extends StatelessWidget {
                       spacing: 18,
                       runSpacing: 18,
                       children: [
-                        for (final step in steps)
+                        for (var i = 0; i < steps.length; i++)
                           SizedBox(
                             width: isWide ? cardWidth : double.infinity,
-                            child: _ProcessCard(step: step),
+                            child: FadeInUp(
+                              delay: Duration(milliseconds: 100 * i),
+                              child: _ProcessCard(step: steps[i]),
+                            ),
                           ),
                       ],
                     ),
@@ -1134,7 +1195,7 @@ class SpotlightCtaSection extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
-        final horizontalPadding = _horizontalPadding(width);
+        final horizontalPadding = responsive.horizontalPadding(width);
         final isWide = width >= 900;
 
         return Padding(
@@ -1313,7 +1374,7 @@ class FooterSection extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
-        final horizontalPadding = _horizontalPadding(width);
+        final horizontalPadding = responsive.horizontalPadding(width);
         final isDesktop = width >= 960;
         return Container(
           padding: EdgeInsets.fromLTRB(horizontalPadding, 64, horizontalPadding, 48),
@@ -1433,75 +1494,352 @@ class _FooterLink extends StatelessWidget {
   }
 }
 
-double _horizontalPadding(double width) {
-  if (width >= 1440) {
-    return 196;
-  }
-  if (width >= 1200) {
-    return 160;
-  }
-  if (width >= 992) {
-    return 120;
-  }
-  if (width >= 768) {
-    return 80;
-  }
-  if (width >= 480) {
-    return 40;
-  }
-  return 24;
-}
-
 Future<void> _showContactDialog(BuildContext context, LandingState state) {
-  final intent = state.contactIntent ?? ContactIntent.projectInquiry;
-  final headline = intent == ContactIntent.portfolio
-      ? '포트폴리오 자료를 이메일로 전달드릴게요.'
-      : '프로젝트나 협업에 대해 이야기 나누고 싶으신가요?';
-  final primaryLabel = intent == ContactIntent.portfolio ? '포트폴리오 요청하기' : '프로젝트 상담 요청';
-
   return showDialog<void>(
     context: context,
+    barrierDismissible: false,
     builder: (dialogContext) {
-      final theme = Theme.of(dialogContext);
-      return AlertDialog(
-        backgroundColor: AppColors.surface,
-        title: Text(
-          'akradev studio',
-          style: theme.textTheme.titleLarge?.copyWith(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              headline,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
-                height: 1.6,
-              ),
+      return BlocProvider.value(
+        value: context.read<LandingCubit>(),
+        child: Dialog(
+          backgroundColor: AppColors.surface,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: _LeadFormDialog(
+              intent: state.contactIntent ?? ContactIntent.projectInquiry,
             ),
-            const SizedBox(height: 16),
-            for (final contact in state.footer.contacts) ...[
-              _FooterLink(contact: contact),
-              if (contact != state.footer.contacts.last)
-                const SizedBox(height: 12),
-            ],
-          ],
+          ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: const Text('닫기'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(primaryLabel),
-          ),
-        ],
       );
     },
   );
+}
+
+class _LeadFormDialog extends StatefulWidget {
+  const _LeadFormDialog({required this.intent});
+
+  final ContactIntent intent;
+
+  @override
+  State<_LeadFormDialog> createState() => _LeadFormDialogState();
+}
+
+class _LeadFormDialogState extends State<_LeadFormDialog> {
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _companyController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  String? _selectedBudget;
+  String? _selectedTimeline;
+
+  final List<String> _budgetOptions = [
+    '1천만원 미만',
+    '1천만원 ~ 3천만원',
+    '3천만원 ~ 5천만원',
+    '5천만원 ~ 1억원',
+    '1억원 이상',
+    '협의 필요',
+  ];
+
+  final List<String> _timelineOptions = [
+    '가능한 빠르게',
+    '1개월 이내',
+    '1~3개월',
+    '3~6개월',
+    '6개월 이상',
+    '유동적',
+  ];
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _companyController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cubit = context.read<LandingCubit>();
+
+    return BlocConsumer<LandingCubit, LandingState>(
+      listener: (context, state) {
+        if (state.formStatus == FormSubmissionStatus.success) {
+          Navigator.of(context).pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('문의가 성공적으로 접수되었습니다. 빠른 시일 내에 연락드리겠습니다.'),
+              backgroundColor: AppColors.accent,
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        final isSubmitting = state.formStatus == FormSubmissionStatus.submitting;
+        final headline = widget.intent == ContactIntent.portfolio
+            ? '포트폴리오 요청'
+            : '프로젝트 문의';
+
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(32),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        headline,
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: isSubmitting ? null : () => Navigator.of(context).pop(),
+                      icon: const Icon(Icons.close),
+                      color: AppColors.textSecondary,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '아래 정보를 입력해주시면 빠르게 연락드리겠습니다.',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                _buildTextField(
+                  controller: _nameController,
+                  label: '이름',
+                  hint: '홍길동',
+                  isRequired: true,
+                  enabled: !isSubmitting,
+                  onChanged: (value) => cubit.updateFormField(name: value),
+                ),
+                const SizedBox(height: 16),
+                _buildTextField(
+                  controller: _emailController,
+                  label: '이메일',
+                  hint: 'example@company.com',
+                  isRequired: true,
+                  enabled: !isSubmitting,
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: (value) => cubit.updateFormField(email: value),
+                ),
+                const SizedBox(height: 16),
+                _buildTextField(
+                  controller: _companyController,
+                  label: '회사명',
+                  hint: '(선택) 소속 회사나 팀',
+                  enabled: !isSubmitting,
+                  onChanged: (value) => cubit.updateFormField(company: value),
+                ),
+                const SizedBox(height: 16),
+                _buildTextField(
+                  controller: _descriptionController,
+                  label: '프로젝트 설명',
+                  hint: '어떤 제품을 만들고 싶으신가요? 간단히 설명해주세요.',
+                  isRequired: true,
+                  enabled: !isSubmitting,
+                  maxLines: 4,
+                  onChanged: (value) => cubit.updateFormField(projectDescription: value),
+                ),
+                const SizedBox(height: 16),
+                _buildDropdown(
+                  label: '예상 예산',
+                  value: _selectedBudget,
+                  items: _budgetOptions,
+                  enabled: !isSubmitting,
+                  onChanged: (value) {
+                    setState(() => _selectedBudget = value);
+                    cubit.updateFormField(budget: value);
+                  },
+                ),
+                const SizedBox(height: 16),
+                _buildDropdown(
+                  label: '희망 시작 시기',
+                  value: _selectedTimeline,
+                  items: _timelineOptions,
+                  enabled: !isSubmitting,
+                  onChanged: (value) {
+                    setState(() => _selectedTimeline = value);
+                    cubit.updateFormField(timeline: value);
+                  },
+                ),
+                if (state.formErrorMessage != null) ...[
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.red.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.error_outline, color: Colors.red, size: 20),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            state.formErrorMessage!,
+                            style: theme.textTheme.bodySmall?.copyWith(color: Colors.red),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: isSubmitting ? null : () => Navigator.of(context).pop(),
+                      child: const Text('취소'),
+                    ),
+                    const SizedBox(width: 12),
+                    ElevatedButton(
+                      onPressed: isSubmitting
+                          ? null
+                          : () {
+                              cubit.submitLeadForm();
+                            },
+                      child: isSubmitting
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Text('제출하기'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    bool isRequired = false,
+    bool enabled = true,
+    int maxLines = 1,
+    TextInputType? keyboardType,
+    required Function(String) onChanged,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              label,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+            if (isRequired)
+              Text(
+                ' *',
+                style: TextStyle(color: AppColors.accent),
+              ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: controller,
+          enabled: enabled,
+          maxLines: maxLines,
+          keyboardType: keyboardType,
+          onChanged: onChanged,
+          style: TextStyle(color: AppColors.textPrimary),
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: TextStyle(color: AppColors.textSecondary.withValues(alpha: 0.5)),
+            filled: true,
+            fillColor: AppColors.background.withValues(alpha: 0.5),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: AppColors.accent, width: 2),
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDropdown({
+    required String label,
+    required String? value,
+    required List<String> items,
+    required bool enabled,
+    required Function(String?) onChanged,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w600,
+              ),
+        ),
+        const SizedBox(height: 8),
+        DropdownButtonFormField<String>(
+          value: value,
+          onChanged: enabled ? onChanged : null,
+          dropdownColor: AppColors.surface,
+          style: TextStyle(color: AppColors.textPrimary),
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: AppColors.background.withValues(alpha: 0.5),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: AppColors.accent, width: 2),
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          ),
+          items: items.map((item) {
+            return DropdownMenuItem(
+              value: item,
+              child: Text(item),
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
 }

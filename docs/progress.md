@@ -73,8 +73,262 @@ akradev studio 웹사이트(Flutter Web) 구축 과정에서 논의·적용한 �
 - [x] Flutter 초기 구조 정리 및 BLoC 도입
 - [x] Hero/Services/Case Studies/Process/CTA/푸터 UI 배치
 - [x] 상태 기반 Contact Dialog 흐름 통합
+- [x] 내비게이션 앵커링 및 스크롤 애니메이션 구현
 - [ ] 실제 데이터 수급 및 카피 확정
-- [ ] 리드 폼/추적 및 애니메이션 개선
+- [ ] 리드 폼/추적 및 백엔드 연동
+
+## 11. 고도화 1단계 완료 (내비게이션 & 애니메이션)
+
+### 11.1 내비게이션 앵커링 구현
+- **LandingPage StatefulWidget 전환**: ScrollController와 GlobalKey를 활용한 섹션 스크롤 구현
+- **섹션별 GlobalKey 추가**: Services, Process, Contact 섹션에 키 할당
+- **스크롤 애니메이션**: 800ms easeInOutCubic 커브로 부드러운 스크롤 이동
+- **오프셋 조정**: 네비게이션 바 높이 고려한 80px 오프셋 적용
+
+**주요 변경사항:**
+```dart
+// LandingPage에 ScrollController 추가
+final ScrollController _scrollController = ScrollController();
+final GlobalKey _servicesKey = GlobalKey();
+final GlobalKey _processKey = GlobalKey();
+final GlobalKey _contactKey = GlobalKey();
+
+// 스크롤 함수 구현
+void _scrollToSection(String sectionName) {
+  // GlobalKey를 통한 위치 계산 및 애니메이션 스크롤
+}
+```
+
+### 11.2 스크롤 애니메이션 추가
+- **_NavItem 위젯**: 네비게이션 메뉴 hover 효과 구현
+  - MouseRegion으로 hover 상태 감지
+  - AnimatedDefaultTextStyle로 색상 전환 (textSecondary → accent)
+  - 200ms 부드러운 전환 애니메이션
+
+- **_FadeInUp 위젯**: 카드 fade-in 애니메이션 구현
+  - FadeTransition + SlideTransition 조합
+  - 투명도 0 → 1, Y축 0.2 → 0 이동
+  - 600ms 애니메이션 지속 시간
+  - 카드별 100ms 지연으로 순차 애니메이션 효과
+
+**적용 섹션:**
+- CaseStudiesSection: 3개 카드 순차 애니메이션
+- ProcessSection: 4개 프로세스 카드 순차 애니메이션
+- LandingServices: 2개 서비스 카드 순차 애니메이션
+
+### 11.3 UX 개선 효과
+- 메뉴 클릭 시 즉각적인 섹션 이동으로 사용자 경험 향상
+- 카드 애니메이션으로 콘텐츠 시각적 깊이 강화
+- Hover 효과로 상호작용성 증대
+
+## 12. 고도화 2단계 완료 (리드 폼 구현)
+
+### 12.1 데이터 모델 설계
+**landing_state.dart 업데이트:**
+- `LeadFormData`: 리드 정보를 담는 Freezed 모델
+  - name, email (필수)
+  - company, projectDescription (필수)
+  - budget, timeline (선택)
+- `FormSubmissionStatus`: 폼 제출 상태 관리 (idle, submitting, success, error)
+- `LandingState`에 `formData`, `formStatus`, `formErrorMessage` 추가
+
+### 12.2 상태 관리 로직 구현
+**landing_cubit.dart 업데이트:**
+- `updateFormField()`: 폼 필드 값 실시간 업데이트
+- `submitLeadForm()`: 폼 제출 및 유효성 검사
+  - 필수 필드 검증 (이름, 이메일, 프로젝트 설명)
+  - 이메일 형식 검증 (정규표현식)
+  - 에러 메시지 상태 관리
+  - 제출 중 로딩 상태 처리
+  - 성공/실패 상태 피드백
+- `_validateEmail()`: 이메일 형식 검증 유틸리티
+- TODO 주석: 백엔드 API 연동 준비 완료 (2초 지연으로 시뮬레이션)
+
+### 12.3 리드 폼 UI 구현
+**_LeadFormDialog 위젯 (main.dart):**
+- **폼 필드:**
+  - 이름 (필수, TextFormField)
+  - 이메일 (필수, 이메일 키보드, 유효성 검사)
+  - 회사명 (선택, TextFormField)
+  - 프로젝트 설명 (필수, 4줄 multiline)
+  - 예상 예산 (선택, DropdownButton: 6개 옵션)
+  - 희망 시작 시기 (선택, DropdownButton: 6개 옵션)
+
+- **UI/UX 특징:**
+  - Dialog 형태, 최대 너비 600px
+  - SingleChildScrollView로 모바일 대응
+  - 필수 필드 표시 (빨간색 * 마크)
+  - 제출 중 필드 비활성화
+  - 에러 메시지 표시 영역 (빨간색 배경)
+  - 제출 버튼에 CircularProgressIndicator
+  - 성공 시 SnackBar 피드백 + Dialog 자동 닫기
+  - barrierDismissible: false (실수로 닫기 방지)
+
+- **스타일링:**
+  - AppColors 테마 일관성 유지
+  - TextFormField: 12px border-radius, accent 색상 focus
+  - DropdownButton: surface 배경, 동일한 스타일
+  - 에러 컨테이너: 반투명 빨간색 배경 + 아이콘
+
+### 12.4 폼 제출 플로우
+1. 사용자가 CTA 버튼 클릭 (프로젝트 문의 / 포트폴리오 요청)
+2. `requestProjectInquiry()` 또는 `requestPortfolio()` 호출
+3. `_showContactDialog()` → `_LeadFormDialog` 표시
+4. 사용자가 폼 작성 → `updateFormField()` 실시간 업데이트
+5. "제출하기" 클릭 → `submitLeadForm()` 실행
+6. 유효성 검사 통과 → `FormSubmissionStatus.submitting`
+7. 2초 지연 (API 호출 시뮬레이션)
+8. 성공 → `FormSubmissionStatus.success` + SnackBar + Dialog 닫기
+9. `dismissContactDialog()` → 폼 상태 초기화
+
+### 12.5 백엔드 연동 준비
+**TODO 구현 가이드 (landing_cubit.dart:108):**
+```dart
+// TODO: Implement actual API call
+// Example: await _apiService.submitLead(state.formData);
+```
+
+**연동 시 필요 사항:**
+1. API 서비스 클래스 생성 (`lib/services/api_service.dart`)
+2. HTTP 패키지 추가 (`http` 또는 `dio`)
+3. 엔드포인트 설정 (예: `POST /api/leads`)
+4. 요청 바디: `LeadFormData.toJson()` (Freezed 자동 생성)
+5. 응답 처리: 성공/실패 분기
+6. 에러 핸들링: 네트워크 오류, 서버 오류 메시지 표시
+
+### 12.6 비즈니스 가치
+- **리드 수집 자동화**: 수동 이메일 대신 구조화된 데이터 수집
+- **전환율 최적화**: 필수 정보만 요구하여 이탈 방지
+- **빠른 응대 준비**: 예산/일정 정보로 상담 효율성 증대
+- **데이터 분석 가능**: 폼 제출 데이터로 마케팅 인사이트 확보
+
+## 13. 고도화 3단계 완료 (코드 리팩토링)
+
+### 13.1 디렉토리 구조 재구성
+**신규 디렉토리 생성:**
+```
+lib/
+├── main.dart (1507줄 → 리팩토링 완료)
+├── shared/
+│   ├── theme/
+│   │   └── app_colors.dart
+│   ├── utils/
+│   │   └── responsive.dart
+│   └── widgets/
+│       ├── fade_in_up.dart
+│       └── nav_item.dart
+└── features/
+    └── landing/
+        ├── landing_cubit.dart
+        ├── landing_state.dart
+        └── widgets/ (향후 확장 가능)
+```
+
+### 13.2 테마 파일 분리
+**lib/shared/theme/app_colors.dart:**
+- `AppColors` 클래스 분리
+- 5가지 색상 상수 정의 (background, surface, accent, textPrimary, textSecondary)
+- main.dart에서 중복 제거 및 import 추가
+
+### 13.3 유틸리티 함수 분리
+**lib/shared/utils/responsive.dart:**
+- `horizontalPadding()` 함수 분리
+- 6개 브레이크포인트 기반 패딩 계산 로직
+- main.dart에서 `responsive.horizontalPadding()` 형태로 호출
+
+### 13.4 공통 위젯 분리
+**lib/shared/widgets/fade_in_up.dart:**
+- `FadeInUp` 애니메이션 위젯 분리
+- SingleTickerProviderStateMixin 기반 구현
+- FadeTransition + SlideTransition 조합
+
+**lib/shared/widgets/nav_item.dart:**
+- `NavItem` 네비게이션 메뉴 위젯 분리
+- Hover 효과 포함 (AnimatedDefaultTextStyle)
+- MouseRegion + GestureDetector 조합
+
+### 13.5 코드 중복 제거
+**main.dart 최적화:**
+- ✅ `AppColors` 클래스 정의 제거
+- ✅ `_NavItem` / `_NavItemState` 클래스 제거
+- ✅ `_FadeInUp` / `_FadeInUpState` 클래스 제거
+- ✅ `_horizontalPadding()` 함수 제거
+- ✅ 모든 호출부를 import된 파일로 교체
+
+**개선 효과:**
+- main.dart 라인 수 감소: ~130줄 제거
+- 코드 재사용성 증대
+- 테마/유틸 변경 시 단일 파일 수정으로 전체 반영 가능
+- 향후 다른 페이지 추가 시 공통 위젯 재사용 용이
+
+### 13.6 빌드 검증
+**flutter analyze 실행 결과:**
+- ✅ 1 deprecation 경고 (DropdownButtonFormField.value → initialValue)
+- ✅ 빌드 성공
+- ✅ 린트 규칙 준수
+
+## 14. 전체 고도화 작업 요약
+
+### 14.1 완료된 작업
+**1단계: 내비게이션 & 애니메이션 (UX 개선)**
+- ✅ 메뉴 클릭 시 섹션 스크롤 (800ms 부드러운 애니메이션)
+- ✅ 카드 fade-in 효과 (순차 애니메이션, 100ms 지연)
+- ✅ 네비게이션 hover 효과 (200ms 색상 전환)
+- **파일 변경:** `lib/main.dart` (LandingPage StatefulWidget 전환)
+
+**2단계: 리드 폼 구현 (비즈니스 가치)**
+- ✅ 폼 데이터 모델 (Freezed 기반 LeadFormData)
+- ✅ 상태 관리 (유효성 검사, 제출 로직)
+- ✅ UI 구현 (6개 입력 필드, 에러 처리)
+- ✅ 백엔드 연동 준비 (TODO 주석 포함)
+- **파일 변경:** `lib/features/landing/landing_state.dart`, `landing_cubit.dart`, `lib/main.dart`
+
+**3단계: 코드 리팩토링 (유지보수성)**
+- ✅ 테마 분리 (AppColors)
+- ✅ 유틸리티 분리 (responsive.horizontalPadding)
+- ✅ 공통 위젯 분리 (FadeInUp, NavItem)
+- ✅ 중복 코드 제거 (~130줄 감소)
+- **파일 변경:** 4개 신규 파일 생성, `lib/main.dart` 최적화
+
+### 14.2 주요 성과 지표
+| 항목 | Before | After | 개선 |
+|------|--------|-------|------|
+| main.dart 라인 수 | 1507줄 | ~1377줄 | -130줄 |
+| 공통 위젯 재사용 | 0개 | 2개 | +2개 |
+| 애니메이션 적용 섹션 | 0개 | 3개 | +3개 |
+| 리드 수집 방식 | 수동 이메일 | 구조화된 폼 | 자동화 |
+| 코드 모듈화 | Monolithic | Modular | 개선 |
+
+### 14.3 기술 스택 및 아키텍처
+**상태 관리:** flutter_bloc (Cubit) + Freezed
+**애니메이션:** Flutter 네이티브 (FadeTransition, SlideTransition)
+**스크롤:** ScrollController + GlobalKey
+**폼 관리:** TextEditingController + DropdownButtonFormField
+**테마:** Material 3 + AppColors 커스텀
+
+**아키텍처 패턴:**
+- Feature-first 구조 (landing/)
+- Shared 레이어 분리 (theme, utils, widgets)
+- BLoC 패턴 (UI ↔ Cubit ↔ State)
+- Freezed 불변 상태 관리
+
+### 14.4 남은 작업 (추후 고도화 가능)
+- [ ] 나머지 대형 위젯 분리 (LandingHero, CaseStudiesSection 등)
+- [ ] 백엔드 API 연동 (리드 폼 제출)
+- [ ] 다국어 지원 (i18n)
+- [ ] Analytics 연동 (Firebase Analytics)
+- [ ] 이미지 최적화 및 SEO
+- [ ] 메트릭 카운터 애니메이션 (숫자 증가 효과)
+- [ ] Scroll-based 애니메이션 (viewport 진입 시 트리거)
+
+### 14.5 배포 체크리스트
+- [x] Freezed 코드 생성 완료
+- [x] Flutter analyze 통과 (1개 deprecation 경고만 존재)
+- [ ] 실제 데이터 교체 (metrics, case studies, trusted brands)
+- [ ] 백엔드 API 엔드포인트 설정
+- [ ] 환경 변수 설정 (.env)
+- [ ] 웹 메타 태그 추가 (SEO)
+- [ ] favicon 및 웹 매니페스트 설정
 
 ---
-마지막 업데이트: 이 문서는 `docs/progress.md`에서 관리되며, 기능 추가나 카피 확정 시 계속 보완할 예정입니다.
+마지막 업데이트: 2025년 고도화 작업 완료. 이 문서는 `docs/progress.md`에서 관리되며, 향후 기능 추가 시 계속 보완할 예정입니다.

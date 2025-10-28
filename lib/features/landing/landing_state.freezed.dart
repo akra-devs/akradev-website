@@ -26,6 +26,9 @@ mixin _$LandingState {
   PrimaryCta get spotlight => throw _privateConstructorUsedError;
   bool get isContactDialogVisible => throw _privateConstructorUsedError;
   ContactIntent? get contactIntent => throw _privateConstructorUsedError;
+  LeadFormData get formData => throw _privateConstructorUsedError;
+  FormSubmissionStatus get formStatus => throw _privateConstructorUsedError;
+  String? get formErrorMessage => throw _privateConstructorUsedError;
 
   /// Create a copy of LandingState
   /// with the given fields replaced by the non-null parameter values.
@@ -51,11 +54,15 @@ abstract class $LandingStateCopyWith<$Res> {
     PrimaryCta spotlight,
     bool isContactDialogVisible,
     ContactIntent? contactIntent,
+    LeadFormData formData,
+    FormSubmissionStatus formStatus,
+    String? formErrorMessage,
   });
 
   $HeroSectionCopyWith<$Res> get hero;
   $FooterContentCopyWith<$Res> get footer;
   $PrimaryCtaCopyWith<$Res> get spotlight;
+  $LeadFormDataCopyWith<$Res> get formData;
 }
 
 /// @nodoc
@@ -82,6 +89,9 @@ class _$LandingStateCopyWithImpl<$Res, $Val extends LandingState>
     Object? spotlight = null,
     Object? isContactDialogVisible = null,
     Object? contactIntent = freezed,
+    Object? formData = null,
+    Object? formStatus = null,
+    Object? formErrorMessage = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -130,6 +140,21 @@ class _$LandingStateCopyWithImpl<$Res, $Val extends LandingState>
                     ? _value.contactIntent
                     : contactIntent // ignore: cast_nullable_to_non_nullable
                         as ContactIntent?,
+            formData:
+                null == formData
+                    ? _value.formData
+                    : formData // ignore: cast_nullable_to_non_nullable
+                        as LeadFormData,
+            formStatus:
+                null == formStatus
+                    ? _value.formStatus
+                    : formStatus // ignore: cast_nullable_to_non_nullable
+                        as FormSubmissionStatus,
+            formErrorMessage:
+                freezed == formErrorMessage
+                    ? _value.formErrorMessage
+                    : formErrorMessage // ignore: cast_nullable_to_non_nullable
+                        as String?,
           )
           as $Val,
     );
@@ -164,6 +189,16 @@ class _$LandingStateCopyWithImpl<$Res, $Val extends LandingState>
       return _then(_value.copyWith(spotlight: value) as $Val);
     });
   }
+
+  /// Create a copy of LandingState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $LeadFormDataCopyWith<$Res> get formData {
+    return $LeadFormDataCopyWith<$Res>(_value.formData, (value) {
+      return _then(_value.copyWith(formData: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -185,6 +220,9 @@ abstract class _$$LandingStateImplCopyWith<$Res>
     PrimaryCta spotlight,
     bool isContactDialogVisible,
     ContactIntent? contactIntent,
+    LeadFormData formData,
+    FormSubmissionStatus formStatus,
+    String? formErrorMessage,
   });
 
   @override
@@ -193,6 +231,8 @@ abstract class _$$LandingStateImplCopyWith<$Res>
   $FooterContentCopyWith<$Res> get footer;
   @override
   $PrimaryCtaCopyWith<$Res> get spotlight;
+  @override
+  $LeadFormDataCopyWith<$Res> get formData;
 }
 
 /// @nodoc
@@ -218,6 +258,9 @@ class __$$LandingStateImplCopyWithImpl<$Res>
     Object? spotlight = null,
     Object? isContactDialogVisible = null,
     Object? contactIntent = freezed,
+    Object? formData = null,
+    Object? formStatus = null,
+    Object? formErrorMessage = freezed,
   }) {
     return _then(
       _$LandingStateImpl(
@@ -266,6 +309,21 @@ class __$$LandingStateImplCopyWithImpl<$Res>
                 ? _value.contactIntent
                 : contactIntent // ignore: cast_nullable_to_non_nullable
                     as ContactIntent?,
+        formData:
+            null == formData
+                ? _value.formData
+                : formData // ignore: cast_nullable_to_non_nullable
+                    as LeadFormData,
+        formStatus:
+            null == formStatus
+                ? _value.formStatus
+                : formStatus // ignore: cast_nullable_to_non_nullable
+                    as FormSubmissionStatus,
+        formErrorMessage:
+            freezed == formErrorMessage
+                ? _value.formErrorMessage
+                : formErrorMessage // ignore: cast_nullable_to_non_nullable
+                    as String?,
       ),
     );
   }
@@ -284,6 +342,9 @@ class _$LandingStateImpl implements _LandingState {
     required this.spotlight,
     this.isContactDialogVisible = false,
     this.contactIntent,
+    this.formData = const LeadFormData(),
+    this.formStatus = FormSubmissionStatus.idle,
+    this.formErrorMessage,
   }) : _navItems = navItems,
        _services = services,
        _caseStudies = caseStudies,
@@ -332,10 +393,18 @@ class _$LandingStateImpl implements _LandingState {
   final bool isContactDialogVisible;
   @override
   final ContactIntent? contactIntent;
+  @override
+  @JsonKey()
+  final LeadFormData formData;
+  @override
+  @JsonKey()
+  final FormSubmissionStatus formStatus;
+  @override
+  final String? formErrorMessage;
 
   @override
   String toString() {
-    return 'LandingState(navItems: $navItems, hero: $hero, services: $services, footer: $footer, caseStudies: $caseStudies, processSteps: $processSteps, spotlight: $spotlight, isContactDialogVisible: $isContactDialogVisible, contactIntent: $contactIntent)';
+    return 'LandingState(navItems: $navItems, hero: $hero, services: $services, footer: $footer, caseStudies: $caseStudies, processSteps: $processSteps, spotlight: $spotlight, isContactDialogVisible: $isContactDialogVisible, contactIntent: $contactIntent, formData: $formData, formStatus: $formStatus, formErrorMessage: $formErrorMessage)';
   }
 
   @override
@@ -360,7 +429,13 @@ class _$LandingStateImpl implements _LandingState {
             (identical(other.isContactDialogVisible, isContactDialogVisible) ||
                 other.isContactDialogVisible == isContactDialogVisible) &&
             (identical(other.contactIntent, contactIntent) ||
-                other.contactIntent == contactIntent));
+                other.contactIntent == contactIntent) &&
+            (identical(other.formData, formData) ||
+                other.formData == formData) &&
+            (identical(other.formStatus, formStatus) ||
+                other.formStatus == formStatus) &&
+            (identical(other.formErrorMessage, formErrorMessage) ||
+                other.formErrorMessage == formErrorMessage));
   }
 
   @override
@@ -375,6 +450,9 @@ class _$LandingStateImpl implements _LandingState {
     spotlight,
     isContactDialogVisible,
     contactIntent,
+    formData,
+    formStatus,
+    formErrorMessage,
   );
 
   /// Create a copy of LandingState
@@ -397,6 +475,9 @@ abstract class _LandingState implements LandingState {
     required final PrimaryCta spotlight,
     final bool isContactDialogVisible,
     final ContactIntent? contactIntent,
+    final LeadFormData formData,
+    final FormSubmissionStatus formStatus,
+    final String? formErrorMessage,
   }) = _$LandingStateImpl;
 
   @override
@@ -417,6 +498,12 @@ abstract class _LandingState implements LandingState {
   bool get isContactDialogVisible;
   @override
   ContactIntent? get contactIntent;
+  @override
+  LeadFormData get formData;
+  @override
+  FormSubmissionStatus get formStatus;
+  @override
+  String? get formErrorMessage;
 
   /// Create a copy of LandingState
   /// with the given fields replaced by the non-null parameter values.
@@ -2366,5 +2453,277 @@ abstract class _ContactInfo implements ContactInfo {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ContactInfoImplCopyWith<_$ContactInfoImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$LeadFormData {
+  String get name => throw _privateConstructorUsedError;
+  String get email => throw _privateConstructorUsedError;
+  String get company => throw _privateConstructorUsedError;
+  String get projectDescription => throw _privateConstructorUsedError;
+  String get budget => throw _privateConstructorUsedError;
+  String get timeline => throw _privateConstructorUsedError;
+
+  /// Create a copy of LeadFormData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $LeadFormDataCopyWith<LeadFormData> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $LeadFormDataCopyWith<$Res> {
+  factory $LeadFormDataCopyWith(
+    LeadFormData value,
+    $Res Function(LeadFormData) then,
+  ) = _$LeadFormDataCopyWithImpl<$Res, LeadFormData>;
+  @useResult
+  $Res call({
+    String name,
+    String email,
+    String company,
+    String projectDescription,
+    String budget,
+    String timeline,
+  });
+}
+
+/// @nodoc
+class _$LeadFormDataCopyWithImpl<$Res, $Val extends LeadFormData>
+    implements $LeadFormDataCopyWith<$Res> {
+  _$LeadFormDataCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of LeadFormData
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? email = null,
+    Object? company = null,
+    Object? projectDescription = null,
+    Object? budget = null,
+    Object? timeline = null,
+  }) {
+    return _then(
+      _value.copyWith(
+            name:
+                null == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as String,
+            email:
+                null == email
+                    ? _value.email
+                    : email // ignore: cast_nullable_to_non_nullable
+                        as String,
+            company:
+                null == company
+                    ? _value.company
+                    : company // ignore: cast_nullable_to_non_nullable
+                        as String,
+            projectDescription:
+                null == projectDescription
+                    ? _value.projectDescription
+                    : projectDescription // ignore: cast_nullable_to_non_nullable
+                        as String,
+            budget:
+                null == budget
+                    ? _value.budget
+                    : budget // ignore: cast_nullable_to_non_nullable
+                        as String,
+            timeline:
+                null == timeline
+                    ? _value.timeline
+                    : timeline // ignore: cast_nullable_to_non_nullable
+                        as String,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$LeadFormDataImplCopyWith<$Res>
+    implements $LeadFormDataCopyWith<$Res> {
+  factory _$$LeadFormDataImplCopyWith(
+    _$LeadFormDataImpl value,
+    $Res Function(_$LeadFormDataImpl) then,
+  ) = __$$LeadFormDataImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    String name,
+    String email,
+    String company,
+    String projectDescription,
+    String budget,
+    String timeline,
+  });
+}
+
+/// @nodoc
+class __$$LeadFormDataImplCopyWithImpl<$Res>
+    extends _$LeadFormDataCopyWithImpl<$Res, _$LeadFormDataImpl>
+    implements _$$LeadFormDataImplCopyWith<$Res> {
+  __$$LeadFormDataImplCopyWithImpl(
+    _$LeadFormDataImpl _value,
+    $Res Function(_$LeadFormDataImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of LeadFormData
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? email = null,
+    Object? company = null,
+    Object? projectDescription = null,
+    Object? budget = null,
+    Object? timeline = null,
+  }) {
+    return _then(
+      _$LeadFormDataImpl(
+        name:
+            null == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String,
+        email:
+            null == email
+                ? _value.email
+                : email // ignore: cast_nullable_to_non_nullable
+                    as String,
+        company:
+            null == company
+                ? _value.company
+                : company // ignore: cast_nullable_to_non_nullable
+                    as String,
+        projectDescription:
+            null == projectDescription
+                ? _value.projectDescription
+                : projectDescription // ignore: cast_nullable_to_non_nullable
+                    as String,
+        budget:
+            null == budget
+                ? _value.budget
+                : budget // ignore: cast_nullable_to_non_nullable
+                    as String,
+        timeline:
+            null == timeline
+                ? _value.timeline
+                : timeline // ignore: cast_nullable_to_non_nullable
+                    as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$LeadFormDataImpl implements _LeadFormData {
+  const _$LeadFormDataImpl({
+    this.name = '',
+    this.email = '',
+    this.company = '',
+    this.projectDescription = '',
+    this.budget = '',
+    this.timeline = '',
+  });
+
+  @override
+  @JsonKey()
+  final String name;
+  @override
+  @JsonKey()
+  final String email;
+  @override
+  @JsonKey()
+  final String company;
+  @override
+  @JsonKey()
+  final String projectDescription;
+  @override
+  @JsonKey()
+  final String budget;
+  @override
+  @JsonKey()
+  final String timeline;
+
+  @override
+  String toString() {
+    return 'LeadFormData(name: $name, email: $email, company: $company, projectDescription: $projectDescription, budget: $budget, timeline: $timeline)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LeadFormDataImpl &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.company, company) || other.company == company) &&
+            (identical(other.projectDescription, projectDescription) ||
+                other.projectDescription == projectDescription) &&
+            (identical(other.budget, budget) || other.budget == budget) &&
+            (identical(other.timeline, timeline) ||
+                other.timeline == timeline));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    name,
+    email,
+    company,
+    projectDescription,
+    budget,
+    timeline,
+  );
+
+  /// Create a copy of LeadFormData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LeadFormDataImplCopyWith<_$LeadFormDataImpl> get copyWith =>
+      __$$LeadFormDataImplCopyWithImpl<_$LeadFormDataImpl>(this, _$identity);
+}
+
+abstract class _LeadFormData implements LeadFormData {
+  const factory _LeadFormData({
+    final String name,
+    final String email,
+    final String company,
+    final String projectDescription,
+    final String budget,
+    final String timeline,
+  }) = _$LeadFormDataImpl;
+
+  @override
+  String get name;
+  @override
+  String get email;
+  @override
+  String get company;
+  @override
+  String get projectDescription;
+  @override
+  String get budget;
+  @override
+  String get timeline;
+
+  /// Create a copy of LeadFormData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$LeadFormDataImplCopyWith<_$LeadFormDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
