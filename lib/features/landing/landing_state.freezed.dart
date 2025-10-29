@@ -26,6 +26,7 @@ mixin _$LandingState {
   PrimaryCta get spotlight => throw _privateConstructorUsedError;
   List<ProjectGalleryItem> get galleryProjects =>
       throw _privateConstructorUsedError;
+  List<ReviewItem> get reviews => throw _privateConstructorUsedError;
   bool get isContactDialogVisible => throw _privateConstructorUsedError;
   ContactIntent? get contactIntent => throw _privateConstructorUsedError;
   LeadFormData get formData => throw _privateConstructorUsedError;
@@ -58,6 +59,7 @@ abstract class $LandingStateCopyWith<$Res> {
     List<ProcessStep> processSteps,
     PrimaryCta spotlight,
     List<ProjectGalleryItem> galleryProjects,
+    List<ReviewItem> reviews,
     bool isContactDialogVisible,
     ContactIntent? contactIntent,
     LeadFormData formData,
@@ -96,6 +98,7 @@ class _$LandingStateCopyWithImpl<$Res, $Val extends LandingState>
     Object? processSteps = null,
     Object? spotlight = null,
     Object? galleryProjects = null,
+    Object? reviews = null,
     Object? isContactDialogVisible = null,
     Object? contactIntent = freezed,
     Object? formData = null,
@@ -146,6 +149,11 @@ class _$LandingStateCopyWithImpl<$Res, $Val extends LandingState>
                     ? _value.galleryProjects
                     : galleryProjects // ignore: cast_nullable_to_non_nullable
                         as List<ProjectGalleryItem>,
+            reviews:
+                null == reviews
+                    ? _value.reviews
+                    : reviews // ignore: cast_nullable_to_non_nullable
+                        as List<ReviewItem>,
             isContactDialogVisible:
                 null == isContactDialogVisible
                     ? _value.isContactDialogVisible
@@ -245,6 +253,7 @@ abstract class _$$LandingStateImplCopyWith<$Res>
     List<ProcessStep> processSteps,
     PrimaryCta spotlight,
     List<ProjectGalleryItem> galleryProjects,
+    List<ReviewItem> reviews,
     bool isContactDialogVisible,
     ContactIntent? contactIntent,
     LeadFormData formData,
@@ -286,6 +295,7 @@ class __$$LandingStateImplCopyWithImpl<$Res>
     Object? processSteps = null,
     Object? spotlight = null,
     Object? galleryProjects = null,
+    Object? reviews = null,
     Object? isContactDialogVisible = null,
     Object? contactIntent = freezed,
     Object? formData = null,
@@ -336,6 +346,11 @@ class __$$LandingStateImplCopyWithImpl<$Res>
                 ? _value._galleryProjects
                 : galleryProjects // ignore: cast_nullable_to_non_nullable
                     as List<ProjectGalleryItem>,
+        reviews:
+            null == reviews
+                ? _value._reviews
+                : reviews // ignore: cast_nullable_to_non_nullable
+                    as List<ReviewItem>,
         isContactDialogVisible:
             null == isContactDialogVisible
                 ? _value.isContactDialogVisible
@@ -388,6 +403,7 @@ class _$LandingStateImpl implements _LandingState {
     required final List<ProcessStep> processSteps,
     required this.spotlight,
     required final List<ProjectGalleryItem> galleryProjects,
+    required final List<ReviewItem> reviews,
     this.isContactDialogVisible = false,
     this.contactIntent,
     this.formData = const LeadFormData(),
@@ -399,7 +415,8 @@ class _$LandingStateImpl implements _LandingState {
        _services = services,
        _caseStudies = caseStudies,
        _processSteps = processSteps,
-       _galleryProjects = galleryProjects;
+       _galleryProjects = galleryProjects,
+       _reviews = reviews;
 
   final List<String> _navItems;
   @override
@@ -447,6 +464,14 @@ class _$LandingStateImpl implements _LandingState {
     return EqualUnmodifiableListView(_galleryProjects);
   }
 
+  final List<ReviewItem> _reviews;
+  @override
+  List<ReviewItem> get reviews {
+    if (_reviews is EqualUnmodifiableListView) return _reviews;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_reviews);
+  }
+
   @override
   @JsonKey()
   final bool isContactDialogVisible;
@@ -469,7 +494,7 @@ class _$LandingStateImpl implements _LandingState {
 
   @override
   String toString() {
-    return 'LandingState(navItems: $navItems, hero: $hero, services: $services, footer: $footer, caseStudies: $caseStudies, processSteps: $processSteps, spotlight: $spotlight, galleryProjects: $galleryProjects, isContactDialogVisible: $isContactDialogVisible, contactIntent: $contactIntent, formData: $formData, formStatus: $formStatus, formErrorMessage: $formErrorMessage, isUrgencyBannerVisible: $isUrgencyBannerVisible, selectedProjectCategory: $selectedProjectCategory)';
+    return 'LandingState(navItems: $navItems, hero: $hero, services: $services, footer: $footer, caseStudies: $caseStudies, processSteps: $processSteps, spotlight: $spotlight, galleryProjects: $galleryProjects, reviews: $reviews, isContactDialogVisible: $isContactDialogVisible, contactIntent: $contactIntent, formData: $formData, formStatus: $formStatus, formErrorMessage: $formErrorMessage, isUrgencyBannerVisible: $isUrgencyBannerVisible, selectedProjectCategory: $selectedProjectCategory)';
   }
 
   @override
@@ -495,6 +520,7 @@ class _$LandingStateImpl implements _LandingState {
               other._galleryProjects,
               _galleryProjects,
             ) &&
+            const DeepCollectionEquality().equals(other._reviews, _reviews) &&
             (identical(other.isContactDialogVisible, isContactDialogVisible) ||
                 other.isContactDialogVisible == isContactDialogVisible) &&
             (identical(other.contactIntent, contactIntent) ||
@@ -525,6 +551,7 @@ class _$LandingStateImpl implements _LandingState {
     const DeepCollectionEquality().hash(_processSteps),
     spotlight,
     const DeepCollectionEquality().hash(_galleryProjects),
+    const DeepCollectionEquality().hash(_reviews),
     isContactDialogVisible,
     contactIntent,
     formData,
@@ -553,6 +580,7 @@ abstract class _LandingState implements LandingState {
     required final List<ProcessStep> processSteps,
     required final PrimaryCta spotlight,
     required final List<ProjectGalleryItem> galleryProjects,
+    required final List<ReviewItem> reviews,
     final bool isContactDialogVisible,
     final ContactIntent? contactIntent,
     final LeadFormData formData,
@@ -578,6 +606,8 @@ abstract class _LandingState implements LandingState {
   PrimaryCta get spotlight;
   @override
   List<ProjectGalleryItem> get galleryProjects;
+  @override
+  List<ReviewItem> get reviews;
   @override
   bool get isContactDialogVisible;
   @override
@@ -1508,6 +1538,7 @@ mixin _$CaseStudy {
   String get description => throw _privateConstructorUsedError;
   String get result => throw _privateConstructorUsedError;
   List<String> get highlights => throw _privateConstructorUsedError;
+  DetailedMetrics? get detailedMetrics => throw _privateConstructorUsedError;
 
   /// Create a copy of CaseStudy
   /// with the given fields replaced by the non-null parameter values.
@@ -1527,7 +1558,10 @@ abstract class $CaseStudyCopyWith<$Res> {
     String description,
     String result,
     List<String> highlights,
+    DetailedMetrics? detailedMetrics,
   });
+
+  $DetailedMetricsCopyWith<$Res>? get detailedMetrics;
 }
 
 /// @nodoc
@@ -1550,6 +1584,7 @@ class _$CaseStudyCopyWithImpl<$Res, $Val extends CaseStudy>
     Object? description = null,
     Object? result = null,
     Object? highlights = null,
+    Object? detailedMetrics = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -1578,9 +1613,28 @@ class _$CaseStudyCopyWithImpl<$Res, $Val extends CaseStudy>
                     ? _value.highlights
                     : highlights // ignore: cast_nullable_to_non_nullable
                         as List<String>,
+            detailedMetrics:
+                freezed == detailedMetrics
+                    ? _value.detailedMetrics
+                    : detailedMetrics // ignore: cast_nullable_to_non_nullable
+                        as DetailedMetrics?,
           )
           as $Val,
     );
+  }
+
+  /// Create a copy of CaseStudy
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $DetailedMetricsCopyWith<$Res>? get detailedMetrics {
+    if (_value.detailedMetrics == null) {
+      return null;
+    }
+
+    return $DetailedMetricsCopyWith<$Res>(_value.detailedMetrics!, (value) {
+      return _then(_value.copyWith(detailedMetrics: value) as $Val);
+    });
   }
 }
 
@@ -1599,7 +1653,11 @@ abstract class _$$CaseStudyImplCopyWith<$Res>
     String description,
     String result,
     List<String> highlights,
+    DetailedMetrics? detailedMetrics,
   });
+
+  @override
+  $DetailedMetricsCopyWith<$Res>? get detailedMetrics;
 }
 
 /// @nodoc
@@ -1621,6 +1679,7 @@ class __$$CaseStudyImplCopyWithImpl<$Res>
     Object? description = null,
     Object? result = null,
     Object? highlights = null,
+    Object? detailedMetrics = freezed,
   }) {
     return _then(
       _$CaseStudyImpl(
@@ -1649,6 +1708,11 @@ class __$$CaseStudyImplCopyWithImpl<$Res>
                 ? _value._highlights
                 : highlights // ignore: cast_nullable_to_non_nullable
                     as List<String>,
+        detailedMetrics:
+            freezed == detailedMetrics
+                ? _value.detailedMetrics
+                : detailedMetrics // ignore: cast_nullable_to_non_nullable
+                    as DetailedMetrics?,
       ),
     );
   }
@@ -1663,6 +1727,7 @@ class _$CaseStudyImpl implements _CaseStudy {
     required this.description,
     required this.result,
     required final List<String> highlights,
+    this.detailedMetrics,
   }) : _highlights = highlights;
 
   @override
@@ -1682,8 +1747,11 @@ class _$CaseStudyImpl implements _CaseStudy {
   }
 
   @override
+  final DetailedMetrics? detailedMetrics;
+
+  @override
   String toString() {
-    return 'CaseStudy(company: $company, title: $title, description: $description, result: $result, highlights: $highlights)';
+    return 'CaseStudy(company: $company, title: $title, description: $description, result: $result, highlights: $highlights, detailedMetrics: $detailedMetrics)';
   }
 
   @override
@@ -1699,7 +1767,9 @@ class _$CaseStudyImpl implements _CaseStudy {
             const DeepCollectionEquality().equals(
               other._highlights,
               _highlights,
-            ));
+            ) &&
+            (identical(other.detailedMetrics, detailedMetrics) ||
+                other.detailedMetrics == detailedMetrics));
   }
 
   @override
@@ -1710,6 +1780,7 @@ class _$CaseStudyImpl implements _CaseStudy {
     description,
     result,
     const DeepCollectionEquality().hash(_highlights),
+    detailedMetrics,
   );
 
   /// Create a copy of CaseStudy
@@ -1728,6 +1799,7 @@ abstract class _CaseStudy implements CaseStudy {
     required final String description,
     required final String result,
     required final List<String> highlights,
+    final DetailedMetrics? detailedMetrics,
   }) = _$CaseStudyImpl;
 
   @override
@@ -1740,12 +1812,233 @@ abstract class _CaseStudy implements CaseStudy {
   String get result;
   @override
   List<String> get highlights;
+  @override
+  DetailedMetrics? get detailedMetrics;
 
   /// Create a copy of CaseStudy
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CaseStudyImplCopyWith<_$CaseStudyImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$DetailedMetrics {
+  String get downloads => throw _privateConstructorUsedError;
+  String get retention => throw _privateConstructorUsedError;
+  String get revenue => throw _privateConstructorUsedError;
+  String get conversionRate => throw _privateConstructorUsedError;
+
+  /// Create a copy of DetailedMetrics
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $DetailedMetricsCopyWith<DetailedMetrics> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DetailedMetricsCopyWith<$Res> {
+  factory $DetailedMetricsCopyWith(
+    DetailedMetrics value,
+    $Res Function(DetailedMetrics) then,
+  ) = _$DetailedMetricsCopyWithImpl<$Res, DetailedMetrics>;
+  @useResult
+  $Res call({
+    String downloads,
+    String retention,
+    String revenue,
+    String conversionRate,
+  });
+}
+
+/// @nodoc
+class _$DetailedMetricsCopyWithImpl<$Res, $Val extends DetailedMetrics>
+    implements $DetailedMetricsCopyWith<$Res> {
+  _$DetailedMetricsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of DetailedMetrics
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? downloads = null,
+    Object? retention = null,
+    Object? revenue = null,
+    Object? conversionRate = null,
+  }) {
+    return _then(
+      _value.copyWith(
+            downloads:
+                null == downloads
+                    ? _value.downloads
+                    : downloads // ignore: cast_nullable_to_non_nullable
+                        as String,
+            retention:
+                null == retention
+                    ? _value.retention
+                    : retention // ignore: cast_nullable_to_non_nullable
+                        as String,
+            revenue:
+                null == revenue
+                    ? _value.revenue
+                    : revenue // ignore: cast_nullable_to_non_nullable
+                        as String,
+            conversionRate:
+                null == conversionRate
+                    ? _value.conversionRate
+                    : conversionRate // ignore: cast_nullable_to_non_nullable
+                        as String,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$DetailedMetricsImplCopyWith<$Res>
+    implements $DetailedMetricsCopyWith<$Res> {
+  factory _$$DetailedMetricsImplCopyWith(
+    _$DetailedMetricsImpl value,
+    $Res Function(_$DetailedMetricsImpl) then,
+  ) = __$$DetailedMetricsImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    String downloads,
+    String retention,
+    String revenue,
+    String conversionRate,
+  });
+}
+
+/// @nodoc
+class __$$DetailedMetricsImplCopyWithImpl<$Res>
+    extends _$DetailedMetricsCopyWithImpl<$Res, _$DetailedMetricsImpl>
+    implements _$$DetailedMetricsImplCopyWith<$Res> {
+  __$$DetailedMetricsImplCopyWithImpl(
+    _$DetailedMetricsImpl _value,
+    $Res Function(_$DetailedMetricsImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of DetailedMetrics
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? downloads = null,
+    Object? retention = null,
+    Object? revenue = null,
+    Object? conversionRate = null,
+  }) {
+    return _then(
+      _$DetailedMetricsImpl(
+        downloads:
+            null == downloads
+                ? _value.downloads
+                : downloads // ignore: cast_nullable_to_non_nullable
+                    as String,
+        retention:
+            null == retention
+                ? _value.retention
+                : retention // ignore: cast_nullable_to_non_nullable
+                    as String,
+        revenue:
+            null == revenue
+                ? _value.revenue
+                : revenue // ignore: cast_nullable_to_non_nullable
+                    as String,
+        conversionRate:
+            null == conversionRate
+                ? _value.conversionRate
+                : conversionRate // ignore: cast_nullable_to_non_nullable
+                    as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$DetailedMetricsImpl implements _DetailedMetrics {
+  const _$DetailedMetricsImpl({
+    required this.downloads,
+    required this.retention,
+    required this.revenue,
+    required this.conversionRate,
+  });
+
+  @override
+  final String downloads;
+  @override
+  final String retention;
+  @override
+  final String revenue;
+  @override
+  final String conversionRate;
+
+  @override
+  String toString() {
+    return 'DetailedMetrics(downloads: $downloads, retention: $retention, revenue: $revenue, conversionRate: $conversionRate)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DetailedMetricsImpl &&
+            (identical(other.downloads, downloads) ||
+                other.downloads == downloads) &&
+            (identical(other.retention, retention) ||
+                other.retention == retention) &&
+            (identical(other.revenue, revenue) || other.revenue == revenue) &&
+            (identical(other.conversionRate, conversionRate) ||
+                other.conversionRate == conversionRate));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, downloads, retention, revenue, conversionRate);
+
+  /// Create a copy of DetailedMetrics
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DetailedMetricsImplCopyWith<_$DetailedMetricsImpl> get copyWith =>
+      __$$DetailedMetricsImplCopyWithImpl<_$DetailedMetricsImpl>(
+        this,
+        _$identity,
+      );
+}
+
+abstract class _DetailedMetrics implements DetailedMetrics {
+  const factory _DetailedMetrics({
+    required final String downloads,
+    required final String retention,
+    required final String revenue,
+    required final String conversionRate,
+  }) = _$DetailedMetricsImpl;
+
+  @override
+  String get downloads;
+  @override
+  String get retention;
+  @override
+  String get revenue;
+  @override
+  String get conversionRate;
+
+  /// Create a copy of DetailedMetrics
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$DetailedMetricsImplCopyWith<_$DetailedMetricsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -3109,5 +3402,297 @@ abstract class _ProjectGalleryItem implements ProjectGalleryItem {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ProjectGalleryItemImplCopyWith<_$ProjectGalleryItemImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$ReviewItem {
+  String get clientName => throw _privateConstructorUsedError;
+  String get clientCompany => throw _privateConstructorUsedError;
+  String get clientRole => throw _privateConstructorUsedError;
+  double get rating => throw _privateConstructorUsedError;
+  String get review => throw _privateConstructorUsedError;
+  String get projectType => throw _privateConstructorUsedError;
+  String? get avatarUrl => throw _privateConstructorUsedError;
+
+  /// Create a copy of ReviewItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $ReviewItemCopyWith<ReviewItem> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ReviewItemCopyWith<$Res> {
+  factory $ReviewItemCopyWith(
+    ReviewItem value,
+    $Res Function(ReviewItem) then,
+  ) = _$ReviewItemCopyWithImpl<$Res, ReviewItem>;
+  @useResult
+  $Res call({
+    String clientName,
+    String clientCompany,
+    String clientRole,
+    double rating,
+    String review,
+    String projectType,
+    String? avatarUrl,
+  });
+}
+
+/// @nodoc
+class _$ReviewItemCopyWithImpl<$Res, $Val extends ReviewItem>
+    implements $ReviewItemCopyWith<$Res> {
+  _$ReviewItemCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of ReviewItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? clientName = null,
+    Object? clientCompany = null,
+    Object? clientRole = null,
+    Object? rating = null,
+    Object? review = null,
+    Object? projectType = null,
+    Object? avatarUrl = freezed,
+  }) {
+    return _then(
+      _value.copyWith(
+            clientName:
+                null == clientName
+                    ? _value.clientName
+                    : clientName // ignore: cast_nullable_to_non_nullable
+                        as String,
+            clientCompany:
+                null == clientCompany
+                    ? _value.clientCompany
+                    : clientCompany // ignore: cast_nullable_to_non_nullable
+                        as String,
+            clientRole:
+                null == clientRole
+                    ? _value.clientRole
+                    : clientRole // ignore: cast_nullable_to_non_nullable
+                        as String,
+            rating:
+                null == rating
+                    ? _value.rating
+                    : rating // ignore: cast_nullable_to_non_nullable
+                        as double,
+            review:
+                null == review
+                    ? _value.review
+                    : review // ignore: cast_nullable_to_non_nullable
+                        as String,
+            projectType:
+                null == projectType
+                    ? _value.projectType
+                    : projectType // ignore: cast_nullable_to_non_nullable
+                        as String,
+            avatarUrl:
+                freezed == avatarUrl
+                    ? _value.avatarUrl
+                    : avatarUrl // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$ReviewItemImplCopyWith<$Res>
+    implements $ReviewItemCopyWith<$Res> {
+  factory _$$ReviewItemImplCopyWith(
+    _$ReviewItemImpl value,
+    $Res Function(_$ReviewItemImpl) then,
+  ) = __$$ReviewItemImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    String clientName,
+    String clientCompany,
+    String clientRole,
+    double rating,
+    String review,
+    String projectType,
+    String? avatarUrl,
+  });
+}
+
+/// @nodoc
+class __$$ReviewItemImplCopyWithImpl<$Res>
+    extends _$ReviewItemCopyWithImpl<$Res, _$ReviewItemImpl>
+    implements _$$ReviewItemImplCopyWith<$Res> {
+  __$$ReviewItemImplCopyWithImpl(
+    _$ReviewItemImpl _value,
+    $Res Function(_$ReviewItemImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of ReviewItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? clientName = null,
+    Object? clientCompany = null,
+    Object? clientRole = null,
+    Object? rating = null,
+    Object? review = null,
+    Object? projectType = null,
+    Object? avatarUrl = freezed,
+  }) {
+    return _then(
+      _$ReviewItemImpl(
+        clientName:
+            null == clientName
+                ? _value.clientName
+                : clientName // ignore: cast_nullable_to_non_nullable
+                    as String,
+        clientCompany:
+            null == clientCompany
+                ? _value.clientCompany
+                : clientCompany // ignore: cast_nullable_to_non_nullable
+                    as String,
+        clientRole:
+            null == clientRole
+                ? _value.clientRole
+                : clientRole // ignore: cast_nullable_to_non_nullable
+                    as String,
+        rating:
+            null == rating
+                ? _value.rating
+                : rating // ignore: cast_nullable_to_non_nullable
+                    as double,
+        review:
+            null == review
+                ? _value.review
+                : review // ignore: cast_nullable_to_non_nullable
+                    as String,
+        projectType:
+            null == projectType
+                ? _value.projectType
+                : projectType // ignore: cast_nullable_to_non_nullable
+                    as String,
+        avatarUrl:
+            freezed == avatarUrl
+                ? _value.avatarUrl
+                : avatarUrl // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$ReviewItemImpl implements _ReviewItem {
+  const _$ReviewItemImpl({
+    required this.clientName,
+    required this.clientCompany,
+    required this.clientRole,
+    required this.rating,
+    required this.review,
+    required this.projectType,
+    this.avatarUrl,
+  });
+
+  @override
+  final String clientName;
+  @override
+  final String clientCompany;
+  @override
+  final String clientRole;
+  @override
+  final double rating;
+  @override
+  final String review;
+  @override
+  final String projectType;
+  @override
+  final String? avatarUrl;
+
+  @override
+  String toString() {
+    return 'ReviewItem(clientName: $clientName, clientCompany: $clientCompany, clientRole: $clientRole, rating: $rating, review: $review, projectType: $projectType, avatarUrl: $avatarUrl)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ReviewItemImpl &&
+            (identical(other.clientName, clientName) ||
+                other.clientName == clientName) &&
+            (identical(other.clientCompany, clientCompany) ||
+                other.clientCompany == clientCompany) &&
+            (identical(other.clientRole, clientRole) ||
+                other.clientRole == clientRole) &&
+            (identical(other.rating, rating) || other.rating == rating) &&
+            (identical(other.review, review) || other.review == review) &&
+            (identical(other.projectType, projectType) ||
+                other.projectType == projectType) &&
+            (identical(other.avatarUrl, avatarUrl) ||
+                other.avatarUrl == avatarUrl));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    clientName,
+    clientCompany,
+    clientRole,
+    rating,
+    review,
+    projectType,
+    avatarUrl,
+  );
+
+  /// Create a copy of ReviewItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ReviewItemImplCopyWith<_$ReviewItemImpl> get copyWith =>
+      __$$ReviewItemImplCopyWithImpl<_$ReviewItemImpl>(this, _$identity);
+}
+
+abstract class _ReviewItem implements ReviewItem {
+  const factory _ReviewItem({
+    required final String clientName,
+    required final String clientCompany,
+    required final String clientRole,
+    required final double rating,
+    required final String review,
+    required final String projectType,
+    final String? avatarUrl,
+  }) = _$ReviewItemImpl;
+
+  @override
+  String get clientName;
+  @override
+  String get clientCompany;
+  @override
+  String get clientRole;
+  @override
+  double get rating;
+  @override
+  String get review;
+  @override
+  String get projectType;
+  @override
+  String? get avatarUrl;
+
+  /// Create a copy of ReviewItem
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ReviewItemImplCopyWith<_$ReviewItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

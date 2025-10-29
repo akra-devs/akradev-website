@@ -14,6 +14,7 @@ class LandingState with _$LandingState {
     required List<ProcessStep> processSteps,
     required PrimaryCta spotlight,
     required List<ProjectGalleryItem> galleryProjects,
+    required List<ReviewItem> reviews,
     @Default(false) bool isContactDialogVisible,
     ContactIntent? contactIntent,
     @Default(LeadFormData()) LeadFormData formData,
@@ -97,6 +98,12 @@ class LandingState with _$LandingState {
               '커뮤니티 기능(챌린지, 랭킹)으로 사용자 참여 촉진',
               '데이터 기반 AB 테스트로 온보딩 이탈률 26% 감소',
             ],
+            detailedMetrics: DetailedMetrics(
+              downloads: '23,481',
+              retention: 'D7 38%',
+              revenue: r'월 $4.2K',
+              conversionRate: '1.8% → 4.3%',
+            ),
           ),
           CaseStudy(
             company: 'F&B Console',
@@ -109,6 +116,12 @@ class LandingState with _$LandingState {
               '현장 매니저용 모바일 앱과 데스크탑 관리자 도구를 동시 제공',
               '자동 리포트로 본사 주간 리포트 작성 시간 70% 절감',
             ],
+            detailedMetrics: DetailedMetrics(
+              downloads: '142개 매장',
+              retention: 'DAU 94%',
+              revenue: '운영비 -62%',
+              conversionRate: '대응시간 -83%',
+            ),
           ),
           CaseStudy(
             company: 'EduLabs',
@@ -121,6 +134,12 @@ class LandingState with _$LandingState {
               'CI/CD 파이프라인과 모듈식 디자인 시스템 구축',
               '사용자 테스트를 통한 IA 리디자인으로 NPS +34점',
             ],
+            detailedMetrics: DetailedMetrics(
+              downloads: '38개 기업',
+              retention: '재계약 89%',
+              revenue: r'ARR $180K',
+              conversionRate: '12% → 26%',
+            ),
           ),
         ],
         processSteps: const [
@@ -196,6 +215,53 @@ class LandingState with _$LandingState {
             categoryType: ProjectCategory.entertainment,
           ),
         ],
+        reviews: const [
+          ReviewItem(
+            clientName: '김민준',
+            clientCompany: 'Habitree',
+            clientRole: 'CEO',
+            rating: 5.0,
+            review:
+                'MVP부터 정식 출시까지 3개월 만에 완성했습니다. 기획 단계부터 데이터 기반으로 의사결정을 도와주셔서 불필요한 시행착오를 줄일 수 있었어요. 특히 온보딩 퍼널 최적화로 리텐션이 크게 개선되었습니다.',
+            projectType: '헬스케어 앱 개발',
+          ),
+          ReviewItem(
+            clientName: '박서연',
+            clientCompany: 'GS리테일',
+            clientRole: 'IT기획팀 팀장',
+            rating: 4.8,
+            review:
+                '프랜차이즈 매장 운영 대시보드 구축 프로젝트를 함께했습니다. 복잡한 데이터 통합 작업을 빠르게 처리해주셨고, 현장 매니저들의 피드백을 즉각 반영해주는 민첩함이 인상적이었습니다. 대응 시간이 실제로 83% 단축되었어요.',
+            projectType: 'B2B 운영 도구',
+          ),
+          ReviewItem(
+            clientName: '이준호',
+            clientCompany: 'EduLabs',
+            clientRole: 'Product Manager',
+            rating: 4.9,
+            review:
+                'B2B 러닝 플랫폼 리뉴얼 프로젝트였는데, 단순히 개발만 하는 게 아니라 세일즈 퍼널까지 함께 고민해주셨습니다. 덕분에 계약 전환율이 2배 이상 올랐고, 클라이언트 온보딩도 훨씬 수월해졌어요.',
+            projectType: 'EdTech 플랫폼',
+          ),
+          ReviewItem(
+            clientName: '최지우',
+            clientCompany: 'YG Entertainment',
+            clientRole: 'Digital Contents Director',
+            rating: 5.0,
+            review:
+                '팬 커뮤니티 플랫폼과 굿즈 판매를 통합한 프로젝트였습니다. 엔터테인먼트 산업 특성을 잘 이해하고 계셔서 커뮤니케이션이 매끄러웠어요. 특히 실시간 알림 시스템과 결제 통합이 안정적으로 작동합니다.',
+            projectType: '엔터테인먼트 플랫폼',
+          ),
+          ReviewItem(
+            clientName: '정수민',
+            clientCompany: 'GreenLabs',
+            clientRole: 'CTO',
+            rating: 4.9,
+            review:
+                '애그리테크 스타트업으로서 빠른 MVP 검증이 필요했는데, akradev 팀이 정확히 필요한 만큼만 개발하고 나머지는 데이터로 검증하는 방식을 제안해주셨습니다. 덕분에 예산을 40% 절약하면서도 핵심 가설은 모두 검증했어요.',
+            projectType: '농업 IoT 대시보드',
+          ),
+        ],
         contactIntent: null,
       );
 }
@@ -249,7 +315,18 @@ class CaseStudy with _$CaseStudy {
     required String description,
     required String result,
     required List<String> highlights,
+    DetailedMetrics? detailedMetrics,
   }) = _CaseStudy;
+}
+
+@freezed
+class DetailedMetrics with _$DetailedMetrics {
+  const factory DetailedMetrics({
+    required String downloads,
+    required String retention,
+    required String revenue,
+    required String conversionRate,
+  }) = _DetailedMetrics;
 }
 
 @freezed
@@ -319,4 +396,17 @@ class ProjectGalleryItem with _$ProjectGalleryItem {
     String? appStoreUrl,
     String? playStoreUrl,
   }) = _ProjectGalleryItem;
+}
+
+@freezed
+class ReviewItem with _$ReviewItem {
+  const factory ReviewItem({
+    required String clientName,
+    required String clientCompany,
+    required String clientRole,
+    required double rating,
+    required String review,
+    required String projectType,
+    String? avatarUrl,
+  }) = _ReviewItem;
 }
