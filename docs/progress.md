@@ -437,4 +437,54 @@ lib/
 4. **배경색**: 단색 vs 교차 패턴
 
 ---
-마지막 업데이트: 2025년 Fastcampus 벤치마크 분석 완료. Phase 1 구현 진행 중.
+
+## 16. Phase 1 & 2 구현 완료 (2025)
+
+### 16.1 Phase 1 완료 항목
+1. ✅ **Hero 카피 강화**
+   - 도발적 헤드라인: "3개월 안에 실제 수익 내는 앱을 만들 수 있습니다"
+   - 문제 제기형 서브헤드: "언제까지 기획만 하고 출시는 미룰 건가요?"
+
+2. ✅ **섹션 배경 교차**
+   - ProcessSection: 라이트 배경 적용
+   - LandingServices: 라이트 배경 적용
+   - 다크/라이트 섹션 교차로 시각적 리듬감 형성
+
+3. ✅ **CTA 텍스트 개선**
+   - "프로젝트 문의" → "무료 상담 신청하기"
+   - "포트폴리오 보기" → "성공 사례 먼저 보기 →"
+
+### 16.2 Phase 2 완료 항목
+4. ✅ **긴급성 배너 추가**
+   - 상단 고정 배너: "이번 주 무료 상담 3자리 남음"
+   - 빨간 그라디언트 (#FC1C49 → #FF6B6B)
+   - 닫기 가능한 UX
+   - 파일: `lib/shared/widgets/urgency_banner.dart` (main.dart 내)
+
+5. ✅ **메트릭 카운터 애니메이션**
+   - AnimatedCounter 위젯 구현
+   - 0부터 타겟 숫자까지 1.5초 카운트업
+   - 파일: `lib/shared/widgets/animated_counter.dart`
+   - Hero 섹션 메트릭에 적용 (3개월, 10+, 100%)
+
+6. ✅ **프로젝트 갤러리 섹션**
+   - 가로 스크롤 캐러셀 형태
+   - 4개 프로젝트 카드 (Habitree, F&B Console, EduLabs, YG Hub)
+   - 호버 애니메이션 (그림자 확대)
+   - ProjectGalleryItem 모델 추가
+   - 파일: landing_state.dart, main.dart:ProjectGallerySection
+
+### 16.3 기술 구현 세부사항
+- **State Management**: Freezed 모델 확장 (isUrgencyBannerVisible, galleryProjects)
+- **Animations**: AnimationController, Tween, CurvedAnimation
+- **Layouts**: Stack, Positioned, ListView.builder (horizontal)
+- **Responsive**: 동적 horizontalPadding, LayoutBuilder
+- **코드 구조**: 재사용 가능한 위젯 분리
+
+### 16.4 예상 효과 (실제 측정 필요)
+- 긴급성 배너: 상담 신청률 +30~50% 예상
+- 메트릭 애니메이션: 체류 시간 +15% 예상
+- 프로젝트 갤러리: 신뢰도 +25%, 포트폴리오 클릭률 +40% 예상
+
+---
+마지막 업데이트: 2025년 Phase 1 & 2 구현 완료. 전환율 개선 요소 모두 적용됨.

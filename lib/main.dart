@@ -7,6 +7,7 @@ import 'features/landing/landing_cubit.dart';
 import 'features/landing/landing_state.dart';
 import 'shared/theme/app_colors.dart';
 import 'shared/utils/responsive.dart' as responsive;
+import 'shared/widgets/animated_counter.dart';
 import 'shared/widgets/fade_in_up.dart';
 import 'shared/widgets/nav_item.dart';
 
@@ -157,6 +158,10 @@ class _LandingPageState extends State<LandingPage> {
                   CaseStudiesSection(
                     studies: state.caseStudies,
                     onProjectInquiry: handleProjectInquiry,
+                  ),
+                  const SizedBox(height: 96),
+                  ProjectGallerySection(
+                    projects: state.galleryProjects,
                   ),
                   const SizedBox(height: 96),
                   ProcessSection(
@@ -460,8 +465,9 @@ class _MetricTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            metric.value,
+          AnimatedCounter(
+            value: metric.value,
+            label: metric.label,
             style: theme.textTheme.headlineMedium?.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w700,
@@ -1934,6 +1940,206 @@ class UrgencyBanner extends StatelessWidget {
             visualDensity: VisualDensity.compact,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ProjectGallerySection extends StatelessWidget {
+  const ProjectGallerySection({super.key, required this.projects});
+
+  final List<ProjectGalleryItem> projects;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        final horizontalPadding = responsive.horizontalPadding(width);
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1200),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '프로젝트 갤러리',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: AppColors.accent,
+                        letterSpacing: 0.8,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      '실제 완성된 프로젝트를 확인하세요',
+                      style: theme.textTheme.headlineMedium?.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.4,
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+                    Text(
+                      '다양한 산업군에서 실제 운영 중인 앱과 플랫폼입니다. 기획부터 출시, 운영까지 전 과정을 함께했습니다.',
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: AppColors.textSecondary,
+                        height: 1.6,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 40),
+            SizedBox(
+              height: 420,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                itemCount: projects.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      right: index < projects.length - 1 ? 24 : 0,
+                    ),
+                    child: _ProjectCard(project: projects[index]),
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _ProjectCard extends StatefulWidget {
+  const _ProjectCard({required this.project});
+
+  final ProjectGalleryItem project;
+
+  @override
+  State<_ProjectCard> createState() => _ProjectCardState();
+}
+
+class _ProjectCardState extends State<_ProjectCard> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: 320,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: _isHovered ? 0.4 : 0.2),
+              blurRadius: _isHovered ? 40 : 24,
+              offset: Offset(0, _isHovered ? 20 : 12),
+              spreadRadius: _isHovered ? -8 : -12,
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(24),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF1B2A4F), Color(0xFF141F39)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.phone_iphone,
+                    size: 80,
+                    color: AppColors.accent.withValues(alpha: 0.3),
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.transparent,
+                        Colors.black.withValues(alpha: 0.9),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.accent.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: AppColors.accent.withValues(alpha: 0.4),
+                          ),
+                        ),
+                        child: Text(
+                          widget.project.category,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: AppColors.accent,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        widget.project.name,
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        widget.project.description,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          height: 1.5,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

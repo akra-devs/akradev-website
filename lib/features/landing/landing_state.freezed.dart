@@ -24,6 +24,8 @@ mixin _$LandingState {
   List<CaseStudy> get caseStudies => throw _privateConstructorUsedError;
   List<ProcessStep> get processSteps => throw _privateConstructorUsedError;
   PrimaryCta get spotlight => throw _privateConstructorUsedError;
+  List<ProjectGalleryItem> get galleryProjects =>
+      throw _privateConstructorUsedError;
   bool get isContactDialogVisible => throw _privateConstructorUsedError;
   ContactIntent? get contactIntent => throw _privateConstructorUsedError;
   LeadFormData get formData => throw _privateConstructorUsedError;
@@ -53,6 +55,7 @@ abstract class $LandingStateCopyWith<$Res> {
     List<CaseStudy> caseStudies,
     List<ProcessStep> processSteps,
     PrimaryCta spotlight,
+    List<ProjectGalleryItem> galleryProjects,
     bool isContactDialogVisible,
     ContactIntent? contactIntent,
     LeadFormData formData,
@@ -89,6 +92,7 @@ class _$LandingStateCopyWithImpl<$Res, $Val extends LandingState>
     Object? caseStudies = null,
     Object? processSteps = null,
     Object? spotlight = null,
+    Object? galleryProjects = null,
     Object? isContactDialogVisible = null,
     Object? contactIntent = freezed,
     Object? formData = null,
@@ -133,6 +137,11 @@ class _$LandingStateCopyWithImpl<$Res, $Val extends LandingState>
                     ? _value.spotlight
                     : spotlight // ignore: cast_nullable_to_non_nullable
                         as PrimaryCta,
+            galleryProjects:
+                null == galleryProjects
+                    ? _value.galleryProjects
+                    : galleryProjects // ignore: cast_nullable_to_non_nullable
+                        as List<ProjectGalleryItem>,
             isContactDialogVisible:
                 null == isContactDialogVisible
                     ? _value.isContactDialogVisible
@@ -226,6 +235,7 @@ abstract class _$$LandingStateImplCopyWith<$Res>
     List<CaseStudy> caseStudies,
     List<ProcessStep> processSteps,
     PrimaryCta spotlight,
+    List<ProjectGalleryItem> galleryProjects,
     bool isContactDialogVisible,
     ContactIntent? contactIntent,
     LeadFormData formData,
@@ -265,6 +275,7 @@ class __$$LandingStateImplCopyWithImpl<$Res>
     Object? caseStudies = null,
     Object? processSteps = null,
     Object? spotlight = null,
+    Object? galleryProjects = null,
     Object? isContactDialogVisible = null,
     Object? contactIntent = freezed,
     Object? formData = null,
@@ -309,6 +320,11 @@ class __$$LandingStateImplCopyWithImpl<$Res>
                 ? _value.spotlight
                 : spotlight // ignore: cast_nullable_to_non_nullable
                     as PrimaryCta,
+        galleryProjects:
+            null == galleryProjects
+                ? _value._galleryProjects
+                : galleryProjects // ignore: cast_nullable_to_non_nullable
+                    as List<ProjectGalleryItem>,
         isContactDialogVisible:
             null == isContactDialogVisible
                 ? _value.isContactDialogVisible
@@ -355,6 +371,7 @@ class _$LandingStateImpl implements _LandingState {
     required final List<CaseStudy> caseStudies,
     required final List<ProcessStep> processSteps,
     required this.spotlight,
+    required final List<ProjectGalleryItem> galleryProjects,
     this.isContactDialogVisible = false,
     this.contactIntent,
     this.formData = const LeadFormData(),
@@ -364,7 +381,8 @@ class _$LandingStateImpl implements _LandingState {
   }) : _navItems = navItems,
        _services = services,
        _caseStudies = caseStudies,
-       _processSteps = processSteps;
+       _processSteps = processSteps,
+       _galleryProjects = galleryProjects;
 
   final List<String> _navItems;
   @override
@@ -404,6 +422,14 @@ class _$LandingStateImpl implements _LandingState {
 
   @override
   final PrimaryCta spotlight;
+  final List<ProjectGalleryItem> _galleryProjects;
+  @override
+  List<ProjectGalleryItem> get galleryProjects {
+    if (_galleryProjects is EqualUnmodifiableListView) return _galleryProjects;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_galleryProjects);
+  }
+
   @override
   @JsonKey()
   final bool isContactDialogVisible;
@@ -423,7 +449,7 @@ class _$LandingStateImpl implements _LandingState {
 
   @override
   String toString() {
-    return 'LandingState(navItems: $navItems, hero: $hero, services: $services, footer: $footer, caseStudies: $caseStudies, processSteps: $processSteps, spotlight: $spotlight, isContactDialogVisible: $isContactDialogVisible, contactIntent: $contactIntent, formData: $formData, formStatus: $formStatus, formErrorMessage: $formErrorMessage, isUrgencyBannerVisible: $isUrgencyBannerVisible)';
+    return 'LandingState(navItems: $navItems, hero: $hero, services: $services, footer: $footer, caseStudies: $caseStudies, processSteps: $processSteps, spotlight: $spotlight, galleryProjects: $galleryProjects, isContactDialogVisible: $isContactDialogVisible, contactIntent: $contactIntent, formData: $formData, formStatus: $formStatus, formErrorMessage: $formErrorMessage, isUrgencyBannerVisible: $isUrgencyBannerVisible)';
   }
 
   @override
@@ -445,6 +471,10 @@ class _$LandingStateImpl implements _LandingState {
             ) &&
             (identical(other.spotlight, spotlight) ||
                 other.spotlight == spotlight) &&
+            const DeepCollectionEquality().equals(
+              other._galleryProjects,
+              _galleryProjects,
+            ) &&
             (identical(other.isContactDialogVisible, isContactDialogVisible) ||
                 other.isContactDialogVisible == isContactDialogVisible) &&
             (identical(other.contactIntent, contactIntent) ||
@@ -469,6 +499,7 @@ class _$LandingStateImpl implements _LandingState {
     const DeepCollectionEquality().hash(_caseStudies),
     const DeepCollectionEquality().hash(_processSteps),
     spotlight,
+    const DeepCollectionEquality().hash(_galleryProjects),
     isContactDialogVisible,
     contactIntent,
     formData,
@@ -495,6 +526,7 @@ abstract class _LandingState implements LandingState {
     required final List<CaseStudy> caseStudies,
     required final List<ProcessStep> processSteps,
     required final PrimaryCta spotlight,
+    required final List<ProjectGalleryItem> galleryProjects,
     final bool isContactDialogVisible,
     final ContactIntent? contactIntent,
     final LeadFormData formData,
@@ -517,6 +549,8 @@ abstract class _LandingState implements LandingState {
   List<ProcessStep> get processSteps;
   @override
   PrimaryCta get spotlight;
+  @override
+  List<ProjectGalleryItem> get galleryProjects;
   @override
   bool get isContactDialogVisible;
   @override
@@ -2750,5 +2784,277 @@ abstract class _LeadFormData implements LeadFormData {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LeadFormDataImplCopyWith<_$LeadFormDataImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$ProjectGalleryItem {
+  String get name => throw _privateConstructorUsedError;
+  String get category => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
+  String get imageUrl => throw _privateConstructorUsedError;
+  String? get appStoreUrl => throw _privateConstructorUsedError;
+  String? get playStoreUrl => throw _privateConstructorUsedError;
+
+  /// Create a copy of ProjectGalleryItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $ProjectGalleryItemCopyWith<ProjectGalleryItem> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ProjectGalleryItemCopyWith<$Res> {
+  factory $ProjectGalleryItemCopyWith(
+    ProjectGalleryItem value,
+    $Res Function(ProjectGalleryItem) then,
+  ) = _$ProjectGalleryItemCopyWithImpl<$Res, ProjectGalleryItem>;
+  @useResult
+  $Res call({
+    String name,
+    String category,
+    String description,
+    String imageUrl,
+    String? appStoreUrl,
+    String? playStoreUrl,
+  });
+}
+
+/// @nodoc
+class _$ProjectGalleryItemCopyWithImpl<$Res, $Val extends ProjectGalleryItem>
+    implements $ProjectGalleryItemCopyWith<$Res> {
+  _$ProjectGalleryItemCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of ProjectGalleryItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? category = null,
+    Object? description = null,
+    Object? imageUrl = null,
+    Object? appStoreUrl = freezed,
+    Object? playStoreUrl = freezed,
+  }) {
+    return _then(
+      _value.copyWith(
+            name:
+                null == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as String,
+            category:
+                null == category
+                    ? _value.category
+                    : category // ignore: cast_nullable_to_non_nullable
+                        as String,
+            description:
+                null == description
+                    ? _value.description
+                    : description // ignore: cast_nullable_to_non_nullable
+                        as String,
+            imageUrl:
+                null == imageUrl
+                    ? _value.imageUrl
+                    : imageUrl // ignore: cast_nullable_to_non_nullable
+                        as String,
+            appStoreUrl:
+                freezed == appStoreUrl
+                    ? _value.appStoreUrl
+                    : appStoreUrl // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            playStoreUrl:
+                freezed == playStoreUrl
+                    ? _value.playStoreUrl
+                    : playStoreUrl // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$ProjectGalleryItemImplCopyWith<$Res>
+    implements $ProjectGalleryItemCopyWith<$Res> {
+  factory _$$ProjectGalleryItemImplCopyWith(
+    _$ProjectGalleryItemImpl value,
+    $Res Function(_$ProjectGalleryItemImpl) then,
+  ) = __$$ProjectGalleryItemImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    String name,
+    String category,
+    String description,
+    String imageUrl,
+    String? appStoreUrl,
+    String? playStoreUrl,
+  });
+}
+
+/// @nodoc
+class __$$ProjectGalleryItemImplCopyWithImpl<$Res>
+    extends _$ProjectGalleryItemCopyWithImpl<$Res, _$ProjectGalleryItemImpl>
+    implements _$$ProjectGalleryItemImplCopyWith<$Res> {
+  __$$ProjectGalleryItemImplCopyWithImpl(
+    _$ProjectGalleryItemImpl _value,
+    $Res Function(_$ProjectGalleryItemImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of ProjectGalleryItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? category = null,
+    Object? description = null,
+    Object? imageUrl = null,
+    Object? appStoreUrl = freezed,
+    Object? playStoreUrl = freezed,
+  }) {
+    return _then(
+      _$ProjectGalleryItemImpl(
+        name:
+            null == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String,
+        category:
+            null == category
+                ? _value.category
+                : category // ignore: cast_nullable_to_non_nullable
+                    as String,
+        description:
+            null == description
+                ? _value.description
+                : description // ignore: cast_nullable_to_non_nullable
+                    as String,
+        imageUrl:
+            null == imageUrl
+                ? _value.imageUrl
+                : imageUrl // ignore: cast_nullable_to_non_nullable
+                    as String,
+        appStoreUrl:
+            freezed == appStoreUrl
+                ? _value.appStoreUrl
+                : appStoreUrl // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        playStoreUrl:
+            freezed == playStoreUrl
+                ? _value.playStoreUrl
+                : playStoreUrl // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$ProjectGalleryItemImpl implements _ProjectGalleryItem {
+  const _$ProjectGalleryItemImpl({
+    required this.name,
+    required this.category,
+    required this.description,
+    required this.imageUrl,
+    this.appStoreUrl,
+    this.playStoreUrl,
+  });
+
+  @override
+  final String name;
+  @override
+  final String category;
+  @override
+  final String description;
+  @override
+  final String imageUrl;
+  @override
+  final String? appStoreUrl;
+  @override
+  final String? playStoreUrl;
+
+  @override
+  String toString() {
+    return 'ProjectGalleryItem(name: $name, category: $category, description: $description, imageUrl: $imageUrl, appStoreUrl: $appStoreUrl, playStoreUrl: $playStoreUrl)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ProjectGalleryItemImpl &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.category, category) ||
+                other.category == category) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl) &&
+            (identical(other.appStoreUrl, appStoreUrl) ||
+                other.appStoreUrl == appStoreUrl) &&
+            (identical(other.playStoreUrl, playStoreUrl) ||
+                other.playStoreUrl == playStoreUrl));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    name,
+    category,
+    description,
+    imageUrl,
+    appStoreUrl,
+    playStoreUrl,
+  );
+
+  /// Create a copy of ProjectGalleryItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ProjectGalleryItemImplCopyWith<_$ProjectGalleryItemImpl> get copyWith =>
+      __$$ProjectGalleryItemImplCopyWithImpl<_$ProjectGalleryItemImpl>(
+        this,
+        _$identity,
+      );
+}
+
+abstract class _ProjectGalleryItem implements ProjectGalleryItem {
+  const factory _ProjectGalleryItem({
+    required final String name,
+    required final String category,
+    required final String description,
+    required final String imageUrl,
+    final String? appStoreUrl,
+    final String? playStoreUrl,
+  }) = _$ProjectGalleryItemImpl;
+
+  @override
+  String get name;
+  @override
+  String get category;
+  @override
+  String get description;
+  @override
+  String get imageUrl;
+  @override
+  String? get appStoreUrl;
+  @override
+  String? get playStoreUrl;
+
+  /// Create a copy of ProjectGalleryItem
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ProjectGalleryItemImplCopyWith<_$ProjectGalleryItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
