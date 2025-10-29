@@ -32,6 +32,8 @@ mixin _$LandingState {
   FormSubmissionStatus get formStatus => throw _privateConstructorUsedError;
   String? get formErrorMessage => throw _privateConstructorUsedError;
   bool get isUrgencyBannerVisible => throw _privateConstructorUsedError;
+  ProjectCategory get selectedProjectCategory =>
+      throw _privateConstructorUsedError;
 
   /// Create a copy of LandingState
   /// with the given fields replaced by the non-null parameter values.
@@ -62,6 +64,7 @@ abstract class $LandingStateCopyWith<$Res> {
     FormSubmissionStatus formStatus,
     String? formErrorMessage,
     bool isUrgencyBannerVisible,
+    ProjectCategory selectedProjectCategory,
   });
 
   $HeroSectionCopyWith<$Res> get hero;
@@ -99,6 +102,7 @@ class _$LandingStateCopyWithImpl<$Res, $Val extends LandingState>
     Object? formStatus = null,
     Object? formErrorMessage = freezed,
     Object? isUrgencyBannerVisible = null,
+    Object? selectedProjectCategory = null,
   }) {
     return _then(
       _value.copyWith(
@@ -172,6 +176,11 @@ class _$LandingStateCopyWithImpl<$Res, $Val extends LandingState>
                     ? _value.isUrgencyBannerVisible
                     : isUrgencyBannerVisible // ignore: cast_nullable_to_non_nullable
                         as bool,
+            selectedProjectCategory:
+                null == selectedProjectCategory
+                    ? _value.selectedProjectCategory
+                    : selectedProjectCategory // ignore: cast_nullable_to_non_nullable
+                        as ProjectCategory,
           )
           as $Val,
     );
@@ -242,6 +251,7 @@ abstract class _$$LandingStateImplCopyWith<$Res>
     FormSubmissionStatus formStatus,
     String? formErrorMessage,
     bool isUrgencyBannerVisible,
+    ProjectCategory selectedProjectCategory,
   });
 
   @override
@@ -282,6 +292,7 @@ class __$$LandingStateImplCopyWithImpl<$Res>
     Object? formStatus = null,
     Object? formErrorMessage = freezed,
     Object? isUrgencyBannerVisible = null,
+    Object? selectedProjectCategory = null,
   }) {
     return _then(
       _$LandingStateImpl(
@@ -355,6 +366,11 @@ class __$$LandingStateImplCopyWithImpl<$Res>
                 ? _value.isUrgencyBannerVisible
                 : isUrgencyBannerVisible // ignore: cast_nullable_to_non_nullable
                     as bool,
+        selectedProjectCategory:
+            null == selectedProjectCategory
+                ? _value.selectedProjectCategory
+                : selectedProjectCategory // ignore: cast_nullable_to_non_nullable
+                    as ProjectCategory,
       ),
     );
   }
@@ -378,6 +394,7 @@ class _$LandingStateImpl implements _LandingState {
     this.formStatus = FormSubmissionStatus.idle,
     this.formErrorMessage,
     this.isUrgencyBannerVisible = true,
+    this.selectedProjectCategory = ProjectCategory.all,
   }) : _navItems = navItems,
        _services = services,
        _caseStudies = caseStudies,
@@ -446,10 +463,13 @@ class _$LandingStateImpl implements _LandingState {
   @override
   @JsonKey()
   final bool isUrgencyBannerVisible;
+  @override
+  @JsonKey()
+  final ProjectCategory selectedProjectCategory;
 
   @override
   String toString() {
-    return 'LandingState(navItems: $navItems, hero: $hero, services: $services, footer: $footer, caseStudies: $caseStudies, processSteps: $processSteps, spotlight: $spotlight, galleryProjects: $galleryProjects, isContactDialogVisible: $isContactDialogVisible, contactIntent: $contactIntent, formData: $formData, formStatus: $formStatus, formErrorMessage: $formErrorMessage, isUrgencyBannerVisible: $isUrgencyBannerVisible)';
+    return 'LandingState(navItems: $navItems, hero: $hero, services: $services, footer: $footer, caseStudies: $caseStudies, processSteps: $processSteps, spotlight: $spotlight, galleryProjects: $galleryProjects, isContactDialogVisible: $isContactDialogVisible, contactIntent: $contactIntent, formData: $formData, formStatus: $formStatus, formErrorMessage: $formErrorMessage, isUrgencyBannerVisible: $isUrgencyBannerVisible, selectedProjectCategory: $selectedProjectCategory)';
   }
 
   @override
@@ -486,7 +506,12 @@ class _$LandingStateImpl implements _LandingState {
             (identical(other.formErrorMessage, formErrorMessage) ||
                 other.formErrorMessage == formErrorMessage) &&
             (identical(other.isUrgencyBannerVisible, isUrgencyBannerVisible) ||
-                other.isUrgencyBannerVisible == isUrgencyBannerVisible));
+                other.isUrgencyBannerVisible == isUrgencyBannerVisible) &&
+            (identical(
+                  other.selectedProjectCategory,
+                  selectedProjectCategory,
+                ) ||
+                other.selectedProjectCategory == selectedProjectCategory));
   }
 
   @override
@@ -506,6 +531,7 @@ class _$LandingStateImpl implements _LandingState {
     formStatus,
     formErrorMessage,
     isUrgencyBannerVisible,
+    selectedProjectCategory,
   );
 
   /// Create a copy of LandingState
@@ -533,6 +559,7 @@ abstract class _LandingState implements LandingState {
     final FormSubmissionStatus formStatus,
     final String? formErrorMessage,
     final bool isUrgencyBannerVisible,
+    final ProjectCategory selectedProjectCategory,
   }) = _$LandingStateImpl;
 
   @override
@@ -563,6 +590,8 @@ abstract class _LandingState implements LandingState {
   String? get formErrorMessage;
   @override
   bool get isUrgencyBannerVisible;
+  @override
+  ProjectCategory get selectedProjectCategory;
 
   /// Create a copy of LandingState
   /// with the given fields replaced by the non-null parameter values.
@@ -2793,6 +2822,7 @@ mixin _$ProjectGalleryItem {
   String get category => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
+  ProjectCategory get categoryType => throw _privateConstructorUsedError;
   String? get appStoreUrl => throw _privateConstructorUsedError;
   String? get playStoreUrl => throw _privateConstructorUsedError;
 
@@ -2815,6 +2845,7 @@ abstract class $ProjectGalleryItemCopyWith<$Res> {
     String category,
     String description,
     String imageUrl,
+    ProjectCategory categoryType,
     String? appStoreUrl,
     String? playStoreUrl,
   });
@@ -2839,6 +2870,7 @@ class _$ProjectGalleryItemCopyWithImpl<$Res, $Val extends ProjectGalleryItem>
     Object? category = null,
     Object? description = null,
     Object? imageUrl = null,
+    Object? categoryType = null,
     Object? appStoreUrl = freezed,
     Object? playStoreUrl = freezed,
   }) {
@@ -2864,6 +2896,11 @@ class _$ProjectGalleryItemCopyWithImpl<$Res, $Val extends ProjectGalleryItem>
                     ? _value.imageUrl
                     : imageUrl // ignore: cast_nullable_to_non_nullable
                         as String,
+            categoryType:
+                null == categoryType
+                    ? _value.categoryType
+                    : categoryType // ignore: cast_nullable_to_non_nullable
+                        as ProjectCategory,
             appStoreUrl:
                 freezed == appStoreUrl
                     ? _value.appStoreUrl
@@ -2894,6 +2931,7 @@ abstract class _$$ProjectGalleryItemImplCopyWith<$Res>
     String category,
     String description,
     String imageUrl,
+    ProjectCategory categoryType,
     String? appStoreUrl,
     String? playStoreUrl,
   });
@@ -2917,6 +2955,7 @@ class __$$ProjectGalleryItemImplCopyWithImpl<$Res>
     Object? category = null,
     Object? description = null,
     Object? imageUrl = null,
+    Object? categoryType = null,
     Object? appStoreUrl = freezed,
     Object? playStoreUrl = freezed,
   }) {
@@ -2942,6 +2981,11 @@ class __$$ProjectGalleryItemImplCopyWithImpl<$Res>
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
                     as String,
+        categoryType:
+            null == categoryType
+                ? _value.categoryType
+                : categoryType // ignore: cast_nullable_to_non_nullable
+                    as ProjectCategory,
         appStoreUrl:
             freezed == appStoreUrl
                 ? _value.appStoreUrl
@@ -2965,6 +3009,7 @@ class _$ProjectGalleryItemImpl implements _ProjectGalleryItem {
     required this.category,
     required this.description,
     required this.imageUrl,
+    required this.categoryType,
     this.appStoreUrl,
     this.playStoreUrl,
   });
@@ -2978,13 +3023,15 @@ class _$ProjectGalleryItemImpl implements _ProjectGalleryItem {
   @override
   final String imageUrl;
   @override
+  final ProjectCategory categoryType;
+  @override
   final String? appStoreUrl;
   @override
   final String? playStoreUrl;
 
   @override
   String toString() {
-    return 'ProjectGalleryItem(name: $name, category: $category, description: $description, imageUrl: $imageUrl, appStoreUrl: $appStoreUrl, playStoreUrl: $playStoreUrl)';
+    return 'ProjectGalleryItem(name: $name, category: $category, description: $description, imageUrl: $imageUrl, categoryType: $categoryType, appStoreUrl: $appStoreUrl, playStoreUrl: $playStoreUrl)';
   }
 
   @override
@@ -2999,6 +3046,8 @@ class _$ProjectGalleryItemImpl implements _ProjectGalleryItem {
                 other.description == description) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
+            (identical(other.categoryType, categoryType) ||
+                other.categoryType == categoryType) &&
             (identical(other.appStoreUrl, appStoreUrl) ||
                 other.appStoreUrl == appStoreUrl) &&
             (identical(other.playStoreUrl, playStoreUrl) ||
@@ -3012,6 +3061,7 @@ class _$ProjectGalleryItemImpl implements _ProjectGalleryItem {
     category,
     description,
     imageUrl,
+    categoryType,
     appStoreUrl,
     playStoreUrl,
   );
@@ -3034,6 +3084,7 @@ abstract class _ProjectGalleryItem implements ProjectGalleryItem {
     required final String category,
     required final String description,
     required final String imageUrl,
+    required final ProjectCategory categoryType,
     final String? appStoreUrl,
     final String? playStoreUrl,
   }) = _$ProjectGalleryItemImpl;
@@ -3046,6 +3097,8 @@ abstract class _ProjectGalleryItem implements ProjectGalleryItem {
   String get description;
   @override
   String get imageUrl;
+  @override
+  ProjectCategory get categoryType;
   @override
   String? get appStoreUrl;
   @override

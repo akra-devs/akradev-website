@@ -174,6 +174,8 @@ class _LandingPageState extends State<LandingPage> {
                     services: state.services,
                   ),
                   const SizedBox(height: 96),
+                  const VideoDemoSection(),
+                  const SizedBox(height: 96),
                   SpotlightCtaSection(
                     data: state.spotlight,
                     onPrimary: handleProjectInquiry,
@@ -1950,73 +1952,165 @@ class ProjectGallerySection extends StatelessWidget {
 
   final List<ProjectGalleryItem> projects;
 
+  String _getCategoryLabel(ProjectCategory category) {
+    switch (category) {
+      case ProjectCategory.all:
+        return '전체';
+      case ProjectCategory.healthcare:
+        return '헬스케어';
+      case ProjectCategory.b2b:
+        return 'B2B';
+      case ProjectCategory.edtech:
+        return 'EdTech';
+      case ProjectCategory.entertainment:
+        return '엔터테인먼트';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final horizontalPadding = responsive.horizontalPadding(width);
+    return BlocBuilder<LandingCubit, LandingState>(
+      builder: (context, state) {
+        final cubit = context.read<LandingCubit>();
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1200),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '프로젝트 갤러리',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: AppColors.accent,
-                        letterSpacing: 0.8,
-                        fontWeight: FontWeight.w600,
-                      ),
+        // Filter projects based on selected category
+        final filteredProjects = state.selectedProjectCategory == ProjectCategory.all
+            ? projects
+            : projects.where((p) => p.categoryType == state.selectedProjectCategory).toList();
+
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final width = constraints.maxWidth;
+            final horizontalPadding = responsive.horizontalPadding(width);
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 1200),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '프로젝트 갤러리',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            color: AppColors.accent,
+                            letterSpacing: 0.8,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          '실제 완성된 프로젝트를 확인하세요',
+                          style: theme.textTheme.headlineMedium?.copyWith(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: -0.4,
+                          ),
+                        ),
+                        const SizedBox(height: 18),
+                        Text(
+                          '다양한 산업군에서 실제 운영 중인 앱과 플랫폼입니다. 기획부터 출시, 운영까지 전 과정을 함께했습니다.',
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            color: AppColors.textSecondary,
+                            height: 1.6,
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+                        // Filter Buttons
+                        Wrap(
+                          spacing: 12,
+                          runSpacing: 12,
+                          children: ProjectCategory.values.map((category) {
+                            final isSelected = state.selectedProjectCategory == category;
+                            return _FilterChip(
+                              label: _getCategoryLabel(category),
+                              isSelected: isSelected,
+                              onTap: () => cubit.selectProjectCategory(category),
+                            );
+                          }).toList(),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      '실제 완성된 프로젝트를 확인하세요',
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: -0.4,
-                      ),
-                    ),
-                    const SizedBox(height: 18),
-                    Text(
-                      '다양한 산업군에서 실제 운영 중인 앱과 플랫폼입니다. 기획부터 출시, 운영까지 전 과정을 함께했습니다.',
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.6,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 40),
-            SizedBox(
-              height: 420,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                itemCount: projects.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(
-                      right: index < projects.length - 1 ? 24 : 0,
-                    ),
-                    child: _ProjectCard(project: projects[index]),
-                  );
-                },
-              ),
-            ),
-          ],
+                const SizedBox(height: 32),
+                SizedBox(
+                  height: 420,
+                  child: filteredProjects.isEmpty
+                      ? Center(
+                          child: Text(
+                            '해당 카테고리의 프로젝트가 없습니다',
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        )
+                      : ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                          itemCount: filteredProjects.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                right: index < filteredProjects.length - 1 ? 24 : 0,
+                              ),
+                              child: _ProjectCard(project: filteredProjects[index]),
+                            );
+                          },
+                        ),
+                ),
+              ],
+            );
+          },
         );
       },
+    );
+  }
+}
+
+class _FilterChip extends StatelessWidget {
+  const _FilterChip({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? AppColors.accent
+              : AppColors.surface.withValues(alpha: 0.4),
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(
+            color: isSelected
+                ? AppColors.accent
+                : Colors.white.withValues(alpha: 0.1),
+            width: 1.5,
+          ),
+        ),
+        child: Text(
+          label,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: isSelected ? Colors.white : AppColors.textSecondary,
+            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
+          ),
+        ),
+      ),
     );
   }
 }
@@ -2138,6 +2232,250 @@ class _ProjectCardState extends State<_ProjectCard> {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class VideoDemoSection extends StatelessWidget {
+  const VideoDemoSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        final horizontalPadding = responsive.horizontalPadding(width);
+        final isDesktop = width >= 1024;
+
+        return Container(
+          color: AppColors.surface.withValues(alpha: 0.3),
+          padding: EdgeInsets.fromLTRB(horizontalPadding, 80, horizontalPadding, 80),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '작업 과정',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: AppColors.accent,
+                      letterSpacing: 0.8,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    '실제 개발 과정을 확인하세요',
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.4,
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  Text(
+                    '기획 워크숍부터 디자인, 개발, 배포까지 전 과정을 투명하게 공개합니다. 클라이언트와 함께 만들어가는 과정을 확인하세요.',
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: AppColors.textSecondary,
+                      height: 1.6,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  if (isDesktop)
+                    Row(
+                      children: [
+                        Expanded(child: _VideoCard(
+                          title: '프로덕트 워크숍',
+                          duration: '3:24',
+                          description: '아이디어 검증부터 MVP 범위 정의까지',
+                        )),
+                        const SizedBox(width: 24),
+                        Expanded(child: _VideoCard(
+                          title: '개발 타임랩스',
+                          duration: '5:12',
+                          description: '플러터 기반 크로스플랫폼 개발 과정',
+                        )),
+                        const SizedBox(width: 24),
+                        Expanded(child: _VideoCard(
+                          title: '클라이언트 인터뷰',
+                          duration: '2:45',
+                          description: 'Habitree 팀이 전하는 협업 후기',
+                        )),
+                      ],
+                    )
+                  else
+                    Column(
+                      children: [
+                        _VideoCard(
+                          title: '프로덕트 워크숍',
+                          duration: '3:24',
+                          description: '아이디어 검증부터 MVP 범위 정의까지',
+                        ),
+                        const SizedBox(height: 24),
+                        _VideoCard(
+                          title: '개발 타임랩스',
+                          duration: '5:12',
+                          description: '플러터 기반 크로스플랫폼 개발 과정',
+                        ),
+                        const SizedBox(height: 24),
+                        _VideoCard(
+                          title: '클라이언트 인터뷰',
+                          duration: '2:45',
+                          description: 'Habitree 팀이 전하는 협업 후기',
+                        ),
+                      ],
+                    ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _VideoCard extends StatefulWidget {
+  const _VideoCard({
+    required this.title,
+    required this.duration,
+    required this.description,
+  });
+
+  final String title;
+  final String duration;
+  final String description;
+
+  @override
+  State<_VideoCard> createState() => _VideoCardState();
+}
+
+class _VideoCardState extends State<_VideoCard> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: _isHovered ? 0.3 : 0.15),
+              blurRadius: _isHovered ? 24 : 16,
+              offset: Offset(0, _isHovered ? 12 : 8),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF1B2A4F), Color(0xFF141F39)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              AppColors.accent.withValues(alpha: 0.2),
+                              AppColors.accent.withValues(alpha: 0.05),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Container(
+                          width: 64,
+                          height: 64,
+                          decoration: BoxDecoration(
+                            color: AppColors.accent,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.accent.withValues(alpha: 0.4),
+                                blurRadius: 20,
+                                spreadRadius: 4,
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.play_arrow,
+                            color: Colors.white,
+                            size: 36,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 12,
+                        right: 12,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withValues(alpha: 0.7),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            widget.duration,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.title,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        widget.description,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          height: 1.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

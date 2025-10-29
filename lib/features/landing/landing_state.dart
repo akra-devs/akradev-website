@@ -20,6 +20,7 @@ class LandingState with _$LandingState {
     @Default(FormSubmissionStatus.idle) FormSubmissionStatus formStatus,
     String? formErrorMessage,
     @Default(true) bool isUrgencyBannerVisible,
+    @Default(ProjectCategory.all) ProjectCategory selectedProjectCategory,
   }) = _LandingState;
 
   factory LandingState.initial() => LandingState(
@@ -171,24 +172,28 @@ class LandingState with _$LandingState {
             category: '헬스케어 · 습관 형성',
             description: '커뮤니티 기반 습관 형성 앱으로 일간 리텐션 38% 향상',
             imageUrl: 'https://via.placeholder.com/400x600/1e293b/38bdf8?text=Habitree',
+            categoryType: ProjectCategory.healthcare,
           ),
           ProjectGalleryItem(
             name: 'F&B Console',
             category: 'B2B · 운영 대시보드',
             description: '프랜차이즈 매장 실시간 모니터링으로 대응 시간 80% 단축',
             imageUrl: 'https://via.placeholder.com/400x600/1e293b/f472b6?text=FnB+Console',
+            categoryType: ProjectCategory.b2b,
           ),
           ProjectGalleryItem(
             name: 'EduLabs Platform',
             category: 'EdTech · 러닝 플랫폼',
             description: 'B2B 러닝 플랫폼 리뉴얼로 세일즈 전환율 2.1배 성장',
             imageUrl: 'https://via.placeholder.com/400x600/1e293b/a78bfa?text=EduLabs',
+            categoryType: ProjectCategory.edtech,
           ),
           ProjectGalleryItem(
             name: 'YG Artist Hub',
             category: '엔터테인먼트 · 팬 커뮤니티',
             description: '아티스트-팬 소통 플랫폼 구축 및 굿즈 판매 연동',
             imageUrl: 'https://via.placeholder.com/400x600/1e293b/fbbf24?text=YG+Hub',
+            categoryType: ProjectCategory.entertainment,
           ),
         ],
         contactIntent: null,
@@ -287,6 +292,8 @@ class ContactInfo with _$ContactInfo {
 
 enum ContactIntent { projectInquiry, portfolio }
 
+enum ProjectCategory { all, healthcare, b2b, edtech, entertainment }
+
 @freezed
 class LeadFormData with _$LeadFormData {
   const factory LeadFormData({
@@ -308,6 +315,7 @@ class ProjectGalleryItem with _$ProjectGalleryItem {
     required String category,
     required String description,
     required String imageUrl,
+    required ProjectCategory categoryType,
     String? appStoreUrl,
     String? playStoreUrl,
   }) = _ProjectGalleryItem;
