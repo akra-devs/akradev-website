@@ -138,18 +138,21 @@ class _LandingPageState extends State<LandingPage> {
           void handlePortfolioRequest() => cubit.requestPortfolio();
 
           return Scaffold(
-            body: SingleChildScrollView(
-              controller: _scrollController,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  LandingHero(
-                    hero: state.hero,
-                    navItems: state.navItems,
-                    onProjectInquiry: handleProjectInquiry,
-                    onPortfolioRequest: handlePortfolioRequest,
-                    onNavItemClick: _scrollToSection,
-                  ),
+            body: Stack(
+              children: [
+                SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (state.isUrgencyBannerVisible) const SizedBox(height: 48),
+                      LandingHero(
+                        hero: state.hero,
+                        navItems: state.navItems,
+                        onProjectInquiry: handleProjectInquiry,
+                        onPortfolioRequest: handlePortfolioRequest,
+                        onNavItemClick: _scrollToSection,
+                      ),
                   const SizedBox(height: 64),
                   CaseStudiesSection(
                     studies: state.caseStudies,
@@ -179,7 +182,18 @@ class _LandingPageState extends State<LandingPage> {
                 ],
               ),
             ),
-          );
+            if (state.isUrgencyBannerVisible)
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: UrgencyBanner(
+                  onDismiss: () => cubit.dismissUrgencyBanner(),
+                ),
+              ),
+          ],
+        ),
+        );
         },
       ),
     );
@@ -315,7 +329,7 @@ class LandingNavigation extends StatelessWidget {
                 ),
               ElevatedButton(
                 onPressed: onProjectInquiry,
-                child: const Text('프로젝트 문의'),
+                child: const Text('무료 상담 신청'),
               ),
             ],
           )
@@ -398,11 +412,12 @@ class _HeroCopy extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: onProjectInquiry,
               icon: const Icon(Icons.rocket_launch_outlined),
-              label: const Text('프로젝트 상담하기'),
+              label: const Text('무료 상담 신청하기'),
             ),
-            OutlinedButton(
+            OutlinedButton.icon(
               onPressed: onPortfolioRequest,
-              child: const Text('포트폴리오 요청'),
+              icon: const Icon(Icons.arrow_forward),
+              label: const Text('성공 사례 먼저 보기'),
             ),
           ],
         ),
@@ -666,48 +681,50 @@ class LandingServices extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final horizontalPadding = responsive.horizontalPadding(width);
-        final isWide = width >= 960;
-        final double rawAvailable =
-            (width - (horizontalPadding * 2)).clamp(0.0, width).toDouble();
-        final double contentWidth = math.min(rawAvailable, 1200.0);
-        final double cardWidth = isWide ? (contentWidth - 24) / 2 : contentWidth;
+    return Container(
+      color: Colors.white,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final width = constraints.maxWidth;
+          final horizontalPadding = responsive.horizontalPadding(width);
+          final isWide = width >= 960;
+          final double rawAvailable =
+              (width - (horizontalPadding * 2)).clamp(0.0, width).toDouble();
+          final double contentWidth = math.min(rawAvailable, 1200.0);
+          final double cardWidth = isWide ? (contentWidth - 24) / 2 : contentWidth;
 
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1200),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '서비스',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: AppColors.accent,
-                      letterSpacing: 0.8,
-                      fontWeight: FontWeight.w600,
+          return Padding(
+            padding: EdgeInsets.fromLTRB(horizontalPadding, 80, horizontalPadding, 80),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1200),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '서비스',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: AppColors.accent,
+                        letterSpacing: 0.8,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    '제품 전체 라이프사이클을 책임지는 파트너',
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.5,
+                    const SizedBox(height: 16),
+                    Text(
+                      '제품 전체 라이프사이클을 책임지는 파트너',
+                      style: theme.textTheme.headlineMedium?.copyWith(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.5,
+                      ),
                     ),
-                  ),
                   const SizedBox(height: 20),
                   Text(
                     '아이디어 검증, UX/UI 설계, 풀스택 개발, 배포·운영 자동화까지 한 팀으로 움직입니다. '
                     '자체 앱을 만들며 학습한 실행 방식 그대로, 고객사의 미션을 달성하도록 돕습니다.',
                     style: theme.textTheme.bodyLarge?.copyWith(
-                      color: AppColors.textSecondary,
+                      color: Colors.black54,
                       height: 1.6,
                     ),
                   ),
@@ -732,6 +749,7 @@ class LandingServices extends StatelessWidget {
           ),
         );
       },
+      ),
     );
   }
 }
@@ -747,9 +765,16 @@ class _ServiceCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: AppColors.surface.withValues(alpha: 0.8),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(28),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.04)),
+        border: Border.all(color: Colors.black.withValues(alpha: 0.08)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -758,7 +783,7 @@ class _ServiceCard extends StatelessWidget {
             height: 52,
             width: 52,
             decoration: BoxDecoration(
-              color: AppColors.accent.withValues(alpha: 0.18),
+              color: AppColors.accent.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Icon(service.icon, color: AppColors.accent, size: 28),
@@ -767,7 +792,7 @@ class _ServiceCard extends StatelessWidget {
           Text(
             service.title,
             style: theme.textTheme.titleLarge?.copyWith(
-              color: AppColors.textPrimary,
+              color: Colors.black87,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -783,7 +808,7 @@ class _ServiceCard extends StatelessWidget {
           Text(
             service.description,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
+              color: Colors.black54,
               height: 1.6,
             ),
           ),
@@ -800,7 +825,7 @@ class _ServiceCard extends StatelessWidget {
                     child: Text(
                       point,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: Colors.black54,
                         height: 1.5,
                       ),
                     ),
@@ -1031,29 +1056,24 @@ class ProcessSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final horizontalPadding = responsive.horizontalPadding(width);
-        final double rawAvailable =
-            (width - (horizontalPadding * 2)).clamp(0.0, width).toDouble();
-        final double contentWidth = math.min(rawAvailable, 1200.0);
-        final isWide = contentWidth >= 900;
-        final double cardWidth = isWide ? (contentWidth - 36) / 3 : contentWidth;
+    return Container(
+      color: Colors.white,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final width = constraints.maxWidth;
+          final horizontalPadding = responsive.horizontalPadding(width);
+          final double rawAvailable =
+              (width - (horizontalPadding * 2)).clamp(0.0, width).toDouble();
+          final double contentWidth = math.min(rawAvailable, 1200.0);
+          final isWide = contentWidth >= 900;
+          final double cardWidth = isWide ? (contentWidth - 36) / 3 : contentWidth;
 
-        return Padding(
-          padding: EdgeInsets.fromLTRB(horizontalPadding, 0, horizontalPadding, 0),
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1200),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 64),
-                decoration: BoxDecoration(
-                  color: AppColors.surface.withValues(alpha: 0.55),
-                  borderRadius: BorderRadius.circular(32),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-                ),
+          return Padding(
+            padding: EdgeInsets.fromLTRB(horizontalPadding, 80, horizontalPadding, 80),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1200),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -1069,7 +1089,7 @@ class ProcessSection extends StatelessWidget {
                     Text(
                       '아이디어에서 운영까지, 집중력 있게 완주합니다',
                       style: theme.textTheme.headlineMedium?.copyWith(
-                        color: AppColors.textPrimary,
+                        color: Colors.black87,
                         fontWeight: FontWeight.w700,
                         letterSpacing: -0.4,
                       ),
@@ -1078,7 +1098,7 @@ class ProcessSection extends StatelessWidget {
                     Text(
                       '각 단계별로 필요한 팀과 실행 항목을 정리해 두어 빠르게 착수하고, 데이터를 기반으로 다음 단계를 설계합니다.',
                       style: theme.textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textSecondary,
+                        color: Colors.black54,
                         height: 1.6,
                       ),
                     ),
@@ -1101,9 +1121,9 @@ class ProcessSection extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-        );
+          );
       },
+      ),
     );
   }
 }
@@ -1119,9 +1139,16 @@ class _ProcessCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.04),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        border: Border.all(color: Colors.black.withValues(alpha: 0.08)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1132,7 +1159,7 @@ class _ProcessCard extends StatelessWidget {
                 height: 36,
                 width: 36,
                 decoration: BoxDecoration(
-                  color: AppColors.accent.withValues(alpha: 0.18),
+                  color: AppColors.accent.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Center(
@@ -1149,7 +1176,7 @@ class _ProcessCard extends StatelessWidget {
               Text(
                 step.duration,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSecondary,
+                  color: Colors.black54,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -1159,7 +1186,7 @@ class _ProcessCard extends StatelessWidget {
           Text(
             step.title,
             style: theme.textTheme.titleLarge?.copyWith(
-              color: AppColors.textPrimary,
+              color: Colors.black87,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -1167,7 +1194,7 @@ class _ProcessCard extends StatelessWidget {
           Text(
             step.description,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
+              color: Colors.black54,
               height: 1.6,
             ),
           ),
@@ -1840,6 +1867,74 @@ class _LeadFormDialogState extends State<_LeadFormDialog> {
           }).toList(),
         ),
       ],
+    );
+  }
+}
+
+class UrgencyBanner extends StatelessWidget {
+  const UrgencyBanner({super.key, required this.onDismiss});
+
+  final VoidCallback onDismiss;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFFC1C49), Color(0xFFFF6B6B)],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.2),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.access_time, color: Colors.white, size: 18),
+          const SizedBox(width: 8),
+          const Text(
+            '이번 주 무료 상담 3자리 남음',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.3,
+            ),
+          ),
+          const SizedBox(width: 4),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.25),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Text(
+              '서둘러 신청하세요!',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          const Spacer(),
+          IconButton(
+            icon: const Icon(Icons.close, color: Colors.white, size: 20),
+            onPressed: onDismiss,
+            constraints: const BoxConstraints(),
+            padding: EdgeInsets.zero,
+            visualDensity: VisualDensity.compact,
+          ),
+        ],
+      ),
     );
   }
 }

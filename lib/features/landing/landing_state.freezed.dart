@@ -29,6 +29,7 @@ mixin _$LandingState {
   LeadFormData get formData => throw _privateConstructorUsedError;
   FormSubmissionStatus get formStatus => throw _privateConstructorUsedError;
   String? get formErrorMessage => throw _privateConstructorUsedError;
+  bool get isUrgencyBannerVisible => throw _privateConstructorUsedError;
 
   /// Create a copy of LandingState
   /// with the given fields replaced by the non-null parameter values.
@@ -57,6 +58,7 @@ abstract class $LandingStateCopyWith<$Res> {
     LeadFormData formData,
     FormSubmissionStatus formStatus,
     String? formErrorMessage,
+    bool isUrgencyBannerVisible,
   });
 
   $HeroSectionCopyWith<$Res> get hero;
@@ -92,6 +94,7 @@ class _$LandingStateCopyWithImpl<$Res, $Val extends LandingState>
     Object? formData = null,
     Object? formStatus = null,
     Object? formErrorMessage = freezed,
+    Object? isUrgencyBannerVisible = null,
   }) {
     return _then(
       _value.copyWith(
@@ -155,6 +158,11 @@ class _$LandingStateCopyWithImpl<$Res, $Val extends LandingState>
                     ? _value.formErrorMessage
                     : formErrorMessage // ignore: cast_nullable_to_non_nullable
                         as String?,
+            isUrgencyBannerVisible:
+                null == isUrgencyBannerVisible
+                    ? _value.isUrgencyBannerVisible
+                    : isUrgencyBannerVisible // ignore: cast_nullable_to_non_nullable
+                        as bool,
           )
           as $Val,
     );
@@ -223,6 +231,7 @@ abstract class _$$LandingStateImplCopyWith<$Res>
     LeadFormData formData,
     FormSubmissionStatus formStatus,
     String? formErrorMessage,
+    bool isUrgencyBannerVisible,
   });
 
   @override
@@ -261,6 +270,7 @@ class __$$LandingStateImplCopyWithImpl<$Res>
     Object? formData = null,
     Object? formStatus = null,
     Object? formErrorMessage = freezed,
+    Object? isUrgencyBannerVisible = null,
   }) {
     return _then(
       _$LandingStateImpl(
@@ -324,6 +334,11 @@ class __$$LandingStateImplCopyWithImpl<$Res>
                 ? _value.formErrorMessage
                 : formErrorMessage // ignore: cast_nullable_to_non_nullable
                     as String?,
+        isUrgencyBannerVisible:
+            null == isUrgencyBannerVisible
+                ? _value.isUrgencyBannerVisible
+                : isUrgencyBannerVisible // ignore: cast_nullable_to_non_nullable
+                    as bool,
       ),
     );
   }
@@ -345,6 +360,7 @@ class _$LandingStateImpl implements _LandingState {
     this.formData = const LeadFormData(),
     this.formStatus = FormSubmissionStatus.idle,
     this.formErrorMessage,
+    this.isUrgencyBannerVisible = true,
   }) : _navItems = navItems,
        _services = services,
        _caseStudies = caseStudies,
@@ -401,10 +417,13 @@ class _$LandingStateImpl implements _LandingState {
   final FormSubmissionStatus formStatus;
   @override
   final String? formErrorMessage;
+  @override
+  @JsonKey()
+  final bool isUrgencyBannerVisible;
 
   @override
   String toString() {
-    return 'LandingState(navItems: $navItems, hero: $hero, services: $services, footer: $footer, caseStudies: $caseStudies, processSteps: $processSteps, spotlight: $spotlight, isContactDialogVisible: $isContactDialogVisible, contactIntent: $contactIntent, formData: $formData, formStatus: $formStatus, formErrorMessage: $formErrorMessage)';
+    return 'LandingState(navItems: $navItems, hero: $hero, services: $services, footer: $footer, caseStudies: $caseStudies, processSteps: $processSteps, spotlight: $spotlight, isContactDialogVisible: $isContactDialogVisible, contactIntent: $contactIntent, formData: $formData, formStatus: $formStatus, formErrorMessage: $formErrorMessage, isUrgencyBannerVisible: $isUrgencyBannerVisible)';
   }
 
   @override
@@ -435,7 +454,9 @@ class _$LandingStateImpl implements _LandingState {
             (identical(other.formStatus, formStatus) ||
                 other.formStatus == formStatus) &&
             (identical(other.formErrorMessage, formErrorMessage) ||
-                other.formErrorMessage == formErrorMessage));
+                other.formErrorMessage == formErrorMessage) &&
+            (identical(other.isUrgencyBannerVisible, isUrgencyBannerVisible) ||
+                other.isUrgencyBannerVisible == isUrgencyBannerVisible));
   }
 
   @override
@@ -453,6 +474,7 @@ class _$LandingStateImpl implements _LandingState {
     formData,
     formStatus,
     formErrorMessage,
+    isUrgencyBannerVisible,
   );
 
   /// Create a copy of LandingState
@@ -478,6 +500,7 @@ abstract class _LandingState implements LandingState {
     final LeadFormData formData,
     final FormSubmissionStatus formStatus,
     final String? formErrorMessage,
+    final bool isUrgencyBannerVisible,
   }) = _$LandingStateImpl;
 
   @override
@@ -504,6 +527,8 @@ abstract class _LandingState implements LandingState {
   FormSubmissionStatus get formStatus;
   @override
   String? get formErrorMessage;
+  @override
+  bool get isUrgencyBannerVisible;
 
   /// Create a copy of LandingState
   /// with the given fields replaced by the non-null parameter values.

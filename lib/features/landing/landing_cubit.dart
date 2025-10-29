@@ -37,6 +37,10 @@ class LandingCubit extends Cubit<LandingState> {
     }
   }
 
+  void dismissUrgencyBanner() {
+    emit(state.copyWith(isUrgencyBannerVisible: false));
+  }
+
   void updateFormField({
     String? name,
     String? email,

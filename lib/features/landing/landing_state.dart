@@ -18,22 +18,23 @@ class LandingState with _$LandingState {
     @Default(LeadFormData()) LeadFormData formData,
     @Default(FormSubmissionStatus.idle) FormSubmissionStatus formStatus,
     String? formErrorMessage,
+    @Default(true) bool isUrgencyBannerVisible,
   }) = _LandingState;
 
   factory LandingState.initial() => LandingState(
         navItems: const ['서비스', '프로세스', '연락처'],
         hero: const HeroSection(
-          badge: 'Product studio · Outsourcing partner',
-          headline: '아이디어를 디지털 제품으로 바꿔\n시장에 빠르게 검증합니다',
-          subHeadline: '자체 서비스 운영으로 검증한 실행력을 파트너의 성장에 연결합니다.',
+          badge: '🚀 Product Studio · 3개월 완성 프로그램',
+          headline: '3개월 안에 실제 수익 내는\n앱을 만들 수 있습니다',
+          subHeadline: '언제까지 기획만 하고 출시는 미룰 건가요?',
           description:
-              'akradev studio는 자체 앱을 기획하고 런칭하며 쌓은 실행력을 기반으로\n'
-              '파트너사의 제품을 함께 만듭니다. 전략 수립부터 디자인, 개발, 운영까지\n'
-              '엔드-투-엔드로 책임지는 팀이 필요하다면 우리와 시작해 보세요.',
+              '아이디어부터 앱스토어 출시, 첫 수익까지. akradev studio가 함께하면\n'
+              '평균 3개월이면 충분합니다. 전략, 디자인, 개발, 마케팅까지\n'
+              '실제로 돈 버는 제품을 만드는 과정을 경험하세요.',
           metrics: [
-            MetricInfo(value: '10+', label: '출시한 제품과 MVP'),
-            MetricInfo(value: '4.8', label: '앱스토어 평균 평점'),
-            MetricInfo(value: '24h', label: '긴급 이슈 대응 시간'),
+            MetricInfo(value: '3개월', label: '평균 출시 기간'),
+            MetricInfo(value: '10+', label: '런칭 성공 프로젝트'),
+            MetricInfo(value: '100%', label: '클라이언트 만족도'),
           ],
           showcaseItems: [
             ShowcaseItem(
