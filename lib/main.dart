@@ -90,6 +90,7 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   final ScrollController _scrollController = ScrollController();
+  final GlobalKey _founderKey = GlobalKey();
   final GlobalKey _servicesKey = GlobalKey();
   final GlobalKey _processKey = GlobalKey();
   final GlobalKey _contactKey = GlobalKey();
@@ -103,6 +104,9 @@ class _LandingPageState extends State<LandingPage> {
   void _scrollToSection(String sectionName) {
     GlobalKey? targetKey;
     switch (sectionName) {
+      case '만드는 사람':
+        targetKey = _founderKey;
+        break;
       case '서비스':
         targetKey = _servicesKey;
         break;
@@ -172,6 +176,11 @@ class _LandingPageState extends State<LandingPage> {
                         onNavItemClick: _scrollToSection,
                       ),
                       const SizedBox(height: 64),
+                      FounderSection(
+                        key: _founderKey,
+                        profile: state.founder,
+                      ),
+                      const SizedBox(height: 96),
                       CaseStudiesSection(
                         studies: state.caseStudies,
                         onProjectInquiry: handleProjectInquiry,
@@ -584,6 +593,35 @@ class _HeroShowcase extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (hero.heroImageUrl != null) ...[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(24),
+              child: Image.network(
+                hero.heroImageUrl!,
+                // TODO(branding): Replace with final hero visual.
+                height: 220,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
+                filterQuality: FilterQuality.high,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: 220,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1B2A4F),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    alignment: Alignment.center,
+                    child: Icon(
+                      Icons.image_not_supported_outlined,
+                      color: Colors.white.withValues(alpha: 0.6),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 24),
+          ],
           Row(
             children: [
               Container(
@@ -625,7 +663,7 @@ class _HeroShowcase extends StatelessWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: Text(
-                    '유저 데이터 분석과 제품 로드맵 설계까지 한 번에 제공해요.',
+                    '도메인 모델링 → API 명세 → 모니터링까지 백엔드 전 과정을 한 흐름으로 제공합니다.',
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -691,6 +729,281 @@ class _ShowcaseCard extends StatelessWidget {
   }
 }
 
+class FounderSection extends StatelessWidget {
+  const FounderSection({super.key, required this.profile});
+
+  final FounderProfile profile;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFF0B1426), Color(0xFF111F39)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final width = constraints.maxWidth;
+          final horizontalPadding = responsive.horizontalPadding(width);
+          final double rawAvailable =
+              (width - (horizontalPadding * 2)).clamp(0.0, width).toDouble();
+          final double contentWidth = math.min(rawAvailable, 1100.0);
+          final isWide = contentWidth >= 820;
+
+          final content =
+              isWide
+                  ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(child: _FounderSummary(profile: profile)),
+                      const SizedBox(width: 48),
+                      Expanded(child: _FounderHighlights(profile: profile)),
+                    ],
+                  )
+                  : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _FounderSummary(profile: profile),
+                      const SizedBox(height: 32),
+                      _FounderHighlights(profile: profile),
+                    ],
+                  );
+
+          return Padding(
+            padding: EdgeInsets.fromLTRB(
+              horizontalPadding,
+              56,
+              horizontalPadding,
+              56,
+            ),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1100),
+                child: content,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _FounderSummary extends StatelessWidget {
+  const _FounderSummary({required this.profile});
+
+  final FounderProfile profile;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (profile.profileImageUrl != null) ...[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: Image.network(
+              profile.profileImageUrl!,
+              // TODO(branding): Swap to final profile photo.
+              width: 220,
+              height: 220,
+              fit: BoxFit.cover,
+              filterQuality: FilterQuality.high,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  width: 220,
+                  height: 220,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1B2A4F),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.person_outline,
+                    color: Colors.white.withValues(alpha: 0.65),
+                    size: 64,
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 24),
+        ],
+        Text(
+          '만드는 사람',
+          style: theme.textTheme.titleMedium?.copyWith(
+            color: AppColors.accent,
+            letterSpacing: 0.6,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 14),
+        Text(
+          profile.name,
+          style: theme.textTheme.headlineMedium?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.4,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          profile.role,
+          style: theme.textTheme.titleMedium?.copyWith(
+            color: AppColors.accent.withValues(alpha: 0.9),
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Text(
+          profile.bio,
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: Colors.white.withValues(alpha: 0.82),
+            height: 1.6,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _FounderHighlights extends StatelessWidget {
+  const _FounderHighlights({required this.profile});
+
+  final FounderProfile profile;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.all(28),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.3),
+            blurRadius: 36,
+            offset: const Offset(0, 18),
+            spreadRadius: -12,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '핵심 역량',
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: AppColors.accent,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.5,
+            ),
+          ),
+          const SizedBox(height: 18),
+          if (profile.highlights.isNotEmpty)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (final highlight in profile.highlights)
+                  _FounderHighlightRow(text: highlight),
+              ],
+            ),
+          if (profile.techStacks.isNotEmpty) ...[
+            const SizedBox(height: 24),
+            Text(
+              'Tech Stack',
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: Colors.white.withValues(alpha: 0.8),
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0.3,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              children: [
+                for (final stack in profile.techStacks) _TechChip(label: stack),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _FounderHighlightRow extends StatelessWidget {
+  const _FounderHighlightRow({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 14),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.check_circle, size: 18, color: AppColors.accent),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              text,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: Colors.white.withValues(alpha: 0.82),
+                height: 1.5,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TechChip extends StatelessWidget {
+  const _TechChip({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: AppColors.accent.withValues(alpha: 0.35)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.code_rounded, size: 14, color: AppColors.accent),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.3,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class LandingServices extends StatefulWidget {
   const LandingServices({super.key, required this.services});
 
@@ -737,7 +1050,7 @@ class _LandingServicesState extends State<LandingServices> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      '제품 전체 라이프사이클을 책임지는 파트너',
+                      '데이터 흐름을 책임지는 백엔드 파트너',
                       style: theme.textTheme.headlineMedium?.copyWith(
                         color: Colors.black87,
                         fontWeight: FontWeight.w700,
@@ -746,8 +1059,8 @@ class _LandingServicesState extends State<LandingServices> {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      '아이디어 검증, UX/UI 설계, 풀스택 개발, 배포·운영 자동화까지 한 팀으로 움직입니다. '
-                      '자체 앱을 만들며 학습한 실행 방식 그대로, 고객사의 미션을 달성하도록 돕습니다.',
+                      '도메인 스토리 분석부터 API 명세, Spring Boot 구현, 운영 자동화까지 한 팀으로 움직입니다. '
+                      '복잡한 요구사항을 구조화해 안전하고 확장 가능한 백엔드를 제공합니다.',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: Colors.black54,
                         height: 1.6,
@@ -2358,7 +2671,7 @@ class ProjectGallerySection extends StatelessWidget {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          '실제 완성된 프로젝트를 확인하세요',
+                          '실제 운영 중인 백엔드·API 프로젝트를 확인하세요',
                           style: theme.textTheme.headlineMedium?.copyWith(
                             color: AppColors.textPrimary,
                             fontWeight: FontWeight.w700,
@@ -2367,7 +2680,7 @@ class ProjectGallerySection extends StatelessWidget {
                         ),
                         const SizedBox(height: 18),
                         Text(
-                          '다양한 산업군에서 실제 운영 중인 앱과 플랫폼입니다. 기획부터 출시, 운영까지 전 과정을 함께했습니다.',
+                          'Spring Boot · Kotlin · Flutter 조합으로 구축한 다양한 산업군의 데이터 파이프라인과 API 사례입니다. 설계 → 개발 → 운영까지 전 과정을 직접 리드했습니다.',
                           style: theme.textTheme.bodyLarge?.copyWith(
                             color: AppColors.textSecondary,
                             height: 1.6,
@@ -2767,7 +3080,7 @@ class VideoDemoSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    '실제 개발 과정을 확인하세요',
+                    'API 백엔드 구축 과정을 확인하세요',
                     style: theme.textTheme.headlineMedium?.copyWith(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.w700,
@@ -2776,7 +3089,7 @@ class VideoDemoSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 18),
                   Text(
-                    '기획 워크숍부터 디자인, 개발, 배포까지 전 과정을 투명하게 공개합니다. 클라이언트와 함께 만들어가는 과정을 확인하세요.',
+                    '도메인 스토리 정리, API 명세 작성, Spring Boot · Flutter 구현, 모니터링까지 백엔드 파이프라인을 어떻게 구축하는지 공유합니다.',
                     style: theme.textTheme.bodyLarge?.copyWith(
                       color: AppColors.textSecondary,
                       height: 1.6,
@@ -2788,25 +3101,25 @@ class VideoDemoSection extends StatelessWidget {
                       children: [
                         Expanded(
                           child: _VideoCard(
-                            title: '프로덕트 워크숍',
+                            title: '도메인 스토리 워크숍',
                             duration: '3:24',
-                            description: '아이디어 검증부터 MVP 범위 정의까지',
+                            description: '이벤트 스토밍으로 데이터 흐름과 컨텍스트를 정리합니다.',
                           ),
                         ),
                         const SizedBox(width: 24),
                         Expanded(
                           child: _VideoCard(
-                            title: '개발 타임랩스',
-                            duration: '5:12',
-                            description: '플러터 기반 크로스플랫폼 개발 과정',
+                            title: 'API Blueprint & 테스트',
+                            duration: '4:58',
+                            description: 'Swagger/AsyncAPI 명세와 Spring Boot 통합 테스트 작성 흐름',
                           ),
                         ),
                         const SizedBox(width: 24),
                         Expanded(
                           child: _VideoCard(
-                            title: '클라이언트 인터뷰',
+                            title: '런칭 후 모니터링',
                             duration: '2:45',
-                            description: 'Habitree 팀이 전하는 협업 후기',
+                            description: 'Grafana·Slack 알림으로 SLA를 지키는 운영 노하우',
                           ),
                         ),
                       ],
@@ -2815,21 +3128,21 @@ class VideoDemoSection extends StatelessWidget {
                     Column(
                       children: [
                         _VideoCard(
-                          title: '프로덕트 워크숍',
+                          title: '도메인 스토리 워크숍',
                           duration: '3:24',
-                          description: '아이디어 검증부터 MVP 범위 정의까지',
+                          description: '이벤트 스토밍으로 데이터 흐름과 컨텍스트를 정리합니다.',
                         ),
                         const SizedBox(height: 24),
                         _VideoCard(
-                          title: '개발 타임랩스',
-                          duration: '5:12',
-                          description: '플러터 기반 크로스플랫폼 개발 과정',
+                          title: 'API Blueprint & 테스트',
+                          duration: '4:58',
+                          description: 'Swagger/AsyncAPI 명세와 Spring Boot 통합 테스트 작성 흐름',
                         ),
                         const SizedBox(height: 24),
                         _VideoCard(
-                          title: '클라이언트 인터뷰',
+                          title: '런칭 후 모니터링',
                           duration: '2:45',
-                          description: 'Habitree 팀이 전하는 협업 후기',
+                          description: 'Grafana·Slack 알림으로 SLA를 지키는 운영 노하우',
                         ),
                       ],
                     ),
@@ -3036,7 +3349,7 @@ class ReviewSection extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '클라이언트 리뷰',
+                                'API 파트너 리뷰',
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   color: AppColors.accent,
                                   letterSpacing: 0.8,
@@ -3045,7 +3358,7 @@ class ReviewSection extends StatelessWidget {
                               ),
                               const SizedBox(height: 16),
                               Text(
-                                '실제 프로젝트를 함께한 고객들의 목소리',
+                                '백엔드·API 프로젝트를 함께한 고객들의 목소리',
                                 style: theme.textTheme.displaySmall?.copyWith(
                                   color: AppColors.textPrimary,
                                   fontWeight: FontWeight.w700,

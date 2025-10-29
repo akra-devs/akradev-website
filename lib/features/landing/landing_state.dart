@@ -8,6 +8,7 @@ class LandingState with _$LandingState {
   const factory LandingState({
     required List<String> navItems,
     required HeroSection hero,
+    required FounderProfile founder,
     required List<ServiceItem> services,
     required FooterContent footer,
     required List<CaseStudy> caseStudies,
@@ -25,19 +26,19 @@ class LandingState with _$LandingState {
   }) = _LandingState;
 
   factory LandingState.initial() => LandingState(
-    navItems: const ['서비스', '프로세스', '연락처'],
+    navItems: const ['만드는 사람', '서비스', '프로세스', '연락처'],
     hero: const HeroSection(
-      badge: '🚀 Product Studio · 3개월 완성 프로그램',
-      headline: '3개월 안에 실제 수익 내는\n앱을 만들 수 있습니다',
-      subHeadline: '언제까지 기획만 하고 출시는 미룰 건가요?',
+      badge: '🚀 Spring Boot · Kotlin 백엔드 스튜디오',
+      headline: '비즈니스의 핵심은 데이터 흐름입니다.\nAPI부터 안정화까지 맡겨 주세요',
+      subHeadline: 'B2B 교육 · 플랫폼 특화 백엔드 & Flutter 팀',
       description:
-          '아이디어부터 앱스토어 출시, 첫 수익까지. akradev studio가 함께하면\n'
-          '평균 3개월이면 충분합니다. 전략, 디자인, 개발, 마케팅까지\n'
-          '실제로 돈 버는 제품을 만드는 과정을 경험하세요.',
+          '도메인 주도 설계로 복잡한 요구사항을 모델링하고,\n'
+          'Spring Boot · Kotlin 기반으로 확장 가능한 API 아키텍처를 구축합니다.\n'
+          '운영에 필요한 인증, 결제, 모니터링, Flutter 앱까지 한 번에 완성하세요.',
       metrics: [
-        MetricInfo(value: '3개월', label: '평균 출시 기간'),
-        MetricInfo(value: '10+', label: '런칭 성공 프로젝트'),
-        MetricInfo(value: '100%', label: '클라이언트 만족도'),
+        MetricInfo(value: '120+', label: '구축한 API 엔드포인트'),
+        MetricInfo(value: '99.95%', label: '운영 SLA 보장'),
+        MetricInfo(value: '3개월', label: '평균 초기 런칭 기간'),
       ],
       showcaseItems: [
         ShowcaseItem(
@@ -52,46 +53,84 @@ class LandingState with _$LandingState {
         ),
       ],
       trustedBy: ['GS리테일', 'YG Entertainment', 'GreenLabs', 'MegaStudio'],
+      heroImageUrl: 'https://placehold.co/640x820/0f172a/38bdf8.png?text=Backend+Flow',
+    ),
+    founder: const FounderProfile(
+      name: '도란 (akradev studio)',
+      role: 'Spring Boot · Kotlin 백엔드 & Flutter 개발자',
+      bio:
+          'B2B 교육 솔루션 백엔드 엔지니어로서 도메인 주도 설계(DDD)와 이벤트 기반 아키텍처를 적용해 '
+          '대규모 데이터 흐름을 설계해 왔습니다. Kotlin · Spring Boot로 API와 배치를 안정화하고, '
+          'Flutter 멀티플랫폼 앱으로 운영자·학습자 경험을 동시에 제공합니다.',
+      highlights: [
+        '교육/러닝 도메인 복잡도를 DDD로 분해하고 확장 가능한 모델 구축',
+        'Spring Boot + Kotlin 기반 API, 배치, 메시징 인프라 설계 및 최적화',
+        'OAuth2, JWT, 결제/알림 등 핵심 연동을 포함한 프로덕트 전 주기 리드',
+        'Flutter로 프런트·운영 대시보드를 빠르게 구현해 팀 생산성 2배 향상',
+      ],
+      techStacks: [
+        'Spring Boot',
+        'Kotlin',
+        'Domain-Driven Design',
+        'CQRS · Event Sourcing',
+        'Flutter',
+        'PostgreSQL',
+        'AWS · GCP · NCP',
+      ],
+      profileImageUrl: 'https://placehold.co/360x360/111f39/34d399.png?text=akradev',
     ),
     services: const [
       ServiceItem(
         icon: Icons.auto_awesome,
-        title: '자체 앱 개발',
-        subtitle: 'Product incubation',
+        title: '데이터 중심 백엔드 구축',
+        subtitle: 'Domain-driven backend',
         description:
-            '아이디어 발굴부터 제품 출시 후 운영까지 전 과정을 책임지는 셀프 프로덕트 팀입니다. '
-            '시장 적합성을 빠르게 확인하고, 데이터 기반으로 제품 개선 사이클을 돌립니다.',
+            '비즈니스 용어와 규칙을 도메인 모델로 정리하고, Spring Boot · Kotlin으로 확장 가능한 백엔드를 제공합니다. '
+            '교육·플랫폼 특화 경험을 바탕으로 인증, 결제, 통계까지 안정적으로 운영할 수 있습니다.',
         points: [
-          '아이디어 검증, UX 리서치, 포지셔닝 워크숍 진행',
-          '플러터 기반 모바일/웹 동시 개발 및 배포 자동화',
-          '운영 데이터/퍼널 분석으로 지표 개선 로드맵 수립',
+          '워크숍을 통한 요구사항·도메인 분석 및 컨텍스트 매핑',
+          'DDD 기반 엔티티/애그리게잇 설계, CQRS·이벤트 구조 적용',
+          '모니터링·로깅·배포 자동화까지 운영 필수 요소 내장',
+        ],
+      ),
+      ServiceItem(
+        icon: Icons.api_outlined,
+        title: 'API 개발 외주',
+        subtitle: 'REST · GraphQL · Event-driven',
+        description:
+            '프런트엔드 팀이나 외부 파트너와 함께 사용할 수 있는 명세 기반 API를 설계·개발합니다. '
+            'Swagger, AsyncAPI, gRPC 등 협업 도구를 활용해 커뮤니케이션 비용을 줄입니다.',
+        points: [
+          '인증·권한(SSO, OAuth2, JWT) 및 멀티 테넌시 구조 설계',
+          '고성능 캐싱, 비동기 큐, 배치 파이프라인으로 비용 대비 성능 최적화',
+          'Swagger/Redoc 명세와 Postman 컬렉션 제공, 연동 QA 지원',
         ],
       ),
       ServiceItem(
         icon: Icons.handshake_outlined,
-        title: '외주 · 협업 개발',
-        subtitle: 'Build with partners',
+        title: '운영 파트너십 & 고도화',
+        subtitle: 'Operate & scale together',
         description:
-            '기획이 완료된 프로젝트부터 0에서 1을 만드는 신규 제품까지, 상황에 맞는 팀 구성을 제안합니다. '
-            '프로덕트 매니저와 개발 리더가 직접 커뮤니케이션하며 속도와 퀄리티를 모두 챙깁니다.',
+            '기존 시스템을 진단하고, API 개선·데이터 마트·운영 자동화를 함께 추진합니다. '
+            '릴리즈 파이프라인과 모니터링 체계를 정비해 팀 전체 생산성을 높입니다.',
         points: [
-          '요구사항 정리, 일정·견적 산출, MVP 범위 정의',
-          '디자인 시스템 구축과 반응형 UI 개발',
-          '런칭 이후 모니터링, 핫픽스 및 장기 운영 지원',
+          '레거시 코드 리팩터링, 테스트 코드 및 품질 지표 정비',
+          '데이터 파이프라인/BI 구축으로 KPI 모니터링 체계화',
+          'SLA 기반 유지보수, 장애 대응 가이드 및 온콜 프로세스 구축',
         ],
       ),
     ],
     caseStudies: const [
       CaseStudy(
         company: 'Habitree',
-        title: '커뮤니티 기반 습관 형성 앱으로 리텐션 38% 향상',
+        title: '커뮤니티 기반 습관 앱 백엔드 전면 구축',
         description:
-            '제로에서 MVP까지 12주 만에 제작하고, 온보딩 퍼널을 최적화하여 초기 유저의 일간 재방문을 끌어올렸습니다.',
-        result: '런칭 3개월 내 2만 다운로드, 일간 활성 3배 성장',
+            '12주 만에 Spring Boot · Kotlin API와 Flutter 앱을 동시 구축해, 커뮤니티 기능과 알림 워크플로를 안정화했습니다.',
+        result: '런칭 3개월 내 23,481 다운로드, MAU 3배 성장',
         highlights: [
-          '일일 Habit 스티키 지표 정의 및 알림 시나리오 설계',
-          '커뮤니티 기능(챌린지, 랭킹)으로 사용자 참여 촉진',
-          '데이터 기반 AB 테스트로 온보딩 이탈률 26% 감소',
+          'DDD 기반 컨텍스트 매핑으로 습관/챌린지 도메인 모델링',
+          'JWT + 소셜 로그인 API, Webhook 기반 리마인더 알림 구축',
+          'Grafana/Prometheus 모니터링으로 리텐션 지표 실시간 추적',
         ],
         detailedMetrics: DetailedMetrics(
           downloads: '23,481',
@@ -102,14 +141,14 @@ class LandingState with _$LandingState {
       ),
       CaseStudy(
         company: 'F&B Console',
-        title: '프랜차이즈 매장 운영 자동화로 본사 대응 속도 단축',
+        title: '전국 매장 데이터 허브 및 운영 API 구축',
         description:
-            '실시간 매출 대시보드와 커스텀 알림 시스템을 구축해 매장 이슈를 빠르게 감지하고 의사 결정을 돕습니다.',
-        result: '주요 알림 대응 시간 24시간 → 4시간 단축',
+            '매장·물류·CS 데이터를 하나의 API 게이트웨이로 통합하고, 이벤트 기반 대응 시나리오를 설계했습니다.',
+        result: '주요 이슈 대응 시간 24시간 → 4시간 단축',
         highlights: [
-          'POS·배송 데이터 통합, 이상 탐지 룰 엔진 구현',
-          '현장 매니저용 모바일 앱과 데스크탑 관리자 도구를 동시 제공',
-          '자동 리포트로 본사 주간 리포트 작성 시간 70% 절감',
+          'Kafka + Spring Cloud Stream으로 이상 징후 실시간 탐지',
+          '매장 등급·공지 API를 Flutter 운영 앱과 관리자 포털에 동시 제공',
+          '주간 리포트 자동화로 보고서 작성 시간 70% 절감',
         ],
         detailedMetrics: DetailedMetrics(
           downloads: '142개 매장',
@@ -120,13 +159,14 @@ class LandingState with _$LandingState {
       ),
       CaseStudy(
         company: 'EduLabs',
-        title: 'B2B 러닝 플랫폼 리뉴얼로 세일즈 전환율 상승',
-        description: '기업 고객 온보딩 시나리오를 재정비하고 모듈형 러닝 빌더를 제공해 세일즈 파이프라인을 안정화했습니다.',
+        title: 'B2B 러닝 플랫폼 API 전환 및 데이터 마트 구축',
+        description:
+            '기존 PHP 백엔드를 Kotlin 마이크로서비스로 이관하고, 세일즈 퍼널 분석용 데이터 마트를 설계했습니다.',
         result: '견적 문의 대비 계약 전환율 2.1배 성장',
         highlights: [
-          '고객 맞춤 커리큘럼 구성 기능과 퍼널 추적 대시보드 제공',
-          'CI/CD 파이프라인과 모듈식 디자인 시스템 구축',
-          '사용자 테스트를 통한 IA 리디자인으로 NPS +34점',
+          'GraphQL + REST 하이브리드 API로 파트너사 연동 비용 절감',
+          '데이터 마트·Looker Studio 대시보드로 전환 퍼널 가시화',
+          'CI/CD + 블루/그린 배포로 무중단 운영 체계 마련',
         ],
         detailedMetrics: DetailedMetrics(
           downloads: '38개 기업',
@@ -139,39 +179,39 @@ class LandingState with _$LandingState {
     processSteps: const [
       ProcessStep(
         order: 1,
-        title: 'Discovery & Alignment',
-        description: '비즈니스 목표, 사용자 페르소나, KPI를 명확히 정리하고 MVP 범위를 합의합니다.',
+        title: 'Discovery & Domain Story',
+        description: '비즈니스 목표와 데이터 흐름을 인터뷰로 파악하고, 도메인 이벤트·용어를 정리합니다.',
         duration: '1~2주',
       ),
       ProcessStep(
         order: 2,
-        title: 'Experience Design',
-        description: '사용자 여정, 와이어프레임, 모듈형 UI 시스템을 설계해 반복 개발에 강한 구조를 만듭니다.',
+        title: 'Modeling & API Blueprint',
+        description: '컨텍스트 매핑, ERD, API 명세(Swagger/AsyncAPI)와 시퀀스 다이어그램을 설계합니다.',
         duration: '2~4주',
       ),
       ProcessStep(
         order: 3,
-        title: 'Build & Launch',
-        description: '플러터 기반 멀티플랫폼 개발과 백엔드를 통합하여 안정적인 배포/모니터링 환경을 구성합니다.',
+        title: 'Build, QA & Automation',
+        description: 'Spring Boot · Flutter 구현, 테스트 코드, CI/CD, 모니터링 대시보드까지 한 흐름으로 완성합니다.',
         duration: '4~8주',
       ),
       ProcessStep(
         order: 4,
         title: 'Operate & Grow',
-        description: '지표 대시보드와 실험 로드맵을 운영하며, 핫픽스부터 장기 로드맵까지 같이 완주합니다.',
+        description: 'SLA 운영, 성능 튜닝, 데이터 파이프라인 확장을 통해 전환·리텐션 실험을 뒷받침합니다.',
         duration: '지속',
       ),
     ],
     spotlight: const PrimaryCta(
-      eyebrow: 'Ready to launch?',
-      headline: '아이디어를 실행으로 옮길 팀이 필요하다면, 지금 이야기 나눠요',
-      body: '프로덕트 전략, 디자인, 개발, 운영까지 한 팀으로 움직입니다. 간단한 아이디어 공유라도 괜찮아요.',
-      primaryLabel: '프로젝트 미팅 예약',
-      secondaryLabel: '소개서 다운로드',
+      eyebrow: 'Need a backend partner?',
+      headline: 'API 아키텍처부터 운영 자동화까지, 한 번에 맡기세요',
+      body: 'Spring Boot · Kotlin 기반 백엔드와 Flutter 앱을 함께 제공하고, 명세·테스트·모니터링을 포함한 운영 체계를 세팅합니다.',
+      primaryLabel: 'API 프로젝트 상담 예약',
+      secondaryLabel: '포트폴리오 살펴보기',
     ),
     footer: const FooterContent(
-      headline: "Let's ship something bold.",
-      body: '자체 서비스 운영 노하우로 제품의 방향성을 함께 설계합니다. 아이디어 탐색 단계라도 연락 주세요.',
+      headline: '데이터 흐름이 막히는 지점이 있다면 연락 주세요.',
+      body: '요구사항 문서가 없어도 괜찮습니다. 도메인 스토리 정리부터 Swagger 명세, 배포 자동화까지 함께 만들어 드립니다.',
       contacts: [
         ContactInfo(icon: Icons.mail_outline, label: 'hello@akradev.studio'),
         ContactInfo(icon: Icons.chat_outlined, label: 'KakaoTalk · akradev'),
@@ -181,24 +221,27 @@ class LandingState with _$LandingState {
       ProjectGalleryItem(
         name: 'Habitree',
         category: '헬스케어 · 습관 형성',
-        description: '커뮤니티 기반 습관 형성 앱으로 일간 리텐션 38% 향상',
+        description: 'Spring Boot + Flutter로 커뮤니티 습관 앱을 12주 만에 런칭',
         imageUrl:
             'https://via.placeholder.com/400x600/1e293b/38bdf8?text=Habitree',
         hoverImageUrl:
             'https://via.placeholder.com/400x600/0f172a/38bdf8?text=Habitree+Dashboard',
-        hoverHighlights: ['온보딩 퍼널 최적화로 이탈률 26% 감소', '커뮤니티 기능으로 DAU 3배 성장'],
+        hoverHighlights: [
+          'DDD 기반 Kotlin API로 회원/챌린지 도메인 정비',
+          'Flutter 운영 대시보드와 실시간 알림 파이프라인 구축',
+        ],
         categoryType: ProjectCategory.healthcare,
       ),
       ProjectGalleryItem(
         name: 'F&B Console',
         category: 'B2B · 운영 대시보드',
-        description: '프랜차이즈 매장 실시간 모니터링으로 대응 시간 80% 단축',
+        description: 'Kafka 기반 운영 API로 전국 매장 대응 속도를 4시간으로 단축',
         imageUrl:
             'https://via.placeholder.com/400x600/1e293b/f472b6?text=FnB+Console',
         hoverImageUrl:
             'https://via.placeholder.com/400x600/0f172a/f472b6?text=Ops+Automation',
         hoverHighlights: [
-          'POS·배송 데이터 통합으로 대응 83% 단축',
+          '매장·물류 데이터를 통합하는 API 게이트웨이 구축',
           '주간 리포트 자동화로 리포트 작성 70% 절감',
         ],
         categoryType: ProjectCategory.b2b,
@@ -206,28 +249,28 @@ class LandingState with _$LandingState {
       ProjectGalleryItem(
         name: 'EduLabs Platform',
         category: 'EdTech · 러닝 플랫폼',
-        description: 'B2B 러닝 플랫폼 리뉴얼로 세일즈 전환율 2.1배 성장',
+        description: 'GraphQL + REST API로 B2B 러닝 플랫폼 재구축',
         imageUrl:
             'https://via.placeholder.com/400x600/1e293b/a78bfa?text=EduLabs',
         hoverImageUrl:
             'https://via.placeholder.com/400x600/0f172a/a78bfa?text=Learning+Builder',
         hoverHighlights: [
-          '온보딩 최적화로 계약 전환율 2.1배 상승',
-          '모듈형 러닝 빌더로 커리큘럼 구성 시간 -40%',
+          'Kotlin 마이크로서비스로 기존 Monolith 리뉴얼',
+          'Looker Studio 대시보드로 퍼널 가시화',
         ],
         categoryType: ProjectCategory.edtech,
       ),
       ProjectGalleryItem(
         name: 'YG Artist Hub',
         category: '엔터테인먼트 · 팬 커뮤니티',
-        description: '아티스트-팬 소통 플랫폼 구축 및 굿즈 판매 연동',
+        description: '팬 활동 API와 커머스 연동으로 매출 48% 향상',
         imageUrl:
             'https://via.placeholder.com/400x600/1e293b/fbbf24?text=YG+Hub',
         hoverImageUrl:
             'https://via.placeholder.com/400x600/0f172a/fbbf24?text=Fan+Engagement',
         hoverHighlights: [
-          '라이브 스트리밍 & 굿즈 연동으로 매출 +48%',
-          '팬 활동 포인트로 재방문율 2.6배 상승',
+          '라이브·굿즈·포인트를 연결하는 이벤트 기반 구조 설계',
+          '팬 활동 지표 대시보드로 재방문율 2.6배 상승',
         ],
         categoryType: ProjectCategory.entertainment,
       ),
@@ -293,6 +336,7 @@ class HeroSection with _$HeroSection {
     required List<MetricInfo> metrics,
     required List<ShowcaseItem> showcaseItems,
     required List<String> trustedBy,
+    String? heroImageUrl,
   }) = _HeroSection;
 }
 
@@ -309,6 +353,18 @@ class ShowcaseItem with _$ShowcaseItem {
     required String subtitle,
     required String description,
   }) = _ShowcaseItem;
+}
+
+@freezed
+class FounderProfile with _$FounderProfile {
+  const factory FounderProfile({
+    required String name,
+    required String role,
+    required String bio,
+    required List<String> highlights,
+    required List<String> techStacks,
+    String? profileImageUrl,
+  }) = _FounderProfile;
 }
 
 @freezed

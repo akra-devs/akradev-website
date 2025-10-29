@@ -19,6 +19,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$LandingState {
   List<String> get navItems => throw _privateConstructorUsedError;
   HeroSection get hero => throw _privateConstructorUsedError;
+  FounderProfile get founder => throw _privateConstructorUsedError;
   List<ServiceItem> get services => throw _privateConstructorUsedError;
   FooterContent get footer => throw _privateConstructorUsedError;
   List<CaseStudy> get caseStudies => throw _privateConstructorUsedError;
@@ -53,6 +54,7 @@ abstract class $LandingStateCopyWith<$Res> {
   $Res call({
     List<String> navItems,
     HeroSection hero,
+    FounderProfile founder,
     List<ServiceItem> services,
     FooterContent footer,
     List<CaseStudy> caseStudies,
@@ -70,6 +72,7 @@ abstract class $LandingStateCopyWith<$Res> {
   });
 
   $HeroSectionCopyWith<$Res> get hero;
+  $FounderProfileCopyWith<$Res> get founder;
   $FooterContentCopyWith<$Res> get footer;
   $PrimaryCtaCopyWith<$Res> get spotlight;
   $LeadFormDataCopyWith<$Res> get formData;
@@ -92,6 +95,7 @@ class _$LandingStateCopyWithImpl<$Res, $Val extends LandingState>
   $Res call({
     Object? navItems = null,
     Object? hero = null,
+    Object? founder = null,
     Object? services = null,
     Object? footer = null,
     Object? caseStudies = null,
@@ -119,6 +123,11 @@ class _$LandingStateCopyWithImpl<$Res, $Val extends LandingState>
                     ? _value.hero
                     : hero // ignore: cast_nullable_to_non_nullable
                         as HeroSection,
+            founder:
+                null == founder
+                    ? _value.founder
+                    : founder // ignore: cast_nullable_to_non_nullable
+                        as FounderProfile,
             services:
                 null == services
                     ? _value.services
@@ -208,6 +217,16 @@ class _$LandingStateCopyWithImpl<$Res, $Val extends LandingState>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
+  $FounderProfileCopyWith<$Res> get founder {
+    return $FounderProfileCopyWith<$Res>(_value.founder, (value) {
+      return _then(_value.copyWith(founder: value) as $Val);
+    });
+  }
+
+  /// Create a copy of LandingState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
   $FooterContentCopyWith<$Res> get footer {
     return $FooterContentCopyWith<$Res>(_value.footer, (value) {
       return _then(_value.copyWith(footer: value) as $Val);
@@ -247,6 +266,7 @@ abstract class _$$LandingStateImplCopyWith<$Res>
   $Res call({
     List<String> navItems,
     HeroSection hero,
+    FounderProfile founder,
     List<ServiceItem> services,
     FooterContent footer,
     List<CaseStudy> caseStudies,
@@ -265,6 +285,8 @@ abstract class _$$LandingStateImplCopyWith<$Res>
 
   @override
   $HeroSectionCopyWith<$Res> get hero;
+  @override
+  $FounderProfileCopyWith<$Res> get founder;
   @override
   $FooterContentCopyWith<$Res> get footer;
   @override
@@ -289,6 +311,7 @@ class __$$LandingStateImplCopyWithImpl<$Res>
   $Res call({
     Object? navItems = null,
     Object? hero = null,
+    Object? founder = null,
     Object? services = null,
     Object? footer = null,
     Object? caseStudies = null,
@@ -316,6 +339,11 @@ class __$$LandingStateImplCopyWithImpl<$Res>
                 ? _value.hero
                 : hero // ignore: cast_nullable_to_non_nullable
                     as HeroSection,
+        founder:
+            null == founder
+                ? _value.founder
+                : founder // ignore: cast_nullable_to_non_nullable
+                    as FounderProfile,
         services:
             null == services
                 ? _value._services
@@ -397,6 +425,7 @@ class _$LandingStateImpl implements _LandingState {
   const _$LandingStateImpl({
     required final List<String> navItems,
     required this.hero,
+    required this.founder,
     required final List<ServiceItem> services,
     required this.footer,
     required final List<CaseStudy> caseStudies,
@@ -428,6 +457,8 @@ class _$LandingStateImpl implements _LandingState {
 
   @override
   final HeroSection hero;
+  @override
+  final FounderProfile founder;
   final List<ServiceItem> _services;
   @override
   List<ServiceItem> get services {
@@ -494,7 +525,7 @@ class _$LandingStateImpl implements _LandingState {
 
   @override
   String toString() {
-    return 'LandingState(navItems: $navItems, hero: $hero, services: $services, footer: $footer, caseStudies: $caseStudies, processSteps: $processSteps, spotlight: $spotlight, galleryProjects: $galleryProjects, reviews: $reviews, isContactDialogVisible: $isContactDialogVisible, contactIntent: $contactIntent, formData: $formData, formStatus: $formStatus, formErrorMessage: $formErrorMessage, isUrgencyBannerVisible: $isUrgencyBannerVisible, selectedProjectCategory: $selectedProjectCategory)';
+    return 'LandingState(navItems: $navItems, hero: $hero, founder: $founder, services: $services, footer: $footer, caseStudies: $caseStudies, processSteps: $processSteps, spotlight: $spotlight, galleryProjects: $galleryProjects, reviews: $reviews, isContactDialogVisible: $isContactDialogVisible, contactIntent: $contactIntent, formData: $formData, formStatus: $formStatus, formErrorMessage: $formErrorMessage, isUrgencyBannerVisible: $isUrgencyBannerVisible, selectedProjectCategory: $selectedProjectCategory)';
   }
 
   @override
@@ -504,6 +535,7 @@ class _$LandingStateImpl implements _LandingState {
             other is _$LandingStateImpl &&
             const DeepCollectionEquality().equals(other._navItems, _navItems) &&
             (identical(other.hero, hero) || other.hero == hero) &&
+            (identical(other.founder, founder) || other.founder == founder) &&
             const DeepCollectionEquality().equals(other._services, _services) &&
             (identical(other.footer, footer) || other.footer == footer) &&
             const DeepCollectionEquality().equals(
@@ -545,6 +577,7 @@ class _$LandingStateImpl implements _LandingState {
     runtimeType,
     const DeepCollectionEquality().hash(_navItems),
     hero,
+    founder,
     const DeepCollectionEquality().hash(_services),
     footer,
     const DeepCollectionEquality().hash(_caseStudies),
@@ -574,6 +607,7 @@ abstract class _LandingState implements LandingState {
   const factory _LandingState({
     required final List<String> navItems,
     required final HeroSection hero,
+    required final FounderProfile founder,
     required final List<ServiceItem> services,
     required final FooterContent footer,
     required final List<CaseStudy> caseStudies,
@@ -594,6 +628,8 @@ abstract class _LandingState implements LandingState {
   List<String> get navItems;
   @override
   HeroSection get hero;
+  @override
+  FounderProfile get founder;
   @override
   List<ServiceItem> get services;
   @override
@@ -640,6 +676,7 @@ mixin _$HeroSection {
   List<MetricInfo> get metrics => throw _privateConstructorUsedError;
   List<ShowcaseItem> get showcaseItems => throw _privateConstructorUsedError;
   List<String> get trustedBy => throw _privateConstructorUsedError;
+  String? get heroImageUrl => throw _privateConstructorUsedError;
 
   /// Create a copy of HeroSection
   /// with the given fields replaced by the non-null parameter values.
@@ -663,6 +700,7 @@ abstract class $HeroSectionCopyWith<$Res> {
     List<MetricInfo> metrics,
     List<ShowcaseItem> showcaseItems,
     List<String> trustedBy,
+    String? heroImageUrl,
   });
 }
 
@@ -688,6 +726,7 @@ class _$HeroSectionCopyWithImpl<$Res, $Val extends HeroSection>
     Object? metrics = null,
     Object? showcaseItems = null,
     Object? trustedBy = null,
+    Object? heroImageUrl = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -726,6 +765,11 @@ class _$HeroSectionCopyWithImpl<$Res, $Val extends HeroSection>
                     ? _value.trustedBy
                     : trustedBy // ignore: cast_nullable_to_non_nullable
                         as List<String>,
+            heroImageUrl:
+                freezed == heroImageUrl
+                    ? _value.heroImageUrl
+                    : heroImageUrl // ignore: cast_nullable_to_non_nullable
+                        as String?,
           )
           as $Val,
     );
@@ -749,6 +793,7 @@ abstract class _$$HeroSectionImplCopyWith<$Res>
     List<MetricInfo> metrics,
     List<ShowcaseItem> showcaseItems,
     List<String> trustedBy,
+    String? heroImageUrl,
   });
 }
 
@@ -773,6 +818,7 @@ class __$$HeroSectionImplCopyWithImpl<$Res>
     Object? metrics = null,
     Object? showcaseItems = null,
     Object? trustedBy = null,
+    Object? heroImageUrl = freezed,
   }) {
     return _then(
       _$HeroSectionImpl(
@@ -811,6 +857,11 @@ class __$$HeroSectionImplCopyWithImpl<$Res>
                 ? _value._trustedBy
                 : trustedBy // ignore: cast_nullable_to_non_nullable
                     as List<String>,
+        heroImageUrl:
+            freezed == heroImageUrl
+                ? _value.heroImageUrl
+                : heroImageUrl // ignore: cast_nullable_to_non_nullable
+                    as String?,
       ),
     );
   }
@@ -827,6 +878,7 @@ class _$HeroSectionImpl implements _HeroSection {
     required final List<MetricInfo> metrics,
     required final List<ShowcaseItem> showcaseItems,
     required final List<String> trustedBy,
+    this.heroImageUrl,
   }) : _metrics = metrics,
        _showcaseItems = showcaseItems,
        _trustedBy = trustedBy;
@@ -864,8 +916,11 @@ class _$HeroSectionImpl implements _HeroSection {
   }
 
   @override
+  final String? heroImageUrl;
+
+  @override
   String toString() {
-    return 'HeroSection(badge: $badge, headline: $headline, subHeadline: $subHeadline, description: $description, metrics: $metrics, showcaseItems: $showcaseItems, trustedBy: $trustedBy)';
+    return 'HeroSection(badge: $badge, headline: $headline, subHeadline: $subHeadline, description: $description, metrics: $metrics, showcaseItems: $showcaseItems, trustedBy: $trustedBy, heroImageUrl: $heroImageUrl)';
   }
 
   @override
@@ -888,7 +943,9 @@ class _$HeroSectionImpl implements _HeroSection {
             const DeepCollectionEquality().equals(
               other._trustedBy,
               _trustedBy,
-            ));
+            ) &&
+            (identical(other.heroImageUrl, heroImageUrl) ||
+                other.heroImageUrl == heroImageUrl));
   }
 
   @override
@@ -901,6 +958,7 @@ class _$HeroSectionImpl implements _HeroSection {
     const DeepCollectionEquality().hash(_metrics),
     const DeepCollectionEquality().hash(_showcaseItems),
     const DeepCollectionEquality().hash(_trustedBy),
+    heroImageUrl,
   );
 
   /// Create a copy of HeroSection
@@ -921,6 +979,7 @@ abstract class _HeroSection implements HeroSection {
     required final List<MetricInfo> metrics,
     required final List<ShowcaseItem> showcaseItems,
     required final List<String> trustedBy,
+    final String? heroImageUrl,
   }) = _$HeroSectionImpl;
 
   @override
@@ -937,6 +996,8 @@ abstract class _HeroSection implements HeroSection {
   List<ShowcaseItem> get showcaseItems;
   @override
   List<String> get trustedBy;
+  @override
+  String? get heroImageUrl;
 
   /// Create a copy of HeroSection
   /// with the given fields replaced by the non-null parameter values.
@@ -1280,6 +1341,293 @@ abstract class _ShowcaseItem implements ShowcaseItem {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ShowcaseItemImplCopyWith<_$ShowcaseItemImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$FounderProfile {
+  String get name => throw _privateConstructorUsedError;
+  String get role => throw _privateConstructorUsedError;
+  String get bio => throw _privateConstructorUsedError;
+  List<String> get highlights => throw _privateConstructorUsedError;
+  List<String> get techStacks => throw _privateConstructorUsedError;
+  String? get profileImageUrl => throw _privateConstructorUsedError;
+
+  /// Create a copy of FounderProfile
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $FounderProfileCopyWith<FounderProfile> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $FounderProfileCopyWith<$Res> {
+  factory $FounderProfileCopyWith(
+    FounderProfile value,
+    $Res Function(FounderProfile) then,
+  ) = _$FounderProfileCopyWithImpl<$Res, FounderProfile>;
+  @useResult
+  $Res call({
+    String name,
+    String role,
+    String bio,
+    List<String> highlights,
+    List<String> techStacks,
+    String? profileImageUrl,
+  });
+}
+
+/// @nodoc
+class _$FounderProfileCopyWithImpl<$Res, $Val extends FounderProfile>
+    implements $FounderProfileCopyWith<$Res> {
+  _$FounderProfileCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of FounderProfile
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? role = null,
+    Object? bio = null,
+    Object? highlights = null,
+    Object? techStacks = null,
+    Object? profileImageUrl = freezed,
+  }) {
+    return _then(
+      _value.copyWith(
+            name:
+                null == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as String,
+            role:
+                null == role
+                    ? _value.role
+                    : role // ignore: cast_nullable_to_non_nullable
+                        as String,
+            bio:
+                null == bio
+                    ? _value.bio
+                    : bio // ignore: cast_nullable_to_non_nullable
+                        as String,
+            highlights:
+                null == highlights
+                    ? _value.highlights
+                    : highlights // ignore: cast_nullable_to_non_nullable
+                        as List<String>,
+            techStacks:
+                null == techStacks
+                    ? _value.techStacks
+                    : techStacks // ignore: cast_nullable_to_non_nullable
+                        as List<String>,
+            profileImageUrl:
+                freezed == profileImageUrl
+                    ? _value.profileImageUrl
+                    : profileImageUrl // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$FounderProfileImplCopyWith<$Res>
+    implements $FounderProfileCopyWith<$Res> {
+  factory _$$FounderProfileImplCopyWith(
+    _$FounderProfileImpl value,
+    $Res Function(_$FounderProfileImpl) then,
+  ) = __$$FounderProfileImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    String name,
+    String role,
+    String bio,
+    List<String> highlights,
+    List<String> techStacks,
+    String? profileImageUrl,
+  });
+}
+
+/// @nodoc
+class __$$FounderProfileImplCopyWithImpl<$Res>
+    extends _$FounderProfileCopyWithImpl<$Res, _$FounderProfileImpl>
+    implements _$$FounderProfileImplCopyWith<$Res> {
+  __$$FounderProfileImplCopyWithImpl(
+    _$FounderProfileImpl _value,
+    $Res Function(_$FounderProfileImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of FounderProfile
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? role = null,
+    Object? bio = null,
+    Object? highlights = null,
+    Object? techStacks = null,
+    Object? profileImageUrl = freezed,
+  }) {
+    return _then(
+      _$FounderProfileImpl(
+        name:
+            null == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String,
+        role:
+            null == role
+                ? _value.role
+                : role // ignore: cast_nullable_to_non_nullable
+                    as String,
+        bio:
+            null == bio
+                ? _value.bio
+                : bio // ignore: cast_nullable_to_non_nullable
+                    as String,
+        highlights:
+            null == highlights
+                ? _value._highlights
+                : highlights // ignore: cast_nullable_to_non_nullable
+                    as List<String>,
+        techStacks:
+            null == techStacks
+                ? _value._techStacks
+                : techStacks // ignore: cast_nullable_to_non_nullable
+                    as List<String>,
+        profileImageUrl:
+            freezed == profileImageUrl
+                ? _value.profileImageUrl
+                : profileImageUrl // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$FounderProfileImpl implements _FounderProfile {
+  const _$FounderProfileImpl({
+    required this.name,
+    required this.role,
+    required this.bio,
+    required final List<String> highlights,
+    required final List<String> techStacks,
+    this.profileImageUrl,
+  }) : _highlights = highlights,
+       _techStacks = techStacks;
+
+  @override
+  final String name;
+  @override
+  final String role;
+  @override
+  final String bio;
+  final List<String> _highlights;
+  @override
+  List<String> get highlights {
+    if (_highlights is EqualUnmodifiableListView) return _highlights;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_highlights);
+  }
+
+  final List<String> _techStacks;
+  @override
+  List<String> get techStacks {
+    if (_techStacks is EqualUnmodifiableListView) return _techStacks;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_techStacks);
+  }
+
+  @override
+  final String? profileImageUrl;
+
+  @override
+  String toString() {
+    return 'FounderProfile(name: $name, role: $role, bio: $bio, highlights: $highlights, techStacks: $techStacks, profileImageUrl: $profileImageUrl)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FounderProfileImpl &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.role, role) || other.role == role) &&
+            (identical(other.bio, bio) || other.bio == bio) &&
+            const DeepCollectionEquality().equals(
+              other._highlights,
+              _highlights,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._techStacks,
+              _techStacks,
+            ) &&
+            (identical(other.profileImageUrl, profileImageUrl) ||
+                other.profileImageUrl == profileImageUrl));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    name,
+    role,
+    bio,
+    const DeepCollectionEquality().hash(_highlights),
+    const DeepCollectionEquality().hash(_techStacks),
+    profileImageUrl,
+  );
+
+  /// Create a copy of FounderProfile
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FounderProfileImplCopyWith<_$FounderProfileImpl> get copyWith =>
+      __$$FounderProfileImplCopyWithImpl<_$FounderProfileImpl>(
+        this,
+        _$identity,
+      );
+}
+
+abstract class _FounderProfile implements FounderProfile {
+  const factory _FounderProfile({
+    required final String name,
+    required final String role,
+    required final String bio,
+    required final List<String> highlights,
+    required final List<String> techStacks,
+    final String? profileImageUrl,
+  }) = _$FounderProfileImpl;
+
+  @override
+  String get name;
+  @override
+  String get role;
+  @override
+  String get bio;
+  @override
+  List<String> get highlights;
+  @override
+  List<String> get techStacks;
+  @override
+  String? get profileImageUrl;
+
+  /// Create a copy of FounderProfile
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FounderProfileImplCopyWith<_$FounderProfileImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

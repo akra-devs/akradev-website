@@ -1449,3 +1449,18 @@
   ⎿  _ProjectCard를 이미지 AnimatedSwitcher와 콘텐츠 AnimatedCrossFade 기반으로 재구성, hover 시 상세 설명과 하이라이트 칩 노출.
   ⎿  build_runner 재생성 및 flutter analyze로 무경고 상태 확인.
 
+● 빌더 프로필 섹션을 신설해 스튜디오의 기술 역량을 명확히 전달했습니다.
+  ⎿  LandingState에 FounderProfile 모델을 추가하고 초기 데이터를 Spring Boot·Kotlin·DDD 중심으로 구성.
+  ⎿  LandingHero 아래에 FounderSection을 배치해 소개/경력/핵심 스택을 카드 형태로 시각화.
+  ⎿  build_runner 재생성과 flutter analyze로 신규 섹션 무경고 상태 확인.
+
+● 백엔드/API 중심으로 랜딩 카피와 서비스 구성을 개편했습니다.
+  ⎿  Hero·Founder·Process 섹션을 Spring Boot·Kotlin, DDD, API 명세 중심 메시지로 재작성.
+  ⎿  서비스 항목에 'API 개발 외주'를 신설하고 인증/성능/명세 제공 범위를 명시.
+  ⎿  Case Study·Project Gallery·Video Demo·리뷰 문구를 실제 API 구축 흐름과 맞춰 업데이트.
+
+● 히어로/프로필 섹션에 임시 이미지를 삽입하고 “만드는 사람” 네비게이션 앵커를 연결했습니다.
+  ⎿  HeroSection·FounderProfile에 heroImageUrl/profileImageUrl 필드를 추가하고 placeholder URL을 주석과 함께 지정.
+  ⎿  UI에서 이미지가 없을 때 fallback을 제공하고, 추후 교체를 위한 TODO 코멘트를 남김.
+  ⎿  네비게이션 항목에 "만드는 사람"을 추가해 스크롤 키와 연동.
+
