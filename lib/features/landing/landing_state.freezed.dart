@@ -3115,6 +3115,8 @@ mixin _$ProjectGalleryItem {
   String get category => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
+  String? get hoverImageUrl => throw _privateConstructorUsedError;
+  List<String> get hoverHighlights => throw _privateConstructorUsedError;
   ProjectCategory get categoryType => throw _privateConstructorUsedError;
   String? get appStoreUrl => throw _privateConstructorUsedError;
   String? get playStoreUrl => throw _privateConstructorUsedError;
@@ -3138,6 +3140,8 @@ abstract class $ProjectGalleryItemCopyWith<$Res> {
     String category,
     String description,
     String imageUrl,
+    String? hoverImageUrl,
+    List<String> hoverHighlights,
     ProjectCategory categoryType,
     String? appStoreUrl,
     String? playStoreUrl,
@@ -3163,6 +3167,8 @@ class _$ProjectGalleryItemCopyWithImpl<$Res, $Val extends ProjectGalleryItem>
     Object? category = null,
     Object? description = null,
     Object? imageUrl = null,
+    Object? hoverImageUrl = freezed,
+    Object? hoverHighlights = null,
     Object? categoryType = null,
     Object? appStoreUrl = freezed,
     Object? playStoreUrl = freezed,
@@ -3189,6 +3195,16 @@ class _$ProjectGalleryItemCopyWithImpl<$Res, $Val extends ProjectGalleryItem>
                     ? _value.imageUrl
                     : imageUrl // ignore: cast_nullable_to_non_nullable
                         as String,
+            hoverImageUrl:
+                freezed == hoverImageUrl
+                    ? _value.hoverImageUrl
+                    : hoverImageUrl // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            hoverHighlights:
+                null == hoverHighlights
+                    ? _value.hoverHighlights
+                    : hoverHighlights // ignore: cast_nullable_to_non_nullable
+                        as List<String>,
             categoryType:
                 null == categoryType
                     ? _value.categoryType
@@ -3224,6 +3240,8 @@ abstract class _$$ProjectGalleryItemImplCopyWith<$Res>
     String category,
     String description,
     String imageUrl,
+    String? hoverImageUrl,
+    List<String> hoverHighlights,
     ProjectCategory categoryType,
     String? appStoreUrl,
     String? playStoreUrl,
@@ -3248,6 +3266,8 @@ class __$$ProjectGalleryItemImplCopyWithImpl<$Res>
     Object? category = null,
     Object? description = null,
     Object? imageUrl = null,
+    Object? hoverImageUrl = freezed,
+    Object? hoverHighlights = null,
     Object? categoryType = null,
     Object? appStoreUrl = freezed,
     Object? playStoreUrl = freezed,
@@ -3274,6 +3294,16 @@ class __$$ProjectGalleryItemImplCopyWithImpl<$Res>
                 ? _value.imageUrl
                 : imageUrl // ignore: cast_nullable_to_non_nullable
                     as String,
+        hoverImageUrl:
+            freezed == hoverImageUrl
+                ? _value.hoverImageUrl
+                : hoverImageUrl // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        hoverHighlights:
+            null == hoverHighlights
+                ? _value._hoverHighlights
+                : hoverHighlights // ignore: cast_nullable_to_non_nullable
+                    as List<String>,
         categoryType:
             null == categoryType
                 ? _value.categoryType
@@ -3302,10 +3332,12 @@ class _$ProjectGalleryItemImpl implements _ProjectGalleryItem {
     required this.category,
     required this.description,
     required this.imageUrl,
+    this.hoverImageUrl,
+    final List<String> hoverHighlights = const [],
     required this.categoryType,
     this.appStoreUrl,
     this.playStoreUrl,
-  });
+  }) : _hoverHighlights = hoverHighlights;
 
   @override
   final String name;
@@ -3316,6 +3348,17 @@ class _$ProjectGalleryItemImpl implements _ProjectGalleryItem {
   @override
   final String imageUrl;
   @override
+  final String? hoverImageUrl;
+  final List<String> _hoverHighlights;
+  @override
+  @JsonKey()
+  List<String> get hoverHighlights {
+    if (_hoverHighlights is EqualUnmodifiableListView) return _hoverHighlights;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_hoverHighlights);
+  }
+
+  @override
   final ProjectCategory categoryType;
   @override
   final String? appStoreUrl;
@@ -3324,7 +3367,7 @@ class _$ProjectGalleryItemImpl implements _ProjectGalleryItem {
 
   @override
   String toString() {
-    return 'ProjectGalleryItem(name: $name, category: $category, description: $description, imageUrl: $imageUrl, categoryType: $categoryType, appStoreUrl: $appStoreUrl, playStoreUrl: $playStoreUrl)';
+    return 'ProjectGalleryItem(name: $name, category: $category, description: $description, imageUrl: $imageUrl, hoverImageUrl: $hoverImageUrl, hoverHighlights: $hoverHighlights, categoryType: $categoryType, appStoreUrl: $appStoreUrl, playStoreUrl: $playStoreUrl)';
   }
 
   @override
@@ -3339,6 +3382,12 @@ class _$ProjectGalleryItemImpl implements _ProjectGalleryItem {
                 other.description == description) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
+            (identical(other.hoverImageUrl, hoverImageUrl) ||
+                other.hoverImageUrl == hoverImageUrl) &&
+            const DeepCollectionEquality().equals(
+              other._hoverHighlights,
+              _hoverHighlights,
+            ) &&
             (identical(other.categoryType, categoryType) ||
                 other.categoryType == categoryType) &&
             (identical(other.appStoreUrl, appStoreUrl) ||
@@ -3354,6 +3403,8 @@ class _$ProjectGalleryItemImpl implements _ProjectGalleryItem {
     category,
     description,
     imageUrl,
+    hoverImageUrl,
+    const DeepCollectionEquality().hash(_hoverHighlights),
     categoryType,
     appStoreUrl,
     playStoreUrl,
@@ -3377,6 +3428,8 @@ abstract class _ProjectGalleryItem implements ProjectGalleryItem {
     required final String category,
     required final String description,
     required final String imageUrl,
+    final String? hoverImageUrl,
+    final List<String> hoverHighlights,
     required final ProjectCategory categoryType,
     final String? appStoreUrl,
     final String? playStoreUrl,
@@ -3390,6 +3443,10 @@ abstract class _ProjectGalleryItem implements ProjectGalleryItem {
   String get description;
   @override
   String get imageUrl;
+  @override
+  String? get hoverImageUrl;
+  @override
+  List<String> get hoverHighlights;
   @override
   ProjectCategory get categoryType;
   @override

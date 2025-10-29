@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -46,17 +47,29 @@ class MyApp extends StatelessWidget {
             backgroundColor: AppColors.accent,
             foregroundColor: Colors.black,
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-            textStyle: const TextStyle(fontWeight: FontWeight.w600, letterSpacing: 0.3),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+            ),
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.3,
+            ),
           ),
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
             foregroundColor: AppColors.textPrimary,
-            side: BorderSide(color: AppColors.textPrimary.withValues(alpha: 0.2)),
+            side: BorderSide(
+              color: AppColors.textPrimary.withValues(alpha: 0.2),
+            ),
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-            textStyle: const TextStyle(fontWeight: FontWeight.w500, letterSpacing: 0.2),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+            ),
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.2,
+            ),
           ),
         ),
       ),
@@ -107,7 +120,8 @@ class _LandingPageState extends State<LandingPage> {
       if (box != null) {
         final position = box.localToGlobal(Offset.zero).dy;
         final scrollOffset = _scrollController.offset;
-        final targetOffset = scrollOffset + position - 80; // 80px offset for navigation
+        final targetOffset =
+            scrollOffset + position - 80; // 80px offset for navigation
 
         _scrollController.animateTo(
           targetOffset,
@@ -121,9 +135,11 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LandingCubit, LandingState>(
-      listenWhen: (previous, current) =>
-          previous.isContactDialogVisible != current.isContactDialogVisible ||
-          previous.contactIntent != current.contactIntent,
+      listenWhen:
+          (previous, current) =>
+              previous.isContactDialogVisible !=
+                  current.isContactDialogVisible ||
+              previous.contactIntent != current.contactIntent,
       listener: (context, state) async {
         if (state.isContactDialogVisible) {
           await _showContactDialog(context, state);
@@ -146,7 +162,8 @@ class _LandingPageState extends State<LandingPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      if (state.isUrgencyBannerVisible) const SizedBox(height: 48),
+                      if (state.isUrgencyBannerVisible)
+                        const SizedBox(height: 48),
                       LandingHero(
                         hero: state.hero,
                         navItems: state.navItems,
@@ -154,57 +171,50 @@ class _LandingPageState extends State<LandingPage> {
                         onPortfolioRequest: handlePortfolioRequest,
                         onNavItemClick: _scrollToSection,
                       ),
-                  const SizedBox(height: 64),
-                  CaseStudiesSection(
-                    studies: state.caseStudies,
-                    onProjectInquiry: handleProjectInquiry,
+                      const SizedBox(height: 64),
+                      CaseStudiesSection(
+                        studies: state.caseStudies,
+                        onProjectInquiry: handleProjectInquiry,
+                      ),
+                      const SizedBox(height: 96),
+                      ProjectGallerySection(projects: state.galleryProjects),
+                      const SizedBox(height: 96),
+                      ProcessSection(
+                        key: _processKey,
+                        steps: state.processSteps,
+                      ),
+                      const SizedBox(height: 96),
+                      LandingServices(
+                        key: _servicesKey,
+                        services: state.services,
+                      ),
+                      const SizedBox(height: 96),
+                      const VideoDemoSection(),
+                      const SizedBox(height: 96),
+                      ReviewSection(reviews: state.reviews),
+                      const SizedBox(height: 96),
+                      SpotlightCtaSection(
+                        data: state.spotlight,
+                        onPrimary: handleProjectInquiry,
+                        onSecondary: handlePortfolioRequest,
+                      ),
+                      const SizedBox(height: 96),
+                      FooterSection(key: _contactKey, content: state.footer),
+                    ],
                   ),
-                  const SizedBox(height: 96),
-                  ProjectGallerySection(
-                    projects: state.galleryProjects,
-                  ),
-                  const SizedBox(height: 96),
-                  ProcessSection(
-                    key: _processKey,
-                    steps: state.processSteps,
-                  ),
-                  const SizedBox(height: 96),
-                  LandingServices(
-                    key: _servicesKey,
-                    services: state.services,
-                  ),
-                  const SizedBox(height: 96),
-                  const VideoDemoSection(),
-                  const SizedBox(height: 96),
-                  ReviewSection(
-                    reviews: state.reviews,
-                  ),
-                  const SizedBox(height: 96),
-                  SpotlightCtaSection(
-                    data: state.spotlight,
-                    onPrimary: handleProjectInquiry,
-                    onSecondary: handlePortfolioRequest,
-                  ),
-                  const SizedBox(height: 96),
-                  FooterSection(
-                    key: _contactKey,
-                    content: state.footer,
-                  ),
-                ],
-              ),
-            ),
-            if (state.isUrgencyBannerVisible)
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: UrgencyBanner(
-                  onDismiss: () => cubit.dismissUrgencyBanner(),
                 ),
-              ),
-          ],
-        ),
-        );
+                if (state.isUrgencyBannerVisible)
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: UrgencyBanner(
+                      onDismiss: () => cubit.dismissUrgencyBanner(),
+                    ),
+                  ),
+              ],
+            ),
+          );
         },
       ),
     );
@@ -232,11 +242,7 @@ class LandingHero extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            Color(0xFF0B1120),
-            Color(0xFF111C37),
-            Color(0xFF0F172A),
-          ],
+          colors: [Color(0xFF0B1120), Color(0xFF111C37), Color(0xFF0F172A)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -244,9 +250,16 @@ class LandingHero extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final isDesktop = constraints.maxWidth >= 1024;
-          final horizontalPadding = responsive.horizontalPadding(constraints.maxWidth);
+          final horizontalPadding = responsive.horizontalPadding(
+            constraints.maxWidth,
+          );
           return Padding(
-            padding: EdgeInsets.fromLTRB(horizontalPadding, 48, horizontalPadding, 96),
+            padding: EdgeInsets.fromLTRB(
+              horizontalPadding,
+              48,
+              horizontalPadding,
+              96,
+            ),
             child: Align(
               alignment: Alignment.topCenter,
               child: ConstrainedBox(
@@ -273,9 +286,7 @@ class LandingHero extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 64),
-                          Expanded(
-                            child: _HeroShowcase(hero: hero),
-                          ),
+                          Expanded(child: _HeroShowcase(hero: hero)),
                         ],
                       )
                     else
@@ -334,10 +345,7 @@ class LandingNavigation extends StatelessWidget {
           Row(
             children: [
               for (final item in navItems)
-                NavItem(
-                  label: item,
-                  onTap: () => onNavItemClick(item),
-                ),
+                NavItem(label: item, onTap: () => onNavItemClick(item)),
               ElevatedButton(
                 onPressed: onProjectInquiry,
                 child: const Text('무료 상담 신청'),
@@ -451,9 +459,7 @@ class _MetricsRow extends StatelessWidget {
     return Wrap(
       spacing: 28,
       runSpacing: 28,
-      children: [
-        for (final metric in metrics) _MetricTile(metric: metric),
-      ],
+      children: [for (final metric in metrics) _MetricTile(metric: metric)],
     );
   }
 }
@@ -516,10 +522,7 @@ class _TrustedByRow extends StatelessWidget {
         Wrap(
           spacing: 20,
           runSpacing: 12,
-          children: [
-            for (final brand in brands)
-              _TrustedBadge(label: brand),
-          ],
+          children: [for (final brand in brands) _TrustedBadge(label: brand)],
         ),
       ],
     );
@@ -615,7 +618,10 @@ class _HeroShowcase extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(Icons.auto_graph_rounded, color: AppColors.accent.withValues(alpha: 0.9)),
+                Icon(
+                  Icons.auto_graph_rounded,
+                  color: AppColors.accent.withValues(alpha: 0.9),
+                ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Text(
@@ -685,10 +691,17 @@ class _ShowcaseCard extends StatelessWidget {
   }
 }
 
-class LandingServices extends StatelessWidget {
+class LandingServices extends StatefulWidget {
   const LandingServices({super.key, required this.services});
 
   final List<ServiceItem> services;
+
+  @override
+  State<LandingServices> createState() => _LandingServicesState();
+}
+
+class _LandingServicesState extends State<LandingServices> {
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -699,14 +712,14 @@ class LandingServices extends StatelessWidget {
         builder: (context, constraints) {
           final width = constraints.maxWidth;
           final horizontalPadding = responsive.horizontalPadding(width);
-          final isWide = width >= 960;
-          final double rawAvailable =
-              (width - (horizontalPadding * 2)).clamp(0.0, width).toDouble();
-          final double contentWidth = math.min(rawAvailable, 1200.0);
-          final double cardWidth = isWide ? (contentWidth - 24) / 2 : contentWidth;
 
           return Padding(
-            padding: EdgeInsets.fromLTRB(horizontalPadding, 80, horizontalPadding, 80),
+            padding: EdgeInsets.fromLTRB(
+              horizontalPadding,
+              80,
+              horizontalPadding,
+              80,
+            ),
             child: Align(
               alignment: Alignment.topCenter,
               child: ConstrainedBox(
@@ -731,43 +744,122 @@ class LandingServices extends StatelessWidget {
                         letterSpacing: -0.5,
                       ),
                     ),
-                  const SizedBox(height: 20),
-                  Text(
-                    '아이디어 검증, UX/UI 설계, 풀스택 개발, 배포·운영 자동화까지 한 팀으로 움직입니다. '
-                    '자체 앱을 만들며 학습한 실행 방식 그대로, 고객사의 미션을 달성하도록 돕습니다.',
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: Colors.black54,
-                      height: 1.6,
+                    const SizedBox(height: 20),
+                    Text(
+                      '아이디어 검증, UX/UI 설계, 풀스택 개발, 배포·운영 자동화까지 한 팀으로 움직입니다. '
+                      '자체 앱을 만들며 학습한 실행 방식 그대로, 고객사의 미션을 달성하도록 돕습니다.',
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: Colors.black54,
+                        height: 1.6,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 48),
-                  Wrap(
-                    spacing: 24,
-                    runSpacing: 24,
-                    children: [
-                      for (var i = 0; i < services.length; i++)
-                        SizedBox(
-                          width: isWide ? cardWidth : double.infinity,
-                          child: FadeInUp(
-                            delay: Duration(milliseconds: 100 * i),
-                            child: _ServiceCard(service: services[i]),
-                          ),
+                    const SizedBox(height: 40),
+                    // 탭 네비게이션
+                    Center(
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey[300]!),
                         ),
-                    ],
-                  ),
-                ],
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            for (var i = 0; i < widget.services.length; i++)
+                              _ServiceTab(
+                                label: widget.services[i].title,
+                                isSelected: _selectedIndex == i,
+                                onTap: () {
+                                  setState(() {
+                                    _selectedIndex = i;
+                                  });
+                                },
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    // 선택된 서비스 카드
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      transitionBuilder: (child, animation) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: SlideTransition(
+                            position: Tween<Offset>(
+                              begin: const Offset(0.0, 0.1),
+                              end: Offset.zero,
+                            ).animate(animation),
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: _ServiceCard(
+                        key: ValueKey(_selectedIndex),
+                        service: widget.services[_selectedIndex],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _ServiceTab extends StatelessWidget {
+  const _ServiceTab({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.white : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow:
+              isSelected
+                  ? [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.08),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                  : null,
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? Colors.black87 : Colors.black54,
+            fontSize: 15,
+            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+            letterSpacing: 0.3,
           ),
-        );
-      },
+        ),
       ),
     );
   }
 }
 
 class _ServiceCard extends StatelessWidget {
-  const _ServiceCard({required this.service});
+  const _ServiceCard({super.key, required this.service});
 
   final ServiceItem service;
 
@@ -831,7 +923,11 @@ class _ServiceCard extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.check_rounded, color: AppColors.accent, size: 20),
+                  const Icon(
+                    Icons.check_rounded,
+                    color: AppColors.accent,
+                    size: 20,
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
@@ -880,10 +976,16 @@ class CaseStudiesSection extends StatelessWidget {
               (width - (horizontalPadding * 2)).clamp(0.0, width).toDouble();
           final double contentWidth = math.min(rawAvailable, 1200.0);
           final isWide = contentWidth >= 900;
-          final double cardWidth = isWide ? (contentWidth - 40) / 2 : contentWidth;
+          final double cardWidth =
+              isWide ? (contentWidth - 40) / 2 : contentWidth;
 
           return Padding(
-            padding: EdgeInsets.fromLTRB(horizontalPadding, 80, horizontalPadding, 80),
+            padding: EdgeInsets.fromLTRB(
+              horizontalPadding,
+              80,
+              horizontalPadding,
+              80,
+            ),
             child: Align(
               alignment: Alignment.topCenter,
               child: ConstrainedBox(
@@ -990,7 +1092,10 @@ class _CaseStudyCard extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(999),
@@ -998,7 +1103,11 @@ class _CaseStudyCard extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.trending_up, size: 16, color: AppColors.accent),
+                    const Icon(
+                      Icons.trending_up,
+                      size: 16,
+                      color: AppColors.accent,
+                    ),
                     const SizedBox(width: 6),
                     Text(
                       study.result,
@@ -1038,7 +1147,11 @@ class _CaseStudyCard extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(Icons.check_circle, size: 18, color: AppColors.accent),
+                      const Icon(
+                        Icons.check_circle,
+                        size: 18,
+                        color: AppColors.accent,
+                      ),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(
@@ -1182,10 +1295,16 @@ class ProcessSection extends StatelessWidget {
               (width - (horizontalPadding * 2)).clamp(0.0, width).toDouble();
           final double contentWidth = math.min(rawAvailable, 1200.0);
           final isWide = contentWidth >= 900;
-          final double cardWidth = isWide ? (contentWidth - 36) / 3 : contentWidth;
+          final double cardWidth =
+              isWide ? (contentWidth - 36) / 3 : contentWidth;
 
           return Padding(
-            padding: EdgeInsets.fromLTRB(horizontalPadding, 80, horizontalPadding, 80),
+            padding: EdgeInsets.fromLTRB(
+              horizontalPadding,
+              80,
+              horizontalPadding,
+              80,
+            ),
             child: Align(
               alignment: Alignment.topCenter,
               child: ConstrainedBox(
@@ -1238,7 +1357,7 @@ class ProcessSection extends StatelessWidget {
               ),
             ),
           );
-      },
+        },
       ),
     );
   }
@@ -1364,36 +1483,37 @@ class SpotlightCtaSection extends StatelessWidget {
                   ),
                 ],
               ),
-              child: isWide
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: _SpotlightCopy(theme: theme, data: data),
-                        ),
-                        const SizedBox(width: 40),
-                        _SpotlightActions(
-                          onPrimary: onPrimary,
-                          onSecondary: onSecondary,
-                          primaryLabel: data.primaryLabel,
-                          secondaryLabel: data.secondaryLabel,
-                        ),
-                      ],
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _SpotlightCopy(theme: theme, data: data),
-                        const SizedBox(height: 32),
-                        _SpotlightActions(
-                          onPrimary: onPrimary,
-                          onSecondary: onSecondary,
-                          primaryLabel: data.primaryLabel,
-                          secondaryLabel: data.secondaryLabel,
-                          isHorizontal: false,
-                        ),
-                      ],
-                    ),
+              child:
+                  isWide
+                      ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: _SpotlightCopy(theme: theme, data: data),
+                          ),
+                          const SizedBox(width: 40),
+                          _SpotlightActions(
+                            onPrimary: onPrimary,
+                            onSecondary: onSecondary,
+                            primaryLabel: data.primaryLabel,
+                            secondaryLabel: data.secondaryLabel,
+                          ),
+                        ],
+                      )
+                      : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _SpotlightCopy(theme: theme, data: data),
+                          const SizedBox(height: 32),
+                          _SpotlightActions(
+                            onPrimary: onPrimary,
+                            onSecondary: onSecondary,
+                            primaryLabel: data.primaryLabel,
+                            secondaryLabel: data.secondaryLabel,
+                            isHorizontal: false,
+                          ),
+                        ],
+                      ),
             ),
           ),
         );
@@ -1471,7 +1591,9 @@ class _SpotlightActions extends StatelessWidget {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
           textStyle: const TextStyle(fontWeight: FontWeight.w700),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
         ),
       ),
       OutlinedButton(
@@ -1480,7 +1602,9 @@ class _SpotlightActions extends StatelessWidget {
           foregroundColor: Colors.white,
           side: const BorderSide(color: Colors.white54),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
         ),
         child: Text(secondaryLabel),
       ),
@@ -1520,7 +1644,12 @@ class FooterSection extends StatelessWidget {
         final horizontalPadding = responsive.horizontalPadding(width);
         final isDesktop = width >= 960;
         return Container(
-          padding: EdgeInsets.fromLTRB(horizontalPadding, 64, horizontalPadding, 48),
+          padding: EdgeInsets.fromLTRB(
+            horizontalPadding,
+            64,
+            horizontalPadding,
+            48,
+          ),
           decoration: BoxDecoration(
             color: AppColors.surface.withValues(alpha: 0.5),
             border: Border(
@@ -1531,79 +1660,81 @@ class FooterSection extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1200),
-              child: isDesktop
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Column(
+              child:
+                  isDesktop
+                      ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  content.headline,
+                                  style: theme.textTheme.headlineSmall
+                                      ?.copyWith(
+                                        color: AppColors.textPrimary,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  content.body,
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color: AppColors.textSecondary,
+                                    height: 1.6,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 48),
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                content.headline,
-                                style: theme.textTheme.headlineSmall?.copyWith(
+                                'Contact',
+                                style: theme.textTheme.titleMedium?.copyWith(
                                   color: AppColors.textPrimary,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
-                              const SizedBox(height: 16),
-                              Text(
-                                content.body,
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  height: 1.6,
-                                ),
-                              ),
+                              const SizedBox(height: 12),
+                              for (final contact in content.contacts) ...[
+                                _FooterLink(contact: contact),
+                                if (contact != content.contacts.last)
+                                  const SizedBox(height: 8),
+                              ],
                             ],
                           ),
-                        ),
-                        const SizedBox(width: 48),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Contact',
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                color: AppColors.textPrimary,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            for (final contact in content.contacts) ...[
-                              _FooterLink(contact: contact),
-                              if (contact != content.contacts.last)
-                                const SizedBox(height: 8),
-                            ],
-                          ],
-                        ),
-                      ],
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          content.headline,
-                          style: theme.textTheme.headlineSmall?.copyWith(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          content.body,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textSecondary,
-                            height: 1.6,
-                          ),
-                        ),
-                        const SizedBox(height: 28),
-                        for (final contact in content.contacts) ...[
-                          _FooterLink(contact: contact),
-                          if (contact != content.contacts.last)
-                            const SizedBox(height: 8),
                         ],
-                      ],
-                    ),
+                      )
+                      : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            content.headline,
+                            style: theme.textTheme.headlineSmall?.copyWith(
+                              color: AppColors.textPrimary,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            content.body,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: AppColors.textSecondary,
+                              height: 1.6,
+                            ),
+                          ),
+                          const SizedBox(height: 28),
+                          for (final contact in content.contacts) ...[
+                            _FooterLink(contact: contact),
+                            if (contact != content.contacts.last)
+                              const SizedBox(height: 8),
+                          ],
+                        ],
+                      ),
             ),
           ),
         );
@@ -1721,10 +1852,10 @@ class _LeadFormDialogState extends State<_LeadFormDialog> {
         }
       },
       builder: (context, state) {
-        final isSubmitting = state.formStatus == FormSubmissionStatus.submitting;
-        final headline = widget.intent == ContactIntent.portfolio
-            ? '포트폴리오 요청'
-            : '프로젝트 문의';
+        final isSubmitting =
+            state.formStatus == FormSubmissionStatus.submitting;
+        final headline =
+            widget.intent == ContactIntent.portfolio ? '포트폴리오 요청' : '프로젝트 문의';
 
         return SingleChildScrollView(
           padding: const EdgeInsets.all(32),
@@ -1746,7 +1877,10 @@ class _LeadFormDialogState extends State<_LeadFormDialog> {
                       ),
                     ),
                     IconButton(
-                      onPressed: isSubmitting ? null : () => Navigator.of(context).pop(),
+                      onPressed:
+                          isSubmitting
+                              ? null
+                              : () => Navigator.of(context).pop(),
                       icon: const Icon(Icons.close),
                       color: AppColors.textSecondary,
                     ),
@@ -1794,7 +1928,9 @@ class _LeadFormDialogState extends State<_LeadFormDialog> {
                   isRequired: true,
                   enabled: !isSubmitting,
                   maxLines: 4,
-                  onChanged: (value) => cubit.updateFormField(projectDescription: value),
+                  onChanged:
+                      (value) =>
+                          cubit.updateFormField(projectDescription: value),
                 ),
                 const SizedBox(height: 16),
                 _buildDropdown(
@@ -1825,16 +1961,24 @@ class _LeadFormDialogState extends State<_LeadFormDialog> {
                     decoration: BoxDecoration(
                       color: Colors.red.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+                      border: Border.all(
+                        color: Colors.red.withValues(alpha: 0.3),
+                      ),
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.error_outline, color: Colors.red, size: 20),
+                        const Icon(
+                          Icons.error_outline,
+                          color: Colors.red,
+                          size: 20,
+                        ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             state.formErrorMessage!,
-                            style: theme.textTheme.bodySmall?.copyWith(color: Colors.red),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: Colors.red,
+                            ),
                           ),
                         ),
                       ],
@@ -1846,23 +1990,30 @@ class _LeadFormDialogState extends State<_LeadFormDialog> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                      onPressed: isSubmitting ? null : () => Navigator.of(context).pop(),
+                      onPressed:
+                          isSubmitting
+                              ? null
+                              : () => Navigator.of(context).pop(),
                       child: const Text('취소'),
                     ),
                     const SizedBox(width: 12),
                     ElevatedButton(
-                      onPressed: isSubmitting
-                          ? null
-                          : () {
-                              cubit.submitLeadForm();
-                            },
-                      child: isSubmitting
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const Text('제출하기'),
+                      onPressed:
+                          isSubmitting
+                              ? null
+                              : () {
+                                cubit.submitLeadForm();
+                              },
+                      child:
+                          isSubmitting
+                              ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                              : const Text('제출하기'),
                     ),
                   ],
                 ),
@@ -1892,15 +2043,12 @@ class _LeadFormDialogState extends State<_LeadFormDialog> {
             Text(
               label,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w600,
-                  ),
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             if (isRequired)
-              Text(
-                ' *',
-                style: TextStyle(color: AppColors.accent),
-              ),
+              Text(' *', style: TextStyle(color: AppColors.accent)),
           ],
         ),
         const SizedBox(height: 8),
@@ -1913,22 +2061,31 @@ class _LeadFormDialogState extends State<_LeadFormDialog> {
           style: TextStyle(color: AppColors.textPrimary),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: TextStyle(color: AppColors.textSecondary.withValues(alpha: 0.5)),
+            hintStyle: TextStyle(
+              color: AppColors.textSecondary.withValues(alpha: 0.5),
+            ),
             filled: true,
             fillColor: AppColors.background.withValues(alpha: 0.5),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+              borderSide: BorderSide(
+                color: Colors.white.withValues(alpha: 0.1),
+              ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+              borderSide: BorderSide(
+                color: Colors.white.withValues(alpha: 0.1),
+              ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: AppColors.accent, width: 2),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
           ),
         ),
       ],
@@ -1948,12 +2105,13 @@ class _LeadFormDialogState extends State<_LeadFormDialog> {
         Text(
           label,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w600,
-              ),
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
+          // ignore: deprecated_member_use
           value: value,
           onChanged: enabled ? onChanged : null,
           dropdownColor: AppColors.surface,
@@ -1963,34 +2121,93 @@ class _LeadFormDialogState extends State<_LeadFormDialog> {
             fillColor: AppColors.background.withValues(alpha: 0.5),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+              borderSide: BorderSide(
+                color: Colors.white.withValues(alpha: 0.1),
+              ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+              borderSide: BorderSide(
+                color: Colors.white.withValues(alpha: 0.1),
+              ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: AppColors.accent, width: 2),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
           ),
-          items: items.map((item) {
-            return DropdownMenuItem(
-              value: item,
-              child: Text(item),
-            );
-          }).toList(),
+          items:
+              items.map((item) {
+                return DropdownMenuItem(value: item, child: Text(item));
+              }).toList(),
         ),
       ],
     );
   }
 }
 
-class UrgencyBanner extends StatelessWidget {
+class UrgencyBanner extends StatefulWidget {
   const UrgencyBanner({super.key, required this.onDismiss});
 
   final VoidCallback onDismiss;
+
+  @override
+  State<UrgencyBanner> createState() => _UrgencyBannerState();
+}
+
+class _UrgencyBannerState extends State<UrgencyBanner> {
+  late Timer _timer;
+  late DateTime _deadline;
+  Duration _remaining = Duration.zero;
+
+  @override
+  void initState() {
+    super.initState();
+    // 7일 후를 마감 시간으로 설정
+    _deadline = DateTime.now().add(const Duration(days: 7));
+    _updateRemaining();
+
+    // 매초 업데이트
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (mounted) {
+        _updateRemaining();
+      }
+    });
+  }
+
+  void _updateRemaining() {
+    setState(() {
+      _remaining = _deadline.difference(DateTime.now());
+      if (_remaining.isNegative) {
+        _remaining = Duration.zero;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  String _formatRemaining() {
+    final days = _remaining.inDays;
+    final hours = _remaining.inHours % 24;
+    final minutes = _remaining.inMinutes % 60;
+    final seconds = _remaining.inSeconds % 60;
+
+    if (days > 0) {
+      return '$days일 $hours시간 $minutes분 남음';
+    } else if (hours > 0) {
+      return '$hours시간 $minutes분 $seconds초 남음';
+    } else {
+      return '$minutes분 $seconds초 남음';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -2017,7 +2234,7 @@ class UrgencyBanner extends StatelessWidget {
           const Icon(Icons.access_time, color: Colors.white, size: 18),
           const SizedBox(width: 8),
           const Text(
-            '이번 주 무료 상담 3자리 남음',
+            '이번 주 무료 상담 마감까지',
             style: TextStyle(
               color: Colors.white,
               fontSize: 14,
@@ -2025,7 +2242,31 @@ class UrgencyBanner extends StatelessWidget {
               letterSpacing: 0.3,
             ),
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.15),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Text(
+              _formatRemaining(),
+              style: const TextStyle(
+                color: Color(0xFFFC1C49),
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 0.5,
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             decoration: BoxDecoration(
@@ -2044,7 +2285,7 @@ class UrgencyBanner extends StatelessWidget {
           const Spacer(),
           IconButton(
             icon: const Icon(Icons.close, color: Colors.white, size: 20),
-            onPressed: onDismiss,
+            onPressed: widget.onDismiss,
             constraints: const BoxConstraints(),
             padding: EdgeInsets.zero,
             visualDensity: VisualDensity.compact,
@@ -2083,9 +2324,14 @@ class ProjectGallerySection extends StatelessWidget {
         final cubit = context.read<LandingCubit>();
 
         // Filter projects based on selected category
-        final filteredProjects = state.selectedProjectCategory == ProjectCategory.all
-            ? projects
-            : projects.where((p) => p.categoryType == state.selectedProjectCategory).toList();
+        final filteredProjects =
+            state.selectedProjectCategory == ProjectCategory.all
+                ? projects
+                : projects
+                    .where(
+                      (p) => p.categoryType == state.selectedProjectCategory,
+                    )
+                    .toList();
 
         return LayoutBuilder(
           builder: (context, constraints) {
@@ -2132,14 +2378,18 @@ class ProjectGallerySection extends StatelessWidget {
                         Wrap(
                           spacing: 12,
                           runSpacing: 12,
-                          children: ProjectCategory.values.map((category) {
-                            final isSelected = state.selectedProjectCategory == category;
-                            return _FilterChip(
-                              label: _getCategoryLabel(category),
-                              isSelected: isSelected,
-                              onTap: () => cubit.selectProjectCategory(category),
-                            );
-                          }).toList(),
+                          children:
+                              ProjectCategory.values.map((category) {
+                                final isSelected =
+                                    state.selectedProjectCategory == category;
+                                return _FilterChip(
+                                  label: _getCategoryLabel(category),
+                                  isSelected: isSelected,
+                                  onTap:
+                                      () =>
+                                          cubit.selectProjectCategory(category),
+                                );
+                              }).toList(),
                         ),
                       ],
                     ),
@@ -2148,28 +2398,36 @@ class ProjectGallerySection extends StatelessWidget {
                 const SizedBox(height: 32),
                 SizedBox(
                   height: 420,
-                  child: filteredProjects.isEmpty
-                      ? Center(
-                          child: Text(
-                            '해당 카테고리의 프로젝트가 없습니다',
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                        )
-                      : ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                          itemCount: filteredProjects.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.only(
-                                right: index < filteredProjects.length - 1 ? 24 : 0,
+                  child:
+                      filteredProjects.isEmpty
+                          ? Center(
+                            child: Text(
+                              '해당 카테고리의 프로젝트가 없습니다',
+                              style: theme.textTheme.bodyLarge?.copyWith(
+                                color: AppColors.textSecondary,
                               ),
-                              child: _ProjectCard(project: filteredProjects[index]),
-                            );
-                          },
-                        ),
+                            ),
+                          )
+                          : ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: horizontalPadding,
+                            ),
+                            itemCount: filteredProjects.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                  right:
+                                      index < filteredProjects.length - 1
+                                          ? 24
+                                          : 0,
+                                ),
+                                child: _ProjectCard(
+                                  project: filteredProjects[index],
+                                ),
+                              );
+                            },
+                          ),
                 ),
               ],
             );
@@ -2200,14 +2458,16 @@ class _FilterChip extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.accent
-              : AppColors.surface.withValues(alpha: 0.4),
+          color:
+              isSelected
+                  ? AppColors.accent
+                  : AppColors.surface.withValues(alpha: 0.4),
           borderRadius: BorderRadius.circular(999),
           border: Border.all(
-            color: isSelected
-                ? AppColors.accent
-                : Colors.white.withValues(alpha: 0.1),
+            color:
+                isSelected
+                    ? AppColors.accent
+                    : Colors.white.withValues(alpha: 0.1),
             width: 1.5,
           ),
         ),
@@ -2235,23 +2495,32 @@ class _ProjectCard extends StatefulWidget {
 class _ProjectCardState extends State<_ProjectCard> {
   bool _isHovered = false;
 
+  void _handleHover(bool hovered) {
+    if (_isHovered == hovered) return;
+    setState(() => _isHovered = hovered);
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final project = widget.project;
+
     return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
+      onEnter: (_) => _handleHover(true),
+      onExit: (_) => _handleHover(false),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 220),
+        curve: Curves.easeOut,
         width: 320,
+        transform: Matrix4.translationValues(0.0, _isHovered ? -6.0 : 0.0, 0.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: _isHovered ? 0.4 : 0.2),
-              blurRadius: _isHovered ? 40 : 24,
-              offset: Offset(0, _isHovered ? 20 : 12),
-              spreadRadius: _isHovered ? -8 : -12,
+              color: Colors.black.withValues(alpha: _isHovered ? 0.45 : 0.22),
+              blurRadius: _isHovered ? 44 : 24,
+              offset: Offset(0, _isHovered ? 18 : 12),
+              spreadRadius: _isHovered ? -6 : -12,
             ),
           ],
         ),
@@ -2260,19 +2529,26 @@ class _ProjectCardState extends State<_ProjectCard> {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Color(0xFF1B2A4F), Color(0xFF141F39)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: Center(
-                  child: Icon(
-                    Icons.phone_iphone,
-                    size: 80,
-                    color: AppColors.accent.withValues(alpha: 0.3),
+              _buildProjectImage(project),
+              Positioned.fill(
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 220),
+                  curve: Curves.easeOut,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors:
+                          _isHovered
+                              ? [
+                                Colors.black.withValues(alpha: 0.08),
+                                Colors.black.withValues(alpha: 0.85),
+                              ]
+                              : [
+                                Colors.black.withValues(alpha: 0.0),
+                                Colors.black.withValues(alpha: 0.78),
+                              ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
                   ),
                 ),
               ),
@@ -2282,66 +2558,173 @@ class _ProjectCardState extends State<_ProjectCard> {
                 right: 0,
                 child: Container(
                   padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [
-                        Colors.transparent,
-                        Colors.black.withValues(alpha: 0.9),
-                      ],
+                      colors: [Color(0x00121A2F), Color(0xCC121A2F)],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.accent.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: AppColors.accent.withValues(alpha: 0.4),
-                          ),
-                        ),
-                        child: Text(
-                          widget.project.category,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: AppColors.accent,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 11,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        widget.project.name,
-                        style: theme.textTheme.headlineSmall?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        widget.project.description,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.5,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+                  child: AnimatedCrossFade(
+                    alignment: Alignment.topLeft,
+                    firstChild: _buildDefaultContent(theme, project),
+                    secondChild: _buildHoverContent(theme, project),
+                    crossFadeState:
+                        _isHovered
+                            ? CrossFadeState.showSecond
+                            : CrossFadeState.showFirst,
+                    duration: const Duration(milliseconds: 240),
+                    sizeCurve: Curves.easeOut,
                   ),
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildProjectImage(ProjectGalleryItem project) {
+    final targetUrl =
+        _isHovered && project.hoverImageUrl != null
+            ? project.hoverImageUrl!
+            : project.imageUrl;
+
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 220),
+      switchInCurve: Curves.easeOut,
+      switchOutCurve: Curves.easeOut,
+      child: Image.network(
+        targetUrl,
+        key: ValueKey<String>('${project.name}-$targetUrl'),
+        fit: BoxFit.cover,
+        alignment: Alignment.topCenter,
+        filterQuality: FilterQuality.high,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            color: const Color(0xFF1B2A4F),
+            alignment: Alignment.center,
+            child: Icon(
+              Icons.broken_image_outlined,
+              size: 48,
+              color: Colors.white.withValues(alpha: 0.4),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildDefaultContent(ThemeData theme, ProjectGalleryItem project) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildCategoryChip(theme, project.category),
+        const SizedBox(height: 12),
+        Text(
+          project.name,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          project.description,
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: AppColors.textSecondary,
+            height: 1.5,
+          ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHoverContent(ThemeData theme, ProjectGalleryItem project) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildCategoryChip(theme, project.category),
+        const SizedBox(height: 12),
+        Text(
+          project.name,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          project.description,
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: Colors.white.withValues(alpha: 0.85),
+            height: 1.5,
+          ),
+        ),
+        if (project.hoverHighlights.isNotEmpty) ...[
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children:
+                project.hoverHighlights
+                    .map((highlight) => _buildHighlightChip(theme, highlight))
+                    .toList(),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildCategoryChip(ThemeData theme, String label) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        color: AppColors.accent.withValues(alpha: 0.18),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.accent.withValues(alpha: 0.4)),
+      ),
+      child: Text(
+        label,
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: AppColors.accent,
+          fontWeight: FontWeight.w600,
+          fontSize: 11,
+          letterSpacing: 0.2,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHighlightChip(ThemeData theme, String text) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: AppColors.accent.withValues(alpha: 0.35)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.check_rounded, size: 14, color: AppColors.accent),
+          const SizedBox(width: 6),
+          Flexible(
+            child: Text(
+              text,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: Colors.white.withValues(alpha: 0.88),
+                fontSize: 11,
+                height: 1.4,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -2361,7 +2744,12 @@ class VideoDemoSection extends StatelessWidget {
 
         return Container(
           color: AppColors.surface.withValues(alpha: 0.3),
-          padding: EdgeInsets.fromLTRB(horizontalPadding, 80, horizontalPadding, 80),
+          padding: EdgeInsets.fromLTRB(
+            horizontalPadding,
+            80,
+            horizontalPadding,
+            80,
+          ),
           child: Align(
             alignment: Alignment.topCenter,
             child: ConstrainedBox(
@@ -2398,23 +2786,29 @@ class VideoDemoSection extends StatelessWidget {
                   if (isDesktop)
                     Row(
                       children: [
-                        Expanded(child: _VideoCard(
-                          title: '프로덕트 워크숍',
-                          duration: '3:24',
-                          description: '아이디어 검증부터 MVP 범위 정의까지',
-                        )),
+                        Expanded(
+                          child: _VideoCard(
+                            title: '프로덕트 워크숍',
+                            duration: '3:24',
+                            description: '아이디어 검증부터 MVP 범위 정의까지',
+                          ),
+                        ),
                         const SizedBox(width: 24),
-                        Expanded(child: _VideoCard(
-                          title: '개발 타임랩스',
-                          duration: '5:12',
-                          description: '플러터 기반 크로스플랫폼 개발 과정',
-                        )),
+                        Expanded(
+                          child: _VideoCard(
+                            title: '개발 타임랩스',
+                            duration: '5:12',
+                            description: '플러터 기반 크로스플랫폼 개발 과정',
+                          ),
+                        ),
                         const SizedBox(width: 24),
-                        Expanded(child: _VideoCard(
-                          title: '클라이언트 인터뷰',
-                          duration: '2:45',
-                          description: 'Habitree 팀이 전하는 협업 후기',
-                        )),
+                        Expanded(
+                          child: _VideoCard(
+                            title: '클라이언트 인터뷰',
+                            duration: '2:45',
+                            description: 'Habitree 팀이 전하는 협업 후기',
+                          ),
+                        ),
                       ],
                     )
                   else
@@ -2541,7 +2935,10 @@ class _VideoCardState extends State<_VideoCard> {
                         bottom: 12,
                         right: 12,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.black.withValues(alpha: 0.7),
                             borderRadius: BorderRadius.circular(6),
@@ -2618,7 +3015,12 @@ class ReviewSection extends StatelessWidget {
         return Container(
           color: const Color(0xFF070B14),
           child: Padding(
-            padding: EdgeInsets.fromLTRB(horizontalPadding, 80, horizontalPadding, 80),
+            padding: EdgeInsets.fromLTRB(
+              horizontalPadding,
+              80,
+              horizontalPadding,
+              80,
+            ),
             child: Align(
               alignment: Alignment.topCenter,
               child: ConstrainedBox(
@@ -2655,7 +3057,10 @@ class ReviewSection extends StatelessWidget {
                         ),
                         const SizedBox(width: 24),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 16,
+                          ),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
@@ -2664,7 +3069,9 @@ class ReviewSection extends StatelessWidget {
                               ],
                             ),
                             borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: AppColors.accent.withValues(alpha: 0.3)),
+                            border: Border.all(
+                              color: AppColors.accent.withValues(alpha: 0.3),
+                            ),
                           ),
                           child: Column(
                             children: [
@@ -2673,14 +3080,19 @@ class ReviewSection extends StatelessWidget {
                                 children: [
                                   Text(
                                     averageRating.toStringAsFixed(1),
-                                    style: theme.textTheme.displayMedium?.copyWith(
-                                      color: AppColors.accent,
-                                      fontWeight: FontWeight.w800,
-                                      height: 1.0,
-                                    ),
+                                    style: theme.textTheme.displayMedium
+                                        ?.copyWith(
+                                          color: AppColors.accent,
+                                          fontWeight: FontWeight.w800,
+                                          height: 1.0,
+                                        ),
                                   ),
                                   const SizedBox(width: 8),
-                                  const Icon(Icons.star, color: AppColors.accent, size: 28),
+                                  const Icon(
+                                    Icons.star,
+                                    color: AppColors.accent,
+                                    size: 28,
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 4),
@@ -2699,17 +3111,19 @@ class ReviewSection extends StatelessWidget {
                     Wrap(
                       spacing: 24,
                       runSpacing: 24,
-                      children: reviews.map((review) {
-                        final cardWidth = isWide
-                            ? (contentWidth - 48) / 3
-                            : isMedium
-                                ? (contentWidth - 24) / 2
-                                : contentWidth;
-                        return SizedBox(
-                          width: cardWidth,
-                          child: _ReviewCard(review: review),
-                        );
-                      }).toList(),
+                      children:
+                          reviews.map((review) {
+                            final cardWidth =
+                                isWide
+                                    ? (contentWidth - 48) / 3
+                                    : isMedium
+                                    ? (contentWidth - 24) / 2
+                                    : contentWidth;
+                            return SizedBox(
+                              width: cardWidth,
+                              child: _ReviewCard(review: review),
+                            );
+                          }).toList(),
                     ),
                   ],
                 ),
@@ -2844,8 +3258,8 @@ class _StarRating extends StatelessWidget {
           isFullStar
               ? Icons.star
               : isHalfStar
-                  ? Icons.star_half
-                  : Icons.star_border,
+              ? Icons.star_half
+              : Icons.star_border,
           color: AppColors.accent,
           size: 18,
         );
