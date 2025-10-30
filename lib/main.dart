@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,6 +17,17 @@ void main() {
   runApp(const MyApp());
 }
 
+// Custom ScrollBehavior to enable drag scrolling on web/desktop
+class AppScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.stylus,
+        PointerDeviceKind.trackpad,
+      };
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -29,6 +41,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'akradev studio',
       debugShowCheckedModeBanner: false,
+      scrollBehavior: AppScrollBehavior(),
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: AppColors.background,
@@ -197,8 +210,6 @@ class _LandingPageState extends State<LandingPage> {
                         key: _servicesKey,
                         services: state.services,
                       ),
-                      const SizedBox(height: 96),
-                      const VideoDemoSection(),
                       const SizedBox(height: 96),
                       ReviewSection(reviews: state.reviews),
                       const SizedBox(height: 96),
@@ -650,22 +661,34 @@ class _HeroShowcase extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.04),
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.accent.withValues(alpha: 0.12),
+                  AppColors.accent.withValues(alpha: 0.06),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+              border: Border.all(
+                color: AppColors.accent.withValues(alpha: 0.2),
+                width: 1.5,
+              ),
             ),
             child: Row(
               children: [
                 Icon(
                   Icons.auto_graph_rounded,
-                  color: AppColors.accent.withValues(alpha: 0.9),
+                  color: AppColors.accent,
+                  size: 28,
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Text(
-                    '도메인 모델링 → API 명세 → 모니터링까지 백엔드 전 과정을 한 흐름으로 제공합니다.',
+                    '아이디어 검증 → 디자인 → 개발 → 앱스토어 출시까지 완전한 제품 개발 프로세스를 제공합니다.',
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
@@ -1050,7 +1073,7 @@ class _LandingServicesState extends State<LandingServices> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      '데이터 흐름을 책임지는 백엔드 파트너',
+                      '완전한 제품을 만드는 Flutter Product Studio',
                       style: theme.textTheme.headlineMedium?.copyWith(
                         color: Colors.black87,
                         fontWeight: FontWeight.w700,
@@ -1059,8 +1082,8 @@ class _LandingServicesState extends State<LandingServices> {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      '도메인 스토리 분석부터 API 명세, Spring Boot 구현, 운영 자동화까지 한 팀으로 움직입니다. '
-                      '복잡한 요구사항을 구조화해 안전하고 확장 가능한 백엔드를 제공합니다.',
+                      '아이디어 검증부터 디자인, 개발, 앱스토어 출시까지 완전한 제품 개발 경험을 제공합니다. '
+                      'Flutter로 iOS·Android·Web을 동시에 개발하고, 필요시 백엔드까지 함께 구축합니다.',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: Colors.black54,
                         height: 1.6,
@@ -1396,40 +1419,49 @@ class _CaseStudyCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                study.company,
-                style: theme.textTheme.labelLarge?.copyWith(
-                  color: AppColors.accent,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.6,
+              Flexible(
+                child: Text(
+                  study.company,
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: AppColors.accent,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.6,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.08),
-                  borderRadius: BorderRadius.circular(999),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.trending_up,
-                      size: 16,
-                      color: AppColors.accent,
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      study.result,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w600,
+              const SizedBox(width: 8),
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.trending_up,
+                        size: 16,
+                        color: AppColors.accent,
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          study.result,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -2609,10 +2641,23 @@ class _UrgencyBannerState extends State<UrgencyBanner> {
   }
 }
 
-class ProjectGallerySection extends StatelessWidget {
+class ProjectGallerySection extends StatefulWidget {
   const ProjectGallerySection({super.key, required this.projects});
 
   final List<ProjectGalleryItem> projects;
+
+  @override
+  State<ProjectGallerySection> createState() => _ProjectGallerySectionState();
+}
+
+class _ProjectGallerySectionState extends State<ProjectGallerySection> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   String _getCategoryLabel(ProjectCategory category) {
     switch (category) {
@@ -2639,8 +2684,8 @@ class ProjectGallerySection extends StatelessWidget {
         // Filter projects based on selected category
         final filteredProjects =
             state.selectedProjectCategory == ProjectCategory.all
-                ? projects
-                : projects
+                ? widget.projects
+                : widget.projects
                     .where(
                       (p) => p.categoryType == state.selectedProjectCategory,
                     )
@@ -2671,7 +2716,7 @@ class ProjectGallerySection extends StatelessWidget {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          '실제 운영 중인 백엔드·API 프로젝트를 확인하세요',
+                          '다양한 산업에서 수익 내는 앱 사례를 확인하세요',
                           style: theme.textTheme.headlineMedium?.copyWith(
                             color: AppColors.textPrimary,
                             fontWeight: FontWeight.w700,
@@ -2680,7 +2725,7 @@ class ProjectGallerySection extends StatelessWidget {
                         ),
                         const SizedBox(height: 18),
                         Text(
-                          'Spring Boot · Kotlin · Flutter 조합으로 구축한 다양한 산업군의 데이터 파이프라인과 API 사례입니다. 설계 → 개발 → 운영까지 전 과정을 직접 리드했습니다.',
+                          'Flutter로 구축한 다양한 산업군의 모바일 앱 포트폴리오입니다. 아이디어 검증부터 디자인, 개발, 앱스토어 출시까지 전 과정을 직접 리드했습니다.',
                           style: theme.textTheme.bodyLarge?.copyWith(
                             color: AppColors.textSecondary,
                             height: 1.6,
@@ -2721,25 +2766,33 @@ class ProjectGallerySection extends StatelessWidget {
                               ),
                             ),
                           )
-                          : ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: horizontalPadding,
+                          : Scrollbar(
+                            controller: _scrollController,
+                            thumbVisibility: true,
+                            thickness: 4,
+                            radius: const Radius.circular(8),
+                            child: ListView.builder(
+                              controller: _scrollController,
+                              scrollDirection: Axis.horizontal,
+                              physics: const BouncingScrollPhysics(),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: horizontalPadding,
+                              ),
+                              itemCount: filteredProjects.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                    right:
+                                        index < filteredProjects.length - 1
+                                            ? 24
+                                            : 0,
+                                  ),
+                                  child: _ProjectCard(
+                                    project: filteredProjects[index],
+                                  ),
+                                );
+                              },
                             ),
-                            itemCount: filteredProjects.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                  right:
-                                      index < filteredProjects.length - 1
-                                          ? 24
-                                          : 0,
-                                ),
-                                child: _ProjectCard(
-                                  project: filteredProjects[index],
-                                ),
-                              );
-                            },
                           ),
                 ),
               ],
@@ -2908,23 +2961,25 @@ class _ProjectCardState extends State<_ProjectCard> {
       duration: const Duration(milliseconds: 220),
       switchInCurve: Curves.easeOut,
       switchOutCurve: Curves.easeOut,
-      child: Image.network(
-        targetUrl,
-        key: ValueKey<String>('${project.name}-$targetUrl'),
-        fit: BoxFit.cover,
-        alignment: Alignment.topCenter,
-        filterQuality: FilterQuality.high,
-        errorBuilder: (context, error, stackTrace) {
-          return Container(
-            color: const Color(0xFF1B2A4F),
-            alignment: Alignment.center,
-            child: Icon(
-              Icons.broken_image_outlined,
-              size: 48,
-              color: Colors.white.withValues(alpha: 0.4),
-            ),
-          );
-        },
+      child: Container(
+        key: ValueKey<String>('${project.name}-$targetUrl-$_isHovered'),
+        child: Image.network(
+          targetUrl,
+          fit: BoxFit.cover,
+          alignment: Alignment.topCenter,
+          filterQuality: FilterQuality.high,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              color: const Color(0xFF1B2A4F),
+              alignment: Alignment.center,
+              child: Icon(
+                Icons.broken_image_outlined,
+                size: 48,
+                color: Colors.white.withValues(alpha: 0.4),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -3349,7 +3404,7 @@ class ReviewSection extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'API 파트너 리뷰',
+                                '클라이언트 리뷰',
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   color: AppColors.accent,
                                   letterSpacing: 0.8,
@@ -3358,7 +3413,7 @@ class ReviewSection extends StatelessWidget {
                               ),
                               const SizedBox(height: 16),
                               Text(
-                                '백엔드·API 프로젝트를 함께한 고객들의 목소리',
+                                '함께 제품을 만든 파트너들의 평가',
                                 style: theme.textTheme.displaySmall?.copyWith(
                                   color: AppColors.textPrimary,
                                   fontWeight: FontWeight.w700,
