@@ -26,7 +26,7 @@ class LandingState with _$LandingState {
   }) = _LandingState;
 
   factory LandingState.initial() => LandingState(
-    navItems: const ['만드는 사람', '서비스', '프로세스', '연락처'],
+    navItems: const ['철학', '만드는 사람', '서비스', '프로세스', '연락처'],
     hero: const HeroSection(
       badge: '🚀 Product Studio · 3개월 완성 프로그램',
       headline: '3개월 안에 실제 수익 내는\n앱을 만들 수 있습니다',
