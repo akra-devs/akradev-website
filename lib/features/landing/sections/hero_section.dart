@@ -87,7 +87,7 @@ class _CinematicBackground extends StatelessWidget {
           color: const Color(0xFF000000), // Pure Black for OLED feel
         ),
         
-        // Dynamic Aurora Effects
+        // Dynamic Aurora Effects with Depth
         Positioned(
           top: -200,
           left: -100,
@@ -95,6 +95,7 @@ class _CinematicBackground extends StatelessWidget {
             color: const Color(0xFF38BDF8).withValues(alpha: 0.15),
             size: 1000,
             duration: const Duration(seconds: 20),
+            offsetScale: 0.8, // Slower movement for depth
           ),
         ),
         Positioned(
@@ -104,6 +105,18 @@ class _CinematicBackground extends StatelessWidget {
             color: const Color(0xFF6366F1).withValues(alpha: 0.15),
             size: 1200,
             duration: const Duration(seconds: 25),
+            offsetScale: 1.2, // Faster movement for foreground feel
+          ),
+        ),
+        // Third Layer for extra depth
+        Positioned(
+          top: 300,
+          right: -200,
+          child: _AnimatedAurora(
+            color: const Color(0xFF818CF8).withValues(alpha: 0.1),
+            size: 800,
+            duration: const Duration(seconds: 30),
+            offsetScale: 0.5, // Very slow background layer
           ),
         ),
         
@@ -250,11 +263,13 @@ class _AnimatedAurora extends StatefulWidget {
     required this.color,
     required this.size,
     required this.duration,
+    this.offsetScale = 1.0,
   });
 
   final Color color;
   final double size;
   final Duration duration;
+  final double offsetScale;
 
   @override
   State<_AnimatedAurora> createState() => _AnimatedAuroraState();
@@ -286,8 +301,8 @@ class _AnimatedAuroraState extends State<_AnimatedAurora>
       builder: (context, child) {
         return Transform.translate(
           offset: Offset(
-            math.sin(_controller.value * math.pi) * 50,
-            math.cos(_controller.value * math.pi) * 50,
+            math.sin(_controller.value * math.pi) * 50 * widget.offsetScale,
+            math.cos(_controller.value * math.pi) * 50 * widget.offsetScale,
           ),
           child: Container(
             width: widget.size,

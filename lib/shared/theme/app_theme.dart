@@ -30,8 +30,8 @@ class AppTheme {
       textTheme: baseTextTheme.copyWith(
         displayLarge: baseTextTheme.displayLarge?.copyWith(
           fontFamily: headingStyle.fontFamily,
-          fontSize: 96, // Huge cinematic title
-          fontWeight: FontWeight.w700, // Apple uses slightly lighter than w800 for huge text
+          fontSize: 96,
+          fontWeight: FontWeight.w700,
           letterSpacing: -3.0,
           height: 1.05,
           color: AppColors.textPrimary,
@@ -55,7 +55,7 @@ class AppTheme {
         headlineMedium: baseTextTheme.headlineMedium?.copyWith(
           fontFamily: headingStyle.fontFamily,
           fontSize: 40,
-          fontWeight: FontWeight.w600, // Semi-bold for subheadings
+          fontWeight: FontWeight.w600,
           letterSpacing: -0.5,
           height: 1.2,
           color: AppColors.textPrimary,
@@ -64,7 +64,7 @@ class AppTheme {
           fontFamily: headingStyle.fontFamily,
           fontSize: 24,
           fontWeight: FontWeight.w700,
-          letterSpacing: -0.25,
+          letterSpacing: -0.5, // Tighter for Korean
           height: 1.4,
           color: AppColors.textPrimary,
         ),
@@ -72,26 +72,26 @@ class AppTheme {
           fontFamily: headingStyle.fontFamily,
           fontSize: 20,
           fontWeight: FontWeight.w600,
-          letterSpacing: -0.15,
+          letterSpacing: -0.3, // Tighter for Korean
           color: AppColors.textPrimary,
         ),
         bodyLarge: baseTextTheme.bodyLarge?.copyWith(
           fontSize: 18,
-          fontWeight: FontWeight.w400,
-          letterSpacing: 0.1,
-          height: 1.7, // Breathable reading experience
+          fontWeight: FontWeight.w500, // Slightly heavier for readability
+          letterSpacing: -0.2, // Tighter for Korean body
+          height: 1.7,
           color: AppColors.textSecondary,
         ),
         bodyMedium: baseTextTheme.bodyMedium?.copyWith(
           fontSize: 16,
-          fontWeight: FontWeight.w400,
-          letterSpacing: 0.2,
+          fontWeight: FontWeight.w500, // Slightly heavier
+          letterSpacing: -0.2, // Tighter for Korean body
           height: 1.6,
           color: AppColors.textSecondary,
         ),
         labelLarge: baseTextTheme.labelLarge?.copyWith(
           fontWeight: FontWeight.w600,
-          letterSpacing: 0.5,
+          letterSpacing: -0.1,
           color: AppColors.textPrimary,
         ),
       ),
