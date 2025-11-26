@@ -14,6 +14,7 @@ import 'shared/utils/responsive.dart' as responsive;
 import 'shared/widgets/animated_counter.dart';
 import 'shared/widgets/fade_in_up.dart';
 import 'shared/widgets/nav_item.dart';
+import 'shared/widgets/hover_scale_effect.dart';
 
 void main() {
   runApp(const MyApp());
@@ -611,22 +612,26 @@ class _HeroCopy extends StatelessWidget {
           spacing: 16,
           runSpacing: 16,
           children: [
-            ElevatedButton.icon(
-              onPressed: onProjectInquiry,
-              icon: const Icon(Icons.rocket_launch_outlined, size: 20),
-              label: const Text('무료 상담 신청하기'),
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-                textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            HoverScaleEffect(
+              child: ElevatedButton.icon(
+                onPressed: onProjectInquiry,
+                icon: const Icon(Icons.rocket_launch_outlined, size: 20),
+                label: const Text('무료 상담 신청하기'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+                  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                ),
               ),
             ),
-            OutlinedButton.icon(
-              onPressed: onPortfolioRequest,
-              icon: const Icon(Icons.arrow_forward, size: 20),
-              label: const Text('성공 사례 먼저 보기'),
-               style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-                textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            HoverScaleEffect(
+              child: OutlinedButton.icon(
+                onPressed: onPortfolioRequest,
+                icon: const Icon(Icons.arrow_forward, size: 20),
+                label: const Text('성공 사례 먼저 보기'),
+                 style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+                  textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
               ),
             ),
           ],
@@ -1365,90 +1370,110 @@ class _ServiceTab extends StatelessWidget {
   }
 }
 
-class _ServiceCard extends StatelessWidget {
+class _ServiceCard extends StatefulWidget {
   const _ServiceCard({super.key, required this.service});
 
   final ServiceItem service;
 
   @override
+  State<_ServiceCard> createState() => _ServiceCardState();
+}
+
+class _ServiceCardState extends State<_ServiceCard> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(32),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(28),
-        border: Border.all(color: Colors.black.withValues(alpha: 0.08)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOut,
+        transform: Matrix4.identity()..scale(_isHovered ? 1.02 : 1.0),
+        padding: const EdgeInsets.all(32),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(28),
+          border: Border.all(
+            color: _isHovered 
+              ? AppColors.accent.withValues(alpha: 0.5)
+              : Colors.black.withValues(alpha: 0.08)
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 52,
-            width: 52,
-            decoration: BoxDecoration(
-              color: AppColors.accent.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: _isHovered 
+                ? AppColors.accent.withValues(alpha: 0.15) 
+                : Colors.black.withValues(alpha: 0.05),
+              blurRadius: _isHovered ? 32 : 20,
+              offset: Offset(0, _isHovered ? 12 : 4),
             ),
-            child: Icon(service.icon, color: AppColors.accent, size: 28),
-          ),
-          const SizedBox(height: 24),
-          Text(
-            service.title,
-            style: theme.textTheme.titleLarge?.copyWith(
-              color: Colors.black87,
-              fontWeight: FontWeight.w700,
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 52,
+              width: 52,
+              decoration: BoxDecoration(
+                color: AppColors.accent.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Icon(widget.service.icon, color: AppColors.accent, size: 28),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            service.subtitle,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.accent,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 18),
-          Text(
-            service.description,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: Colors.black54,
-              height: 1.6,
-            ),
-          ),
-          const SizedBox(height: 28),
-          for (final point in service.points)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 14),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.check_rounded,
-                    color: AppColors.accent,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      point,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: Colors.black54,
-                        height: 1.5,
-                      ),
-                    ),
-                  ),
-                ],
+            const SizedBox(height: 24),
+            Text(
+              widget.service.title,
+              style: theme.textTheme.titleLarge?.copyWith(
+                color: Colors.black87,
+                fontWeight: FontWeight.w700,
               ),
             ),
-        ],
+            const SizedBox(height: 8),
+            Text(
+              widget.service.subtitle,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.accent,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 18),
+            Text(
+              widget.service.description,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: Colors.black54,
+                height: 1.6,
+              ),
+            ),
+            const SizedBox(height: 28),
+            for (final point in widget.service.points)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 14),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Icons.check_rounded,
+                      color: AppColors.accent,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        point,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: Colors.black54,
+                          height: 1.5,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -1557,184 +1582,201 @@ class CaseStudiesSection extends StatelessWidget {
   }
 }
 
-class _CaseStudyCard extends StatelessWidget {
+class _CaseStudyCard extends StatefulWidget {
   const _CaseStudyCard({required this.study});
 
   final CaseStudy study;
 
   @override
+  State<_CaseStudyCard> createState() => _CaseStudyCardState();
+}
+
+class _CaseStudyCardState extends State<_CaseStudyCard> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(28),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(28),
-        gradient: const LinearGradient(
-          colors: [Color(0xFF1B2A4F), Color(0xFF141F39)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.3),
-            blurRadius: 30,
-            offset: const Offset(0, 18),
-            spreadRadius: -12,
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.all(28),
+        transform: Matrix4.identity()..scale(_isHovered ? 1.02 : 1.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(28),
+          gradient: const LinearGradient(
+            colors: [Color(0xFF1B2A4F), Color(0xFF141F39)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: Text(
-                  study.company,
-                  style: theme.textTheme.labelLarge?.copyWith(
-                    color: AppColors.accent,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.6,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(
-                        Icons.trending_up,
-                        size: 16,
-                        color: AppColors.accent,
-                      ),
-                      const SizedBox(width: 6),
-                      Flexible(
-                        child: Text(
-                          study.result,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+          border: Border.all(
+            color: _isHovered 
+              ? AppColors.accent.withValues(alpha: 0.3) 
+              : Colors.white.withValues(alpha: 0.06),
           ),
-          const SizedBox(height: 18),
-          Text(
-            study.title,
-            style: theme.textTheme.titleLarge?.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 14),
-          Text(
-            study.description,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
-              height: 1.6,
-            ),
-          ),
-          const SizedBox(height: 24),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (final highlight in study.highlights)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Icon(
-                        Icons.check_circle,
-                        size: 18,
-                        color: AppColors.accent,
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          highlight,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                            height: 1.5,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-            ],
-          ),
-          if (study.detailedMetrics != null) ...[
-            const SizedBox(height: 24),
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.04),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '핵심 성과 지표',
-                    style: theme.textTheme.labelMedium?.copyWith(
-                      color: AppColors.accent,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Wrap(
-                    spacing: 16,
-                    runSpacing: 16,
-                    children: [
-                      _MetricChip(
-                        label: '다운로드',
-                        value: study.detailedMetrics!.downloads,
-                        icon: Icons.download,
-                      ),
-                      _MetricChip(
-                        label: '리텐션',
-                        value: study.detailedMetrics!.retention,
-                        icon: Icons.repeat,
-                      ),
-                      _MetricChip(
-                        label: '수익/효과',
-                        value: study.detailedMetrics!.revenue,
-                        icon: Icons.trending_up,
-                      ),
-                      _MetricChip(
-                        label: '전환율',
-                        value: study.detailedMetrics!.conversionRate,
-                        icon: Icons.auto_graph,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: _isHovered ? 0.4 : 0.3),
+              blurRadius: _isHovered ? 40 : 30,
+              offset: Offset(0, _isHovered ? 24 : 18),
+              spreadRadius: -12,
             ),
           ],
-        ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    widget.study.company,
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      color: AppColors.accent,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.6,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.trending_up,
+                          size: 16,
+                          color: AppColors.accent,
+                        ),
+                        const SizedBox(width: 6),
+                        Flexible(
+                          child: Text(
+                            widget.study.result,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: AppColors.textPrimary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 18),
+            Text(
+              widget.study.title,
+              style: theme.textTheme.titleLarge?.copyWith(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 14),
+            Text(
+              widget.study.description,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+                height: 1.6,
+              ),
+            ),
+            const SizedBox(height: 24),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (final highlight in widget.study.highlights)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Icons.check_circle,
+                          size: 18,
+                          color: AppColors.accent,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            highlight,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: AppColors.textSecondary,
+                              height: 1.5,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+            if (widget.study.detailedMetrics != null) ...[
+              const SizedBox(height: 24),
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.04),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '핵심 성과 지표',
+                      style: theme.textTheme.labelMedium?.copyWith(
+                        color: AppColors.accent,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Wrap(
+                      spacing: 16,
+                      runSpacing: 16,
+                      children: [
+                        _MetricChip(
+                          label: '다운로드',
+                          value: widget.study.detailedMetrics!.downloads,
+                          icon: Icons.download,
+                        ),
+                        _MetricChip(
+                          label: '리텐션',
+                          value: widget.study.detailedMetrics!.retention,
+                          icon: Icons.repeat,
+                        ),
+                        _MetricChip(
+                          label: '수익/효과',
+                          value: widget.study.detailedMetrics!.revenue,
+                          icon: Icons.trending_up,
+                        ),
+                        _MetricChip(
+                          label: '전환율',
+                          value: widget.study.detailedMetrics!.conversionRate,
+                          icon: Icons.auto_graph,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }
@@ -1879,77 +1921,96 @@ class ProcessSection extends StatelessWidget {
   }
 }
 
-class _ProcessCard extends StatelessWidget {
+class _ProcessCard extends StatefulWidget {
   const _ProcessCard({required this.step});
 
   final ProcessStep step;
 
   @override
+  State<_ProcessCard> createState() => _ProcessCardState();
+}
+
+class _ProcessCardState extends State<_ProcessCard> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(28),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.black.withValues(alpha: 0.08)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        transform: Matrix4.identity()..scale(_isHovered ? 1.02 : 1.0),
+        padding: const EdgeInsets.all(28),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: _isHovered 
+                ? AppColors.accent.withValues(alpha: 0.5) 
+                : Colors.black.withValues(alpha: 0.08)
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                height: 36,
-                width: 36,
-                decoration: BoxDecoration(
-                  color: AppColors.accent.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Center(
-                  child: Text(
-                    step.order.toString().padLeft(2, '0'),
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      color: AppColors.accent,
-                      fontWeight: FontWeight.w700,
+          boxShadow: [
+            BoxShadow(
+              color: _isHovered 
+                  ? AppColors.accent.withValues(alpha: 0.15)
+                  : Colors.black.withValues(alpha: 0.04),
+              blurRadius: _isHovered ? 24 : 12,
+              offset: Offset(0, _isHovered ? 8 : 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  height: 36,
+                  width: 36,
+                  decoration: BoxDecoration(
+                    color: AppColors.accent.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Center(
+                    child: Text(
+                      widget.step.order.toString().padLeft(2, '0'),
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        color: AppColors.accent,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 16),
-              Text(
-                step.duration,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: Colors.black54,
-                  fontWeight: FontWeight.w600,
+                const SizedBox(width: 16),
+                Text(
+                  widget.step.duration,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 18),
+            Text(
+              widget.step.title,
+              style: theme.textTheme.titleLarge?.copyWith(
+                color: Colors.black87,
+                fontWeight: FontWeight.w700,
               ),
-            ],
-          ),
-          const SizedBox(height: 18),
-          Text(
-            step.title,
-            style: theme.textTheme.titleLarge?.copyWith(
-              color: Colors.black87,
-              fontWeight: FontWeight.w700,
             ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            step.description,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: Colors.black54,
-              height: 1.6,
+            const SizedBox(height: 12),
+            Text(
+              widget.step.description,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: Colors.black54,
+                height: 1.6,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
