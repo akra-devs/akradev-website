@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:math' as math;
+import 'dart:ui'; // For ImageFilter
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'features/landing/landing_cubit.dart';
 import 'features/landing/landing_state.dart';
@@ -50,8 +52,11 @@ class MyApp extends StatelessWidget {
           onSurface: AppColors.textPrimary,
           primary: AppColors.accent,
           onPrimary: Colors.black,
+          secondary: const Color(0xFF6366F1), // Indigo accent
         ),
-        textTheme: Typography.whiteMountainView.apply(
+        textTheme: GoogleFonts.notoSansKrTextTheme(
+          Typography.whiteMountainView,
+        ).apply(
           displayColor: AppColors.textPrimary,
           bodyColor: AppColors.textSecondary,
         ),
@@ -59,13 +64,15 @@ class MyApp extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.accent,
             foregroundColor: Colors.black,
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(16),
             ),
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.3,
+            elevation: 0,
+            textStyle: GoogleFonts.notoSansKr(
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.0,
+              fontSize: 16,
             ),
           ),
         ),
@@ -75,13 +82,14 @@ class MyApp extends StatelessWidget {
             side: BorderSide(
               color: AppColors.textPrimary.withValues(alpha: 0.2),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
+              borderRadius: BorderRadius.circular(16),
             ),
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.w500,
-              letterSpacing: 0.2,
+            textStyle: GoogleFonts.notoSansKr(
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.0,
+              fontSize: 16,
             ),
           ),
         ),
@@ -259,76 +267,125 @@ class LandingHero extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF0B1120), Color(0xFF111C37), Color(0xFF0F172A)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final isDesktop = constraints.maxWidth >= 1024;
-          final horizontalPadding = responsive.horizontalPadding(
-            constraints.maxWidth,
-          );
-          return Padding(
-            padding: EdgeInsets.fromLTRB(
-              horizontalPadding,
-              48,
-              horizontalPadding,
-              96,
-            ),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1200),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    LandingNavigation(
-                      isDesktop: isDesktop,
-                      navItems: navItems,
-                      onProjectInquiry: onProjectInquiry,
-                      onNavItemClick: onNavItemClick,
-                    ),
-                    const SizedBox(height: 72),
-                    if (isDesktop)
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: _HeroCopy(
-                              hero: hero,
-                              onProjectInquiry: onProjectInquiry,
-                              onPortfolioRequest: onPortfolioRequest,
-                            ),
-                          ),
-                          const SizedBox(width: 64),
-                          Expanded(child: _HeroShowcase(hero: hero)),
-                        ],
-                      )
-                    else
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _HeroCopy(
-                            hero: hero,
-                            onProjectInquiry: onProjectInquiry,
-                            onPortfolioRequest: onPortfolioRequest,
-                          ),
-                          const SizedBox(height: 48),
-                          _HeroShowcase(hero: hero),
-                        ],
-                      ),
-                  ],
-                ),
+    return Stack(
+      children: [
+        // Ambient Background Effects
+        Positioned(
+          top: -100,
+          right: -100,
+          child: Container(
+            width: 600,
+            height: 600,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: RadialGradient(
+                colors: [
+                  const Color(0xFF38BDF8).withValues(alpha: 0.15),
+                  Colors.transparent,
+                ],
+                stops: const [0.0, 0.7],
               ),
             ),
-          );
-        },
-      ),
+          ),
+        ),
+        Positioned(
+          top: 100,
+          left: -200,
+          child: Container(
+            width: 800,
+            height: 800,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: RadialGradient(
+                colors: [
+                  const Color(0xFF6366F1).withValues(alpha: 0.1),
+                  Colors.transparent,
+                ],
+                stops: const [0.0, 0.7],
+              ),
+            ),
+          ),
+        ),
+        
+        // Main Content
+        Container(
+          // subtle grid pattern could go here
+          decoration: const BoxDecoration(
+             // Keep the base dark gradient but lighter
+            gradient: LinearGradient(
+              colors: [Color(0xFF0B1120), Color(0xFF0F172A)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final isDesktop = constraints.maxWidth >= 1024;
+              final horizontalPadding = responsive.horizontalPadding(
+                constraints.maxWidth,
+              );
+              return Padding(
+                padding: EdgeInsets.fromLTRB(
+                  horizontalPadding,
+                  32, // Reduced top padding for a tighter feel
+                  horizontalPadding,
+                  96,
+                ),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 1280),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        LandingNavigation(
+                          isDesktop: isDesktop,
+                          navItems: navItems,
+                          onProjectInquiry: onProjectInquiry,
+                          onNavItemClick: onNavItemClick,
+                        ),
+                        const SizedBox(height: 80),
+                        if (isDesktop)
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center, // Align center for better balance
+                            children: [
+                              Expanded(
+                                flex: 5,
+                                child: _HeroCopy(
+                                  hero: hero,
+                                  onProjectInquiry: onProjectInquiry,
+                                  onPortfolioRequest: onPortfolioRequest,
+                                ),
+                              ),
+                              const SizedBox(width: 80),
+                              Expanded(
+                                flex: 6,
+                                child: _HeroShowcase(hero: hero)
+                              ),
+                            ],
+                          )
+                        else
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _HeroCopy(
+                                hero: hero,
+                                onProjectInquiry: onProjectInquiry,
+                                onPortfolioRequest: onPortfolioRequest,
+                              ),
+                              const SizedBox(height: 64),
+                              _HeroShowcase(hero: hero),
+                            ],
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
@@ -350,35 +407,69 @@ class LandingNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Row(
-      children: [
-        Text(
-          'akradev studio',
-          style: textTheme.titleLarge?.copyWith(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w700,
-            letterSpacing: -0.2,
+    
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(100), // Pill shape
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          decoration: BoxDecoration(
+            color: AppColors.surface.withValues(alpha: 0.6),
+            borderRadius: BorderRadius.circular(100),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.1),
+              width: 1,
+            ),
+          ),
+          child: Row(
+            children: [
+              // Logo / Brand
+              Icon(Icons.code, color: AppColors.accent, size: 24),
+              const SizedBox(width: 12),
+              Text(
+                'akradev studio',
+                style: textTheme.titleLarge?.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -0.5,
+                ),
+              ),
+              const Spacer(),
+              if (isDesktop)
+                Row(
+                  children: [
+                    for (final item in navItems)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: NavItem(
+                          label: item, 
+                          onTap: () => onNavItemClick(item)
+                        ),
+                      ),
+                    const SizedBox(width: 16),
+                    ElevatedButton(
+                      onPressed: onProjectInquiry,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                         textStyle: GoogleFonts.notoSansKr(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                      ),
+                      child: const Text('무료 상담 신청'),
+                    ),
+                  ],
+                )
+              else
+                IconButton(
+                   onPressed: onProjectInquiry,
+                   icon: const Icon(Icons.menu, color: Colors.white),
+                ), 
+            ],
           ),
         ),
-        const Spacer(),
-        if (isDesktop)
-          Row(
-            children: [
-              for (final item in navItems)
-                NavItem(label: item, onTap: () => onNavItemClick(item)),
-              ElevatedButton(
-                onPressed: onProjectInquiry,
-                child: const Text('무료 상담 신청'),
-              ),
-            ],
-          )
-        else
-          ElevatedButton.icon(
-            onPressed: onProjectInquiry,
-            icon: const Icon(Icons.chat_bubble_outline),
-            label: const Text('상담하기'),
-          ),
-      ],
+      ),
     );
   }
 }
@@ -399,70 +490,87 @@ class _HeroCopy extends StatelessWidget {
     final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: AppColors.surface.withValues(alpha: 0.45),
+            color: AppColors.accent.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(999),
-            border: Border.all(color: AppColors.accent.withValues(alpha: 0.4)),
+            border: Border.all(color: AppColors.accent.withValues(alpha: 0.3)),
           ),
           child: Text(
             hero.badge,
             style: theme.textTheme.labelMedium?.copyWith(
               color: AppColors.accent,
-              letterSpacing: 0.6,
+              letterSpacing: 0.5,
               fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        const SizedBox(height: 32),
+        ShaderMask(
+          shaderCallback: (bounds) => const LinearGradient(
+            colors: [Colors.white, Color(0xFF94A3B8)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ).createShader(bounds),
+          child: Text(
+            hero.headline,
+            style: theme.textTheme.displayMedium?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w800,
+              height: 1.15,
+              letterSpacing: -1.5,
             ),
           ),
         ),
         const SizedBox(height: 24),
         Text(
-          hero.headline,
-          style: theme.textTheme.displaySmall?.copyWith(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w700,
-            height: 1.1,
-            letterSpacing: -1,
-          ),
-        ),
-        const SizedBox(height: 16),
-        Text(
           hero.subHeadline,
-          style: theme.textTheme.titleMedium?.copyWith(
-            color: AppColors.textPrimary.withValues(alpha: 0.82),
-            fontWeight: FontWeight.w600,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            color: const Color(0xFF94A3B8), // Slate-400
+            fontWeight: FontWeight.w500,
             height: 1.4,
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 32),
         Text(
           hero.description,
           style: theme.textTheme.bodyLarge?.copyWith(
             color: AppColors.textSecondary,
-            height: 1.6,
+            height: 1.8,
+            fontSize: 18,
           ),
         ),
-        const SizedBox(height: 32),
+        const SizedBox(height: 48),
         Wrap(
           spacing: 16,
           runSpacing: 16,
           children: [
             ElevatedButton.icon(
               onPressed: onProjectInquiry,
-              icon: const Icon(Icons.rocket_launch_outlined),
+              icon: const Icon(Icons.rocket_launch_outlined, size: 20),
               label: const Text('무료 상담 신청하기'),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+                textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+              ),
             ),
             OutlinedButton.icon(
               onPressed: onPortfolioRequest,
-              icon: const Icon(Icons.arrow_forward),
+              icon: const Icon(Icons.arrow_forward, size: 20),
               label: const Text('성공 사례 먼저 보기'),
+               style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+                textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
             ),
           ],
         ),
-        const SizedBox(height: 32),
+        const SizedBox(height: 48),
         _MetricsRow(metrics: hero.metrics),
-        const SizedBox(height: 32),
+        const SizedBox(height: 40),
         _TrustedByRow(brands: hero.trustedBy),
       ],
     );
