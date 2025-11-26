@@ -38,7 +38,12 @@ class MyApp extends StatelessWidget {
     final baseScheme = ColorScheme.fromSeed(
       seedColor: AppColors.accent,
       brightness: Brightness.dark,
+      surface: AppColors.surface,
+      onSurface: AppColors.textPrimary,
     );
+
+    // Base text theme with Noto Sans KR
+    final baseTextTheme = GoogleFonts.notoSansKrTextTheme(Typography.whiteMountainView);
 
     return MaterialApp(
       title: 'akradev studio',
@@ -51,28 +56,84 @@ class MyApp extends StatelessWidget {
           surface: AppColors.surface,
           onSurface: AppColors.textPrimary,
           primary: AppColors.accent,
-          onPrimary: Colors.black,
-          secondary: const Color(0xFF6366F1), // Indigo accent
+          secondary: AppColors.secondary,
         ),
-        textTheme: GoogleFonts.notoSansKrTextTheme(
-          Typography.whiteMountainView,
-        ).apply(
-          displayColor: AppColors.textPrimary,
-          bodyColor: AppColors.textSecondary,
+        // Professional Typography Hierarchy
+        textTheme: baseTextTheme.copyWith(
+          displayLarge: baseTextTheme.displayLarge?.copyWith(
+            fontSize: 72,
+            fontWeight: FontWeight.w800,
+            letterSpacing: -2.5,
+            height: 1.1,
+            color: AppColors.textPrimary,
+          ),
+          displayMedium: baseTextTheme.displayMedium?.copyWith(
+            fontSize: 56,
+            fontWeight: FontWeight.w800,
+            letterSpacing: -1.5,
+            height: 1.15,
+            color: AppColors.textPrimary,
+          ),
+          displaySmall: baseTextTheme.displaySmall?.copyWith(
+            fontSize: 42,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -1.0,
+            height: 1.2,
+            color: AppColors.textPrimary,
+          ),
+          headlineMedium: baseTextTheme.headlineMedium?.copyWith(
+            fontSize: 32,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.5,
+            height: 1.3,
+            color: AppColors.textPrimary,
+          ),
+          headlineSmall: baseTextTheme.headlineSmall?.copyWith(
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.25,
+            height: 1.4,
+            color: AppColors.textPrimary,
+          ),
+          titleLarge: baseTextTheme.titleLarge?.copyWith(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            letterSpacing: -0.15,
+            color: AppColors.textPrimary,
+          ),
+          bodyLarge: baseTextTheme.bodyLarge?.copyWith(
+            fontSize: 18,
+            fontWeight: FontWeight.w400,
+            letterSpacing: 0.1,
+            height: 1.7, // Breathable reading experience
+            color: AppColors.textSecondary,
+          ),
+          bodyMedium: baseTextTheme.bodyMedium?.copyWith(
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            letterSpacing: 0.2,
+            height: 1.6,
+            color: AppColors.textSecondary,
+          ),
+          labelLarge: baseTextTheme.labelLarge?.copyWith(
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.5,
+            color: AppColors.textPrimary,
+          ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.accent,
+            backgroundColor: AppColors.textPrimary, // White button
             foregroundColor: Colors.black,
-            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 22),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(100), // Pill shape
             ),
             elevation: 0,
             textStyle: GoogleFonts.notoSansKr(
               fontWeight: FontWeight.w700,
-              letterSpacing: 0.0,
               fontSize: 16,
+              letterSpacing: -0.2,
             ),
           ),
         ),
@@ -81,15 +142,16 @@ class MyApp extends StatelessWidget {
             foregroundColor: AppColors.textPrimary,
             side: BorderSide(
               color: AppColors.textPrimary.withValues(alpha: 0.2),
+              width: 1.5,
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 22),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(100),
             ),
             textStyle: GoogleFonts.notoSansKr(
               fontWeight: FontWeight.w600,
-              letterSpacing: 0.0,
               fontSize: 16,
+              letterSpacing: -0.2,
             ),
           ),
         ),
@@ -196,37 +258,38 @@ class _LandingPageState extends State<LandingPage> {
                         onPortfolioRequest: handlePortfolioRequest,
                         onNavItemClick: _scrollToSection,
                       ),
-                      const SizedBox(height: 64),
+                      // Increased spacing for "Pro" feel (Whitespace is luxury)
+                      const SizedBox(height: 160),
                       FounderSection(
                         key: _founderKey,
                         profile: state.founder,
                       ),
-                      const SizedBox(height: 96),
+                      const SizedBox(height: 180),
                       CaseStudiesSection(
                         studies: state.caseStudies,
                         onProjectInquiry: handleProjectInquiry,
                       ),
-                      const SizedBox(height: 96),
+                      const SizedBox(height: 180),
                       ProjectGallerySection(projects: state.galleryProjects),
-                      const SizedBox(height: 96),
+                      const SizedBox(height: 180),
                       ProcessSection(
                         key: _processKey,
                         steps: state.processSteps,
                       ),
-                      const SizedBox(height: 96),
+                      const SizedBox(height: 180),
                       LandingServices(
                         key: _servicesKey,
                         services: state.services,
                       ),
-                      const SizedBox(height: 96),
+                      const SizedBox(height: 180),
                       ReviewSection(reviews: state.reviews),
-                      const SizedBox(height: 96),
+                      const SizedBox(height: 180),
                       SpotlightCtaSection(
                         data: state.spotlight,
                         onPrimary: handleProjectInquiry,
                         onSecondary: handlePortfolioRequest,
                       ),
-                      const SizedBox(height: 96),
+                      const SizedBox(height: 120),
                       FooterSection(key: _contactKey, content: state.footer),
                     ],
                   ),
