@@ -1,4 +1,4 @@
-import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import '../../../shared/theme/app_colors.dart';
 import '../../../shared/utils/responsive.dart' as responsive;
@@ -19,19 +19,14 @@ class ProcessSection extends StatelessWidget {
         builder: (context, constraints) {
           final width = constraints.maxWidth;
           final horizontalPadding = responsive.horizontalPadding(width);
-          final double rawAvailable =
-              (width - (horizontalPadding * 2)).clamp(0.0, width).toDouble();
-          final double contentWidth = math.min(rawAvailable, 1200.0);
-          final isWide = contentWidth >= 900;
-          final double cardWidth =
-              isWide ? (contentWidth - 36) / 3 : contentWidth;
+          final isDesktop = width >= 1024;
 
           return Padding(
             padding: EdgeInsets.fromLTRB(
               horizontalPadding,
-              80,
+              120,
               horizontalPadding,
-              80,
+              120,
             ),
             child: Align(
               alignment: Alignment.topCenter,
@@ -50,14 +45,14 @@ class ProcessSection extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      '아이디어에서 운영까지, 집중력 있게 완주합니다',
+                      '성공을 위한 최적의 경로',
                       style: theme.textTheme.headlineMedium?.copyWith(
                         color: AppColors.textPrimary,
                         fontWeight: FontWeight.w700,
-                        letterSpacing: -0.4,
+                        letterSpacing: -0.5,
                       ),
                     ),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 20),
                     Text(
                       '각 단계별로 필요한 팀과 실행 항목을 정리해 두어 빠르게 착수하고, 데이터를 기반으로 다음 단계를 설계합니다.',
                       style: theme.textTheme.bodyLarge?.copyWith(
@@ -65,27 +60,158 @@ class ProcessSection extends StatelessWidget {
                         height: 1.6,
                       ),
                     ),
-                    const SizedBox(height: 40),
-                    Wrap(
-                      spacing: 18,
-                      runSpacing: 18,
-                      children: [
-                        for (var i = 0; i < steps.length; i++)
-                          SizedBox(
-                            width: isWide ? cardWidth : double.infinity,
-                            child: FadeInUp(
-                              delay: Duration(milliseconds: 100 * i),
-                              child: _ProcessCard(step: steps[i]),
+                    const SizedBox(height: 80),
+                    if (isDesktop)
+                      _DesktopTimeline(steps: steps)
+                    else
+                      Column(
+                        children: [
+                          for (var i = 0; i < steps.length; i++)
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 24),
+                              child: FadeInUp(
+                                delay: Duration(milliseconds: 100 * i),
+                                child: _ProcessCard(step: steps[i]),
+                              ),
                             ),
-                          ),
-                      ],
-                    ),
+                        ],
+                      ),
                   ],
                 ),
               ),
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _DesktopTimeline extends StatelessWidget {
+  const _DesktopTimeline({required this.steps});
+
+  final List<ProcessStep> steps;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        // Connecting Line
+        Positioned(
+          top: 24,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: 2,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.accent.withValues(alpha: 0.1),
+                  AppColors.accent.withValues(alpha: 0.5),
+                  AppColors.accent.withValues(alpha: 0.1),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            for (var i = 0; i < steps.length; i++)
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    right: i < steps.length - 1 ? 24 : 0,
+                  ),
+                  child: _TimelineItem(step: steps[i], index: i),
+                ),
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _TimelineItem extends StatefulWidget {
+  const _TimelineItem({required this.step, required this.index});
+
+  final ProcessStep step;
+  final int index;
+
+  @override
+  State<_TimelineItem> createState() => _TimelineItemState();
+}
+
+class _TimelineItemState extends State<_TimelineItem> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: AppColors.background,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: _isHovered ? AppColors.accent : AppColors.accent.withValues(alpha: 0.3),
+                width: 2,
+              ),
+              boxShadow: [
+                if (_isHovered)
+                  BoxShadow(
+                    color: AppColors.accent.withValues(alpha: 0.4),
+                    blurRadius: 16,
+                    spreadRadius: 2,
+                  ),
+              ],
+            ),
+            child: Center(
+              child: Text(
+                (widget.index + 1).toString(),
+                style: TextStyle(
+                  color: _isHovered ? AppColors.accent : AppColors.textSecondary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 32),
+          Text(
+            widget.step.duration,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: AppColors.accent,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.5,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            widget.step.title,
+            style: theme.textTheme.headlineSmall?.copyWith(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            widget.step.description,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: AppColors.textSecondary,
+              height: 1.6,
+            ),
+          ),
+        ],
       ),
     );
   }

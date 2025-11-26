@@ -89,6 +89,25 @@ class _FounderSummary extends StatelessWidget {
               height: 220,
               fit: BoxFit.cover,
               filterQuality: FilterQuality.high,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Container(
+                  width: 220,
+                  height: 220,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1B2A4F),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                        : null,
+                    color: AppColors.accent,
+                  ),
+                );
+              },
               errorBuilder: (context, error, stackTrace) {
                 return Container(
                   width: 220,
@@ -193,7 +212,7 @@ class _FounderHighlights extends StatelessWidget {
           if (profile.techStacks.isNotEmpty) ...[
             const SizedBox(height: 24),
             Text(
-              'Tech Stack',
+              '기술 스택',
               style: theme.textTheme.labelMedium?.copyWith(
                 color: Colors.white.withValues(alpha: 0.8),
                 fontWeight: FontWeight.w600,

@@ -66,7 +66,7 @@ class FooterSection extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Contact',
+                                '문의하기',
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   color: AppColors.textPrimary,
                                   fontWeight: FontWeight.w700,

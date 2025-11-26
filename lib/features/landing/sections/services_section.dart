@@ -13,7 +13,7 @@ class LandingServices extends StatefulWidget {
 }
 
 class _LandingServicesState extends State<LandingServices> {
-  int _selectedIndex = 0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +24,14 @@ class _LandingServicesState extends State<LandingServices> {
         builder: (context, constraints) {
           final width = constraints.maxWidth;
           final horizontalPadding = responsive.horizontalPadding(width);
+          final isDesktop = width >= 1024;
 
           return Padding(
             padding: EdgeInsets.fromLTRB(
               horizontalPadding,
-              80,
+              120,
               horizontalPadding,
-              80,
+              120,
             ),
             child: Align(
               alignment: Alignment.topCenter,
@@ -49,7 +50,7 @@ class _LandingServicesState extends State<LandingServices> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      '완전한 제품을 만드는 Flutter Product Studio',
+                      '비즈니스 성공을 위한\n완전한 제품 개발',
                       style: theme.textTheme.headlineMedium?.copyWith(
                         color: AppColors.textPrimary,
                         fontWeight: FontWeight.w700,
@@ -65,54 +66,49 @@ class _LandingServicesState extends State<LandingServices> {
                         height: 1.6,
                       ),
                     ),
-                    const SizedBox(height: 40),
-                    // 탭 네비게이션
-                    Center(
-                      child: Container(
-                        padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          color: AppColors.surface.withValues(alpha: 0.5),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            for (var i = 0; i < widget.services.length; i++)
-                              _ServiceTab(
-                                label: widget.services[i].title,
-                                isSelected: _selectedIndex == i,
-                                onTap: () {
-                                  setState(() {
-                                    _selectedIndex = i;
-                                  });
-                                },
-                              ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    // 선택된 서비스 카드
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      transitionBuilder: (child, animation) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: SlideTransition(
-                            position: Tween<Offset>(
-                              begin: const Offset(0.0, 0.1),
-                              end: Offset.zero,
-                            ).animate(animation),
-                            child: child,
+                    const SizedBox(height: 60),
+                    // Bento Grid Layout
+                    if (isDesktop)
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: _BentoCard(
+                              service: widget.services[0],
+                              isLarge: true,
+                            ),
                           ),
-                        );
-                      },
-                      child: _ServiceCard(
-                        key: ValueKey(_selectedIndex),
-                        service: widget.services[_selectedIndex],
+                          const SizedBox(width: 24),
+                          Expanded(
+                            child: Column(
+                              children: [
+                                _BentoCard(
+                                  service: widget.services[1],
+                                  isLarge: false,
+                                ),
+                                const SizedBox(height: 24),
+                                _TechStackCard(),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                    else
+                      Column(
+                        children: [
+                          _BentoCard(
+                            service: widget.services[0],
+                            isLarge: false,
+                          ),
+                          const SizedBox(height: 24),
+                          _BentoCard(
+                            service: widget.services[1],
+                            isLarge: false,
+                          ),
+                          const SizedBox(height: 24),
+                          _TechStackCard(),
+                        ],
                       ),
-                    ),
                   ],
                 ),
               ),
@@ -124,53 +120,17 @@ class _LandingServicesState extends State<LandingServices> {
   }
 }
 
-class _ServiceTab extends StatelessWidget {
-  const _ServiceTab({
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.accent.withValues(alpha: 0.15) : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
-          border: isSelected ? Border.all(color: AppColors.accent.withValues(alpha: 0.3)) : null,
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isSelected ? AppColors.accent : AppColors.textSecondary,
-            fontSize: 15,
-            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-            letterSpacing: 0.3,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ServiceCard extends StatefulWidget {
-  const _ServiceCard({super.key, required this.service});
+class _BentoCard extends StatefulWidget {
+  const _BentoCard({required this.service, required this.isLarge});
 
   final ServiceItem service;
+  final bool isLarge;
 
   @override
-  State<_ServiceCard> createState() => _ServiceCardState();
+  State<_BentoCard> createState() => _BentoCardState();
 }
 
-class _ServiceCardState extends State<_ServiceCard> {
+class _BentoCardState extends State<_BentoCard> {
   bool _isHovered = false;
 
   @override
@@ -182,24 +142,23 @@ class _ServiceCardState extends State<_ServiceCard> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeOut,
-        transform: Matrix4.identity()..scale(_isHovered ? 1.02 : 1.0),
+        height: widget.isLarge ? 620 : 380,
         padding: const EdgeInsets.all(32),
         decoration: BoxDecoration(
-          color: AppColors.surface.withValues(alpha: 0.6),
-          borderRadius: BorderRadius.circular(28),
+          color: const Color(0xFF1D1D1F), // Apple's dark gray
+          borderRadius: BorderRadius.circular(32), // Smoother corners
           border: Border.all(
-            color: _isHovered 
-              ? AppColors.accent.withValues(alpha: 0.5)
-              : Colors.white.withValues(alpha: 0.05)
+            color: _isHovered
+                ? Colors.white.withValues(alpha: 0.2)
+                : Colors.transparent,
           ),
           boxShadow: [
-            BoxShadow(
-              color: _isHovered 
-                ? AppColors.accent.withValues(alpha: 0.15) 
-                : Colors.black.withValues(alpha: 0.2),
-              blurRadius: _isHovered ? 32 : 20,
-              offset: Offset(0, _isHovered ? 12 : 4),
-            ),
+            if (_isHovered)
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.3),
+                blurRadius: 40,
+                offset: const Offset(0, 20),
+              ),
           ],
         ),
         child: Column(
@@ -212,7 +171,11 @@ class _ServiceCardState extends State<_ServiceCard> {
                 color: AppColors.accent.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Icon(widget.service.icon, color: AppColors.accent, size: 28),
+              child: Icon(
+                widget.service.icon,
+                color: AppColors.accent,
+                size: 28,
+              ),
             ),
             const SizedBox(height: 24),
             Text(
@@ -238,32 +201,98 @@ class _ServiceCardState extends State<_ServiceCard> {
                 height: 1.6,
               ),
             ),
-            const SizedBox(height: 28),
-            for (final point in widget.service.points)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 14),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.check_rounded,
-                      color: AppColors.accent,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        point,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.5,
+            if (widget.isLarge) ...[
+              const Spacer(),
+              for (final point in widget.service.points)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 14),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.check_rounded,
+                        color: AppColors.accent,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          point,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                            height: 1.5,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+            ],
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TechStackCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 380,
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1D1D1F),
+        borderRadius: BorderRadius.circular(32),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '핵심 기술 스택',
+            style: TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 24),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: [
+              _TechChip(label: 'Flutter'),
+              _TechChip(label: 'Dart'),
+              _TechChip(label: 'Firebase'),
+              _TechChip(label: 'Supabase'),
+              _TechChip(label: 'Cloud Functions'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TechChip extends StatelessWidget {
+  const _TechChip({required this.label});
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(100),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: AppColors.textSecondary,
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );

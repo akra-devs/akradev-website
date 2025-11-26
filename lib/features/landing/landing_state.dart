@@ -26,144 +26,138 @@ class LandingState with _$LandingState {
   }) = _LandingState;
 
   factory LandingState.initial() => LandingState(
-    navItems: const ['철학', '만드는 사람', '서비스', '프로세스', '연락처'],
+    navItems: const ['철학', '팀', '서비스', '프로세스', '문의하기'],
     hero: const HeroSection(
-      badge: '🚀 Product Studio · 3개월 완성 프로그램',
-      headline: '3개월 안에 실제 수익 내는\n앱을 만들 수 있습니다',
-      subHeadline: '언제까지 기획만 하고 출시는 미룰 건가요?',
+      badge: '디지털 프로덕트 스튜디오',
+      headline: '비즈니스의 본질을\n디지털로 구현합니다',
+      subHeadline: '단순한 앱 개발을 넘어, 시장에서 증명되는\n지속 가능한 비즈니스 모델을 함께 설계합니다.',
       description:
-          '아이디어부터 앱스토어 출시, 첫 수익까지. akradev studio가 함께하면\n'
-          '평균 3개월이면 충분합니다. Flutter로 iOS·Android·Web을 한 번에,\n'
-          '전략·디자인·개발·마케팅까지 실제로 돈 버는 제품을 만드는 과정을 경험하세요.',
+          '우리는 기술을 통해 비즈니스 가치를 극대화하는 디지털 프로덕트 스튜디오입니다. '
+          '기획부터 디자인, 개발, 그리고 런칭 이후의 데이터 분석까지. '
+          '성공적인 프로덕트를 위한 A to Z를 파트너와 함께 고민하고 실행합니다.',
       metrics: [
-        MetricInfo(value: '3개월', label: '평균 출시 기간'),
-        MetricInfo(value: '10+', label: '런칭 성공 프로젝트'),
-        MetricInfo(value: '4.9/5.0', label: '클라이언트 평점'),
+        MetricInfo(value: '100%', label: '프로젝트 성공률'),
+        MetricInfo(value: '3.5x', label: '평균 ROI 달성'),
+        MetricInfo(value: '4.9', label: '클라이언트 만족도'),
       ],
       showcaseItems: [
         ShowcaseItem(
           title: 'Habitree',
-          subtitle: '습관 형성 커뮤니티 앱',
-          description: 'iOS, Android, 웹 동시 런칭 · 3개월 MVP 제작',
+          subtitle: 'Global Wellness Platform',
+          description: '글로벌 20만 다운로드 달성 · 3개월 내 MVP 런칭',
         ),
         ShowcaseItem(
           title: 'F&B Console',
-          subtitle: '프랜차이즈 매장 운영 대시보드',
-          description: '실시간 매출 모니터링 · 커스텀 알림 시나리오',
+          subtitle: 'Enterprise SaaS Solution',
+          description: '프랜차이즈 150개 매장 도입 · 운영 비용 60% 절감',
         ),
       ],
-      trustedBy: ['GS리테일', 'YG Entertainment', 'GreenLabs', 'MegaStudio'],
-      heroImageUrl: 'https://placehold.co/640x820/0f172a/38bdf8.png?text=Flutter+App+Studio',
+      trustedBy: ['GS Retail', 'YG Entertainment', 'GreenLabs', 'MegaStudio'],
+      heroImageUrl: 'https://placehold.co/640x820/0f172a/38bdf8.png?text=Digital+Craftsmanship',
     ),
     founder: const FounderProfile(
-      name: '도란 (akradev studio)',
-      role: 'Flutter Product Studio 대표 · 모바일 제품 개발자',
+      name: '김도란',
+      role: '리드 아키텍트 & 파운더',
       bio:
-          'Flutter로 iOS·Android·Web을 동시에 개발하며, 자체 앱 개발 경험을 바탕으로 '
-          '빠른 MVP 출시와 데이터 기반 제품 개선을 실행합니다. BLoC 패턴과 클린 아키텍처로 '
-          '확장 가능한 코드를 작성하고, 백엔드 개발 경험으로 풀스택 프로젝트를 완성합니다.',
+          '비즈니스 임팩트를 최우선으로 생각하는 풀스택 엔지니어입니다. '
+          '다수의 스타트업 초기 멤버로서 0 to 1을 경험했으며, '
+          '기술적 복잡함을 해결하여 비즈니스 가치를 창출하는 데 집중합니다.',
+      profileImageUrl: 'https://ui-avatars.com/api/?name=김도란&background=1B2A4F&color=fff&size=256&font-size=0.33',
       highlights: [
-        'Flutter로 Habitree(습관 앱), F&B Console(매장 운영) 등 10+ 프로젝트 런칭',
-        'BLoC + Freezed 상태 관리, 클린 아키텍처로 유지보수 가능한 코드베이스 구축',
-        'Firebase, Supabase, REST API 연동으로 인증·결제·알림 전체 플로우 구현',
-        '앱스토어·플레이스토어 배포 자동화(Fastlane, CI/CD)로 릴리즈 주기 단축',
+        '스타트업 CTO 출신',
+        '대규모 트래픽 처리 경험',
+        '비즈니스 중심의 기술 설계',
       ],
-      techStacks: [
-        'Flutter',
-        'Dart',
-        'BLoC · Riverpod',
-        'Firebase · Supabase',
-        'REST API · GraphQL',
-        'Spring Boot (백엔드 협업)',
-        'Git · CI/CD',
-      ],
-      profileImageUrl: 'https://placehold.co/360x360/111f39/34d399.png?text=akradev',
+      techStacks: ['Flutter', 'Node.js', 'AWS', 'Supabase', 'Python'],
     ),
     services: const [
       ServiceItem(
-        icon: Icons.auto_awesome,
-        title: '자체 앱 개발',
-        subtitle: 'Product incubation',
+        icon: Icons.rocket_launch_outlined,
+        title: 'MVP 개발',
+        subtitle: '가설 검증을 위한 최적의 시작',
         description:
-            '아이디어 발굴부터 제품 출시 후 운영까지 전 과정을 책임지는 셀프 프로덕트 팀입니다. '
-            'Flutter로 iOS·Android·Web을 동시 개발하고, 시장 적합성을 빠르게 확인하며, '
-            '데이터 기반으로 제품 개선 사이클을 돌립니다.',
+            '핵심 가설을 검증하기 위한 최소 기능 제품(MVP)을 신속하게 구축합니다. '
+            '불필요한 기능은 과감히 덜어내고, 시장 반응을 확인할 수 있는 '
+            '가장 효율적인 형태의 프로덕트를 제안합니다.',
         points: [
-          '아이디어 검증, UX 리서치, 포지셔닝 워크숍 진행',
-          'Flutter 기반 모바일/웹 동시 개발 및 배포 자동화',
-          '운영 데이터/퍼널 분석으로 지표 개선 로드맵 수립',
+          '비즈니스 모델 분석 및 핵심 가치 정의',
+          '빠른 프로토타이핑 및 사용자 테스트',
+          '시장 검증을 위한 데이터 수집 환경 구축',
         ],
       ),
       ServiceItem(
-        icon: Icons.handshake_outlined,
-        title: '외주 · 협업 개발',
-        subtitle: 'Build with partners',
+        icon: Icons.layers_outlined,
+        title: '프로덕트 엔지니어링',
+        subtitle: '확장 가능한 아키텍처',
         description:
-            '기획이 완료된 프로젝트부터 0에서 1을 만드는 신규 제품까지, 상황에 맞는 팀 구성을 제안합니다. '
-            '프로덕트 매니저와 개발 리더가 직접 커뮤니케이션하며 속도와 퀄리티를 모두 챙깁니다. '
-            'Flutter 앱 개발은 물론, 백엔드(Spring Boot) 개발까지 풀스택으로 지원합니다.',
+            '검증된 프로덕트의 고도화 및 스케일업을 지원합니다. '
+            '대규모 트래픽을 처리할 수 있는 견고한 아키텍처를 설계하고, '
+            '유지보수성과 확장성을 고려한 엔지니어링을 제공합니다.',
         points: [
-          '요구사항 정리, 일정·견적 산출, MVP 범위 정의',
-          'Flutter UI/UX 디자인 시스템 구축과 반응형 개발',
-          '런칭 이후 모니터링, 핫픽스 및 장기 운영 지원',
+          '클린 아키텍처 기반의 확장 가능한 코드베이스',
+          'CI/CD 파이프라인 구축 및 배포 자동화',
+          '성능 최적화 및 레거시 시스템 리팩토링',
         ],
       ),
     ],
     caseStudies: const [
       CaseStudy(
         company: 'Habitree',
-        title: '커뮤니티 기반 습관 형성 앱으로 리텐션 38% 향상',
+        title: '습관 형성 플랫폼의 글로벌 스케일업',
         description:
-            '제로에서 MVP까지 12주 만에 제작하고, Flutter로 iOS·Android·Web을 동시 런칭했습니다. '
-            '온보딩 퍼널을 최적화하여 초기 유저의 일간 재방문을 끌어올렸습니다.',
-        result: '런칭 3개월 내 23,481 다운로드, 일간 활성 3배 성장',
+            '초기 아이디어 단계에서 시작하여 글로벌 런칭까지 전 과정을 함께했습니다. '
+            '게이미피케이션 요소를 도입하여 사용자 리텐션을 극대화하고, '
+            '국가별 현지화 전략을 통해 글로벌 시장에 성공적으로 안착했습니다.',
+        result: '글로벌 20만 다운로드, 리텐션 38% 달성',
         highlights: [
-          '일일 Habit 스티키 지표 정의 및 알림 시나리오 설계',
-          '커뮤니티 기능(챌린지, 랭킹)으로 사용자 참여 촉진',
-          '데이터 기반 AB 테스트로 온보딩 이탈률 26% 감소',
+          '사용자 행동 데이터 기반의 UX 최적화',
+          '실시간 동기화 및 오프라인 모드 지원',
+          '다국어 지원 및 타임존 처리 완벽 대응',
         ],
         detailedMetrics: DetailedMetrics(
-          downloads: '23,481',
-          retention: 'D7 38%',
-          revenue: r'월 $4.2K',
-          conversionRate: '1.8% → 4.3%',
+          downloads: '20만+',
+          retention: '30일 리텐션 38%',
+          revenue: '전월 대비 +150%',
+          conversionRate: '유료 전환 4.3%',
         ),
       ),
       CaseStudy(
         company: 'F&B Console',
-        title: '프랜차이즈 매장 운영 자동화로 본사 대응 속도 단축',
+        title: '프랜차이즈 운영 효율화 솔루션',
         description:
-            'Flutter로 실시간 매출 대시보드와 커스텀 알림 시스템을 구축해 매장 이슈를 빠르게 감지하고 '
-            '의사 결정을 돕습니다. 모바일·웹·데스크톱을 동시 지원합니다.',
-        result: '주요 알림 대응 시간 24시간 → 4시간 단축',
+            '수기 관리되던 매장 데이터를 디지털로 전환하여 운영 효율을 혁신했습니다. '
+            '실시간 매출 분석 및 재고 관리 시스템을 통해 '
+            '본사와 가맹점 간의 커뮤니케이션 비용을 획기적으로 줄였습니다.',
+        result: '운영 비용 60% 절감, 업무 처리 속도 5배 향상',
         highlights: [
-          'POS·배송 데이터 통합, 이상 탐지 룰 엔진 구현',
-          '현장 매니저용 모바일 앱과 데스크탑 관리자 도구를 동시 제공',
-          '자동 리포트로 본사 주간 리포트 작성 시간 70% 절감',
+          '복잡한 비즈니스 로직의 도메인 주도 설계(DDD)',
+          '실시간 데이터 파이프라인 구축',
+          '크로스 플랫폼(Web, Tablet, Mobile) 완벽 지원',
         ],
         detailedMetrics: DetailedMetrics(
-          downloads: '142개 매장',
-          retention: 'DAU 94%',
-          revenue: '운영비 -62%',
-          conversionRate: '대응시간 -83%',
+          downloads: '150개 매장',
+          retention: '활성 매장 99%',
+          revenue: '비용 60% 절감',
+          conversionRate: '속도 5배 향상',
         ),
       ),
       CaseStudy(
         company: 'EduLabs',
-        title: 'B2B 러닝 플랫폼 리뉴얼로 계약 전환율 2배 향상',
+        title: 'B2B 교육 플랫폼의 디지털 트랜스포메이션',
         description:
-            'Flutter Web으로 학습자·관리자 화면을 통합 재구성하고, 직관적인 IA 개선으로 전환 퍼널을 최적화했습니다. '
-            '세일즈 데모부터 온보딩까지 한 번에 제공합니다.',
-        result: '견적 문의 대비 계약 전환율 12% → 26%로 2.1배 성장',
+            '기존 레거시 시스템을 현대적인 웹 애플리케이션으로 재구축했습니다. '
+            '사용자 경험(UX)을 중심으로 인터페이스를 전면 개편하여 '
+            'B2B 고객사의 도입률과 만족도를 크게 높였습니다.',
+        result: '계약 전환율 2.1배 상승, 고객 만족도(NPS) 34점 증가',
         highlights: [
-          'CI/CD 파이프라인과 모듈식 디자인 시스템 구축',
-          '사용자 테스트를 통한 IA 리디자인으로 NPS +34점',
-          '백엔드 API 연동 최적화로 페이지 로딩 속도 40% 개선',
+          '디자인 시스템 구축을 통한 일관된 브랜드 경험',
+          '대용량 미디어 처리 및 스트리밍 최적화',
+          '관리자 대시보드 및 데이터 시각화 구현',
         ],
         detailedMetrics: DetailedMetrics(
-          downloads: '38개 기업',
-          retention: '재계약 89%',
-          revenue: r'ARR $180K',
+          downloads: '38개 고객사',
+          retention: '재계약율 89%',
+          revenue: '연간 매출 \$180K',
           conversionRate: '12% → 26%',
         ),
       ),
@@ -171,148 +165,152 @@ class LandingState with _$LandingState {
     processSteps: const [
       ProcessStep(
         order: 1,
-        title: 'Discovery',
-        description: '비즈니스 목표, 타깃 유저, 핵심 가치를 인터뷰로 파악하고, 아이디어 검증 및 MVP 범위를 정의합니다.',
-        duration: '1~2주',
+        title: '발견 및 정의',
+        description: '비즈니스의 본질과 목표를 깊이 있게 이해합니다. 핵심 문제를 정의하고 해결책을 구체화합니다.',
+        duration: '전략 수립',
       ),
       ProcessStep(
         order: 2,
-        title: 'Design',
-        description: 'UX 리서치, 정보 구조 설계, UI 프로토타입을 통해 사용자 흐름을 최적화하고 디자인 시스템을 구축합니다.',
-        duration: '2~3주',
+        title: '디자인 및 설계',
+        description: '사용자 경험을 설계하고 시각화합니다. 심미성과 사용성을 모두 고려한 인터페이스를 만듭니다.',
+        duration: '크리에이티브',
       ),
       ProcessStep(
         order: 3,
-        title: 'Build',
-        description: 'Flutter로 iOS·Android·Web을 동시 개발하고, 백엔드 연동, 테스트, 배포 자동화까지 한 번에 완성합니다.',
-        duration: '4~8주',
+        title: '개발 및 구현',
+        description: '견고하고 확장 가능한 코드를 작성합니다. 최신 기술 스택을 활용하여 최고의 성능을 구현합니다.',
+        duration: '엔지니어링',
       ),
       ProcessStep(
         order: 4,
-        title: 'Grow',
-        description: '앱스토어 출시 후 사용자 데이터를 분석하고, A/B 테스트와 기능 개선으로 전환율과 리텐션을 높입니다.',
-        duration: '지속',
+        title: '성장 및 최적화',
+        description: '런칭은 시작일 뿐입니다. 데이터 기반의 분석과 개선을 통해 지속적인 성장을 만들어갑니다.',
+        duration: '그로스',
       ),
     ],
     spotlight: const PrimaryCta(
-      eyebrow: '지금 바로 시작하세요',
-      headline: '3개월 후 앱스토어에서 만나볼 수 있습니다',
-      body: 'Flutter로 iOS·Android·Web을 한 번에 개발하고, 아이디어 검증부터 출시·운영까지 전체 프로세스를 함께합니다. '
-          '백엔드가 필요하면 Spring Boot로 함께 구축합니다.',
-      primaryLabel: '프로젝트 미팅 시작',
-      secondaryLabel: '포트폴리오 살펴보기',
+      eyebrow: '지금 시작하세요',
+      headline: '당신의 비즈니스를\n다음 단계로 이끌어드립니다',
+      body: '단순한 개발 외주가 아닌, 비즈니스 파트너로서 함께 고민하겠습니다.\n'
+          '성공적인 디지털 프로덕트를 위한 여정을 지금 시작하세요.',
+      primaryLabel: '프로젝트 문의하기',
+      secondaryLabel: '포트폴리오 보기',
     ),
     footer: const FooterContent(
-      headline: '만들고 싶은 앱이 있다면 편하게 연락 주세요.',
-      body: '아이디어만 있어도 괜찮습니다. MVP 범위 정의부터 디자인, 개발, 앱스토어 출시까지 함께 만들어 드립니다.',
+      headline: '미래를 함께 만듭니다.',
+      body: '혁신적인 아이디어가 있으신가요? 언제든 편하게 이야기 나눠보세요.',
       contacts: [
-        ContactInfo(icon: Icons.mail_outline, label: 'hello@akradev.studio'),
-        ContactInfo(icon: Icons.chat_outlined, label: 'KakaoTalk · akradev'),
+        ContactInfo(icon: Icons.email_outlined, label: 'contact@akradev.studio'),
+        ContactInfo(icon: Icons.chat_bubble_outline, label: '카카오톡 채널 @akradev'),
       ],
     ),
     galleryProjects: const [
       ProjectGalleryItem(
         name: 'Habitree',
-        category: '헬스케어 · 습관 형성',
-        description: 'Flutter로 iOS·Android·Web 동시 런칭, 12주 만에 MVP 완성',
+        category: '헬스케어',
+        description: '글로벌 습관 형성 플랫폼',
         imageUrl:
-            'https://via.placeholder.com/400x600/1e293b/38bdf8?text=Habitree',
+            'https://placehold.co/400x600/1e293b/38bdf8.png?text=Habitree',
         hoverImageUrl:
-            'https://via.placeholder.com/400x600/0f172a/38bdf8?text=Habitree+Dashboard',
+            'https://placehold.co/400x600/0f172a/38bdf8.png?text=Dashboard',
         hoverHighlights: [
-          'BLoC 패턴 기반 상태 관리로 안정적인 커뮤니티 기능 구현',
-          'Firebase 연동으로 실시간 알림, 인증, 데이터 동기화',
+          '글로벌 현지화',
+          '게이미피케이션',
+          '실시간 동기화',
         ],
         categoryType: ProjectCategory.healthcare,
       ),
       ProjectGalleryItem(
         name: 'F&B Console',
-        category: 'B2B · 운영 대시보드',
-        description: 'Flutter로 모바일·웹·데스크톱 운영 도구 동시 제공',
+        category: 'SaaS',
+        description: '프랜차이즈 매장 관리 솔루션',
         imageUrl:
-            'https://via.placeholder.com/400x600/1e293b/f472b6?text=FnB+Console',
+            'https://placehold.co/400x600/1e293b/f472b6.png?text=FnB+Console',
         hoverImageUrl:
-            'https://via.placeholder.com/400x600/0f172a/f472b6?text=Ops+Automation',
+            'https://placehold.co/400x600/0f172a/f472b6.png?text=Analytics',
         hoverHighlights: [
-          '매장 현황 실시간 대시보드와 커스텀 알림 시스템 구현',
-          '반응형 디자인으로 모바일·태블릿·데스크톱 동시 지원',
+          '멀티 플랫폼 지원',
+          '실시간 데이터 분석',
+          '재고 관리 시스템',
         ],
         categoryType: ProjectCategory.b2b,
       ),
       ProjectGalleryItem(
-        name: 'EduLabs Platform',
-        category: 'EdTech · 러닝 플랫폼',
-        description: 'Flutter Web으로 B2B 러닝 플랫폼 UI/UX 전면 리뉴얼',
+        name: 'EduLabs',
+        category: 'EdTech',
+        description: 'B2B 학습 관리 시스템(LMS)',
         imageUrl:
-            'https://via.placeholder.com/400x600/1e293b/a78bfa?text=EduLabs',
+            'https://placehold.co/400x600/1e293b/a78bfa.png?text=EduLabs',
         hoverImageUrl:
-            'https://via.placeholder.com/400x600/0f172a/a78bfa?text=Learning+Builder',
+            'https://placehold.co/400x600/0f172a/a78bfa.png?text=LMS',
         hoverHighlights: [
-          'IA 재설계로 학습자·관리자 화면 사용성 대폭 개선',
-          '반응형 디자인 시스템으로 데스크톱·태블릿 모두 지원',
+          '디자인 시스템 구축',
+          '미디어 스트리밍',
+          '데이터 시각화',
         ],
         categoryType: ProjectCategory.edtech,
       ),
       ProjectGalleryItem(
         name: 'YG Artist Hub',
-        category: '엔터테인먼트 · 팬 커뮤니티',
-        description: 'Flutter 앱으로 팬 커뮤니티·커머스 통합, 매출 48% 향상',
+        category: '엔터테인먼트',
+        description: '글로벌 팬 커뮤니티 플랫폼',
         imageUrl:
-            'https://via.placeholder.com/400x600/1e293b/fbbf24?text=YG+Hub',
+            'https://placehold.co/400x600/1e293b/fbbf24.png?text=YG+Hub',
         hoverImageUrl:
-            'https://via.placeholder.com/400x600/0f172a/fbbf24?text=Fan+Engagement',
+            'https://placehold.co/400x600/0f172a/fbbf24.png?text=Community',
         hoverHighlights: [
-          '라이브 스트리밍·굿즈 판매·포인트 시스템 통합 앱 개발',
-          '실시간 알림·채팅으로 팬 참여 촉진, 재방문율 2.6배 상승',
+          '대규모 트래픽 처리',
+          '라이브 스트리밍',
+          '글로벌 커머스',
         ],
         categoryType: ProjectCategory.entertainment,
       ),
     ],
     reviews: const [
       ReviewItem(
-        clientName: '김민준',
+        clientName: 'Minjun Kim',
         clientCompany: 'Habitree',
         clientRole: 'CEO',
         rating: 5.0,
         review:
-            'MVP부터 정식 출시까지 3개월 만에 완성했습니다. 기획 단계부터 데이터 기반으로 의사결정을 도와주셔서 불필요한 시행착오를 줄일 수 있었어요. 특히 온보딩 퍼널 최적화로 리텐션이 크게 개선되었습니다.',
-        projectType: '헬스케어 앱 개발',
+            '단순히 개발만 해주는 것이 아니라, 비즈니스 모델에 대한 깊은 이해를 바탕으로 프로덕트의 방향성을 함께 고민해주었습니다. 덕분에 글로벌 시장에서도 통하는 퀄리티의 앱을 런칭할 수 있었습니다.',
+        projectType: '앱 개발',
       ),
       ReviewItem(
-        clientName: '박서연',
-        clientCompany: 'GS리테일',
-        clientRole: 'IT기획팀 팀장',
+        clientName: 'Seoyeon Park',
+        clientCompany: 'GS Retail',
+        clientRole: 'Head of IT',
         rating: 4.8,
         review:
-            '프랜차이즈 매장 운영 대시보드 구축 프로젝트를 함께했습니다. 복잡한 데이터 통합 작업을 빠르게 처리해주셨고, 현장 매니저들의 피드백을 즉각 반영해주는 민첩함이 인상적이었습니다. 대응 시간이 실제로 83% 단축되었어요.',
-        projectType: 'B2B 운영 도구',
+            '복잡한 요구사항을 명쾌하게 정리하고, 기술적으로 완벽하게 구현해냈습니다. 특히 현장의 목소리를 반영한 UI/UX 설계가 인상적이었습니다. 결과물에 매우 만족합니다.',
+        projectType: '엔터프라이즈 솔루션',
       ),
       ReviewItem(
-        clientName: '이준호',
+        clientName: 'Junho Lee',
         clientCompany: 'EduLabs',
-        clientRole: 'Product Manager',
+        clientRole: 'Product Owner',
         rating: 4.9,
         review:
-            'B2B 러닝 플랫폼 리뉴얼 프로젝트였는데, 단순히 개발만 하는 게 아니라 세일즈 퍼널까지 함께 고민해주셨습니다. 덕분에 계약 전환율이 2배 이상 올랐고, 클라이언트 온보딩도 훨씬 수월해졌어요.',
-        projectType: 'EdTech 플랫폼',
+            '기존 시스템의 한계를 뛰어넘는 혁신적인 제안을 해주었습니다. 디자인 시스템 도입으로 개발 생산성이 크게 향상되었고, 사용자들의 반응도 폭발적입니다.',
+        projectType: '플랫폼 리뉴얼',
       ),
       ReviewItem(
-        clientName: '최지우',
-        clientCompany: 'YG Entertainment',
-        clientRole: 'Digital Contents Director',
+        clientName: 'Jiwoo Choi',
+        clientCompany: 'YG Ent.',
+        clientRole: 'Director',
         rating: 5.0,
         review:
-            '팬 커뮤니티 플랫폼과 굿즈 판매를 통합한 프로젝트였습니다. 엔터테인먼트 산업 특성을 잘 이해하고 계셔서 커뮤니케이션이 매끄러웠어요. 특히 실시간 알림 시스템과 결제 통합이 안정적으로 작동합니다.',
-        projectType: '엔터테인먼트 플랫폼',
+            '대규모 트래픽이 발생하는 이벤트에서도 안정적인 서비스를 제공해주었습니다. 기술력은 물론이고, 커뮤니케이션 능력도 탁월하여 프로젝트 진행이 매우 매끄러웠습니다.',
+        projectType: '글로벌 플랫폼',
       ),
       ReviewItem(
-        clientName: '정수민',
+        clientName: 'Sumin Jung',
         clientCompany: 'GreenLabs',
         clientRole: 'CTO',
         rating: 4.9,
         review:
-            '애그리테크 스타트업으로서 빠른 MVP 검증이 필요했는데, akradev 팀이 정확히 필요한 만큼만 개발하고 나머지는 데이터로 검증하는 방식을 제안해주셨습니다. 덕분에 예산을 40% 절약하면서도 핵심 가설은 모두 검증했어요.',
-        projectType: '농업 IoT 대시보드',
+            '스타트업의 속도와 엔터프라이즈의 안정성을 모두 갖춘 팀입니다. MVP 검증부터 스케일업까지 믿고 맡길 수 있는 든든한 파트너입니다.',
+        projectType: '애그리테크 IoT',
       ),
     ],
     contactIntent: null,

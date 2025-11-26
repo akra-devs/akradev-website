@@ -31,8 +31,8 @@ class PhilosophySection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'PHILOSOPHY',
-                      style: GoogleFonts.inter(
+                      '우리의 철학',
+                      style: GoogleFonts.notoSansKr(
                         color: AppColors.accent,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -41,11 +41,11 @@ class PhilosophySection extends StatelessWidget {
                     ),
                     const SizedBox(height: 32),
                     Text(
-                      'Code is Poetry,\nProduct is Art.',
+                      '기술의 깊이가\n비즈니스의 높이를 결정합니다',
                       style: theme.textTheme.displayMedium?.copyWith(
                         color: AppColors.textPrimary,
                         fontWeight: FontWeight.w800,
-                        height: 1.1,
+                        height: 1.2,
                         letterSpacing: -1.0,
                       ),
                     ),
@@ -70,9 +70,9 @@ class PhilosophySection extends StatelessWidget {
                         const SizedBox(width: 32),
                         Expanded(
                           child: Text(
-                            '우리는 코드가 단순한 기능 구현을 넘어, 미래를 그리는 붓이라고 믿습니다.\n'
-                            '단 한 줄의 코드에도 장인 정신을 담아, 사용자의 삶을 변화시키는\n'
-                            '가치 있는 디지털 경험을 창조합니다.',
+                            '우리는 코드가 단순한 기능 구현을 넘어, 비즈니스 성장을 견인하는 핵심 자산이라고 믿습니다.\n'
+                            '치열한 고민과 정교한 설계를 통해, 시장에서 증명되는\n'
+                            '압도적인 디지털 경쟁력을 창조합니다.',
                             style: theme.textTheme.headlineSmall?.copyWith(
                               color: AppColors.textSecondary,
                               fontWeight: FontWeight.w400,
@@ -107,19 +107,19 @@ class _PhilosophyGrid extends StatelessWidget {
           children: [
             _PhilosophyItem(
               icon: Icons.psychology_outlined,
-              title: 'Deep Thinking',
-              description: '본질을 꿰뚫는 통찰력으로\n문제의 핵심을 해결합니다.',
+              title: '본질적 통찰',
+              description: '현상을 넘어 문제의 본질을\n꿰뚫어 봅니다.',
               isMobile: isMobile,
             ),
             _PhilosophyItem(
               icon: Icons.code,
-              title: 'Clean Code',
-              description: '유지보수 가능한 견고한\n아키텍처를 설계합니다.',
+              title: '견고한 설계',
+              description: '지속 가능한 성장을 위한\n단단한 기반을 만듭니다.',
               isMobile: isMobile,
             ),
             _PhilosophyItem(
               icon: Icons.rocket_launch_outlined,
-              title: 'Fast Execution',
+              title: '압도적 실행',
               description: '빠른 실행과 검증으로\n시장을 선점합니다.',
               isMobile: isMobile,
             ),

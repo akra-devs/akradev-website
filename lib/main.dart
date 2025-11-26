@@ -83,7 +83,7 @@ class _LandingPageState extends State<LandingPage> {
       case '철학':
         targetKey = _philosophyKey;
         break;
-      case '만드는 사람':
+      case '팀':
         targetKey = _founderKey;
         break;
       case '서비스':
@@ -92,7 +92,7 @@ class _LandingPageState extends State<LandingPage> {
       case '프로세스':
         targetKey = _processKey;
         break;
-      case '연락처':
+      case '문의하기':
         targetKey = _contactKey;
         break;
     }

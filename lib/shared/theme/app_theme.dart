@@ -30,18 +30,18 @@ class AppTheme {
       textTheme: baseTextTheme.copyWith(
         displayLarge: baseTextTheme.displayLarge?.copyWith(
           fontFamily: headingStyle.fontFamily,
-          fontSize: 72,
-          fontWeight: FontWeight.w800,
-          letterSpacing: -2.5,
-          height: 1.1,
+          fontSize: 96, // Huge cinematic title
+          fontWeight: FontWeight.w700, // Apple uses slightly lighter than w800 for huge text
+          letterSpacing: -3.0,
+          height: 1.05,
           color: AppColors.textPrimary,
         ),
         displayMedium: baseTextTheme.displayMedium?.copyWith(
           fontFamily: headingStyle.fontFamily,
-          fontSize: 56,
-          fontWeight: FontWeight.w800,
-          letterSpacing: -1.5,
-          height: 1.15,
+          fontSize: 64,
+          fontWeight: FontWeight.w700,
+          letterSpacing: -2.0,
+          height: 1.1,
           color: AppColors.textPrimary,
         ),
         displaySmall: baseTextTheme.displaySmall?.copyWith(
@@ -54,10 +54,10 @@ class AppTheme {
         ),
         headlineMedium: baseTextTheme.headlineMedium?.copyWith(
           fontFamily: headingStyle.fontFamily,
-          fontSize: 32,
-          fontWeight: FontWeight.w700,
+          fontSize: 40,
+          fontWeight: FontWeight.w600, // Semi-bold for subheadings
           letterSpacing: -0.5,
-          height: 1.3,
+          height: 1.2,
           color: AppColors.textPrimary,
         ),
         headlineSmall: baseTextTheme.headlineSmall?.copyWith(
