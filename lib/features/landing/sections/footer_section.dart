@@ -29,12 +29,8 @@ class FooterSection extends StatelessWidget {
               top: BorderSide(color: Colors.white.withValues(alpha: 0.05)),
             ),
           ),
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1200),
-              child:
-                  isDesktop
+          child:
+              isDesktop
                       ? Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -108,9 +104,7 @@ class FooterSection extends StatelessWidget {
                           ],
                         ],
                       ),
-            ),
-          ),
-        );
+          );
       },
     );
   }

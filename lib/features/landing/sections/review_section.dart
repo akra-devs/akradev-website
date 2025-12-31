@@ -37,11 +37,7 @@ class ReviewSection extends StatelessWidget {
               horizontalPadding,
               80,
             ),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1200),
-                child: Column(
+            child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
@@ -65,6 +61,7 @@ class ReviewSection extends StatelessWidget {
                                 style: theme.textTheme.displaySmall?.copyWith(
                                   color: AppColors.textPrimary,
                                   fontWeight: FontWeight.w700,
+                                  fontSize: isWide ? 42 : 28,
                                   height: 1.2,
                                 ),
                               ),
@@ -143,8 +140,6 @@ class ReviewSection extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-            ),
           ),
         );
       },

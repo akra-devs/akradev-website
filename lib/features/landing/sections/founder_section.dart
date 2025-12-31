@@ -33,7 +33,12 @@ class FounderSection extends StatelessWidget {
                   ? Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(child: _FounderSummary(profile: profile)),
+                      Expanded(
+                        child: _FounderSummary(
+                          profile: profile,
+                          isWide: isWide,
+                        ),
+                      ),
                       const SizedBox(width: 48),
                       Expanded(child: _FounderHighlights(profile: profile)),
                     ],
@@ -41,7 +46,10 @@ class FounderSection extends StatelessWidget {
                   : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _FounderSummary(profile: profile),
+                      _FounderSummary(
+                        profile: profile,
+                        isWide: isWide,
+                      ),
                       const SizedBox(height: 32),
                       _FounderHighlights(profile: profile),
                     ],
@@ -54,13 +62,7 @@ class FounderSection extends StatelessWidget {
               horizontalPadding,
               56,
             ),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1100),
-                child: content,
-              ),
-            ),
+            child: content,
           );
         },
       ),
@@ -69,9 +71,10 @@ class FounderSection extends StatelessWidget {
 }
 
 class _FounderSummary extends StatelessWidget {
-  const _FounderSummary({required this.profile});
+  const _FounderSummary({required this.profile, required this.isWide});
 
   final FounderProfile profile;
+  final bool isWide;
 
   @override
   Widget build(BuildContext context) {
@@ -143,6 +146,7 @@ class _FounderSummary extends StatelessWidget {
             color: Colors.white,
             fontWeight: FontWeight.w700,
             letterSpacing: -0.4,
+            fontSize: isWide ? 40 : 28,
           ),
         ),
         const SizedBox(height: 8),

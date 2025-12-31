@@ -21,6 +21,7 @@ import 'features/landing/sections/services_section.dart';
 import 'features/landing/sections/spotlight_section.dart';
 import 'shared/theme/app_colors.dart';
 import 'shared/theme/app_theme.dart';
+import 'shared/utils/responsive.dart' as responsive;
 
 
 void main() {
@@ -117,94 +118,104 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LandingCubit, LandingState>(
-      listenWhen:
-          (previous, current) =>
-              previous.isContactDialogVisible !=
-                  current.isContactDialogVisible ||
-              previous.contactIntent != current.contactIntent,
-      listener: (context, state) async {
-        if (state.isContactDialogVisible) {
-          await _showContactDialog(context, state);
-          if (context.mounted) {
-            context.read<LandingCubit>().dismissContactDialog();
-          }
-        }
-      },
-      child: BlocBuilder<LandingCubit, LandingState>(
-        builder: (context, state) {
-          final cubit = context.read<LandingCubit>();
-          void handleProjectInquiry() => cubit.requestProjectInquiry();
-          void handlePortfolioRequest() => cubit.requestPortfolio();
+    final mediaQuery = MediaQuery.of(context);
+    final width = mediaQuery.size.width;
+    final responsiveScale = responsive.textScale(width);
+    final systemScale = MediaQuery.textScaleFactorOf(context);
+    final effectiveTextScale =
+        systemScale > 1.0 ? systemScale : systemScale * responsiveScale;
 
-          return Scaffold(
-            body: Stack(
-              children: [
-                SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (state.isUrgencyBannerVisible)
-                        const SizedBox(height: 48),
-                      LandingHero(
-                        hero: state.hero,
-                        navItems: state.navItems,
-                        onProjectInquiry: handleProjectInquiry,
-                        onPortfolioRequest: handlePortfolioRequest,
-                        onNavItemClick: _scrollToSection,
-                      ),
-                      // Increased spacing for "Pro" feel (Whitespace is luxury)
-                      const SizedBox(height: 160),
-                      PhilosophySection(key: _philosophyKey),
-                      const SizedBox(height: 160),
-                      FounderSection(
-                        key: _founderKey,
-                        profile: state.founder,
-                      ),
-                      const SizedBox(height: 180),
-                      CaseStudiesSection(
-                        studies: state.caseStudies,
-                        onProjectInquiry: handleProjectInquiry,
-                      ),
-                      const SizedBox(height: 180),
-                      ProjectGallerySection(projects: state.galleryProjects),
-                      const SizedBox(height: 180),
-                      ProcessSection(
-                        key: _processKey,
-                        steps: state.processSteps,
-                      ),
-                      const SizedBox(height: 180),
-                      LandingServices(
-                        key: _servicesKey,
-                        services: state.services,
-                      ),
-                      const SizedBox(height: 180),
-                      ReviewSection(reviews: state.reviews),
-                      const SizedBox(height: 180),
-                      SpotlightCtaSection(
-                        data: state.spotlight,
-                        onPrimary: handleProjectInquiry,
-                        onSecondary: handlePortfolioRequest,
-                      ),
-                      const SizedBox(height: 120),
-                      FooterSection(key: _contactKey, content: state.footer),
-                    ],
-                  ),
-                ),
-                if (state.isUrgencyBannerVisible)
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: UrgencyBanner(
-                      onDismiss: () => cubit.dismissUrgencyBanner(),
+    return MediaQuery(
+      data: mediaQuery.copyWith(
+        textScaler: TextScaler.linear(effectiveTextScale),
+      ),
+      child: BlocListener<LandingCubit, LandingState>(
+        listenWhen: (previous, current) =>
+            previous.isContactDialogVisible != current.isContactDialogVisible ||
+            previous.contactIntent != current.contactIntent,
+        listener: (context, state) async {
+          if (state.isContactDialogVisible) {
+            await _showContactDialog(context, state);
+            if (context.mounted) {
+              context.read<LandingCubit>().dismissContactDialog();
+            }
+          }
+        },
+        child: BlocBuilder<LandingCubit, LandingState>(
+          builder: (context, state) {
+            final cubit = context.read<LandingCubit>();
+            void handleProjectInquiry() => cubit.requestProjectInquiry();
+            void handlePortfolioRequest() => cubit.requestPortfolio();
+
+            return Scaffold(
+              body: Stack(
+                children: [
+                  SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        if (state.isUrgencyBannerVisible)
+                          const SizedBox(height: 48),
+                        LandingHero(
+                          hero: state.hero,
+                          navItems: state.navItems,
+                          onProjectInquiry: handleProjectInquiry,
+                          onPortfolioRequest: handlePortfolioRequest,
+                          onNavItemClick: _scrollToSection,
+                        ),
+                        // Increased spacing for "Pro" feel (Whitespace is luxury)
+                        const SizedBox(height: 160),
+                        PhilosophySection(key: _philosophyKey),
+                        const SizedBox(height: 160),
+                        FounderSection(
+                          key: _founderKey,
+                          profile: state.founder,
+                        ),
+                        const SizedBox(height: 180),
+                        CaseStudiesSection(
+                          studies: state.caseStudies,
+                          onProjectInquiry: handleProjectInquiry,
+                        ),
+                        const SizedBox(height: 180),
+                        ProjectGallerySection(projects: state.galleryProjects),
+                        const SizedBox(height: 180),
+                        ProcessSection(
+                          key: _processKey,
+                          steps: state.processSteps,
+                        ),
+                        const SizedBox(height: 180),
+                        LandingServices(
+                          key: _servicesKey,
+                          services: state.services,
+                        ),
+                        const SizedBox(height: 180),
+                        ReviewSection(reviews: state.reviews),
+                        const SizedBox(height: 180),
+                        SpotlightCtaSection(
+                          data: state.spotlight,
+                          onPrimary: handleProjectInquiry,
+                          onSecondary: handlePortfolioRequest,
+                        ),
+                        const SizedBox(height: 120),
+                        FooterSection(key: _contactKey, content: state.footer),
+                      ],
                     ),
                   ),
-              ],
-            ),
-          );
-        },
+                  if (state.isUrgencyBannerVisible)
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: UrgencyBanner(
+                        onDismiss: () => cubit.dismissUrgencyBanner(),
+                      ),
+                    ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

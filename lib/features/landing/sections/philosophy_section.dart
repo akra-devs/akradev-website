@@ -23,11 +23,7 @@ class PhilosophySection extends StatelessWidget {
               horizontalPadding,
               120,
             ),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1000),
-                child: Column(
+            child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -45,6 +41,7 @@ class PhilosophySection extends StatelessWidget {
                       style: theme.textTheme.displayMedium?.copyWith(
                         color: AppColors.textPrimary,
                         fontWeight: FontWeight.w800,
+                        fontSize: width >= 1024 ? 64 : 36,
                         height: 1.2,
                         letterSpacing: -1.0,
                       ),
@@ -77,6 +74,7 @@ class PhilosophySection extends StatelessWidget {
                               color: AppColors.textSecondary,
                               fontWeight: FontWeight.w400,
                               height: 1.6,
+                              fontSize: width >= 1024 ? 24 : 18,
                             ),
                           ),
                         ),
@@ -86,9 +84,7 @@ class PhilosophySection extends StatelessWidget {
                     _PhilosophyGrid(),
                   ],
                 ),
-              ),
-            ),
-          );
+              );
         },
       ),
     );

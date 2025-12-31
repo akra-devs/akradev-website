@@ -28,11 +28,7 @@ class ProcessSection extends StatelessWidget {
               horizontalPadding,
               120,
             ),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1200),
-                child: Column(
+            child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -49,6 +45,7 @@ class ProcessSection extends StatelessWidget {
                       style: theme.textTheme.headlineMedium?.copyWith(
                         color: AppColors.textPrimary,
                         fontWeight: FontWeight.w700,
+                        fontSize: isDesktop ? 48 : 32,
                         letterSpacing: -0.5,
                       ),
                     ),
@@ -78,9 +75,7 @@ class ProcessSection extends StatelessWidget {
                       ),
                   ],
                 ),
-              ),
-            ),
-          );
+              );
         },
       ),
     );

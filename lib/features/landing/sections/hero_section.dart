@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../shared/utils/responsive.dart' as responsive;
 import '../../../shared/widgets/fade_in_up.dart';
 import '../../../shared/widgets/hover_scale_effect.dart';
 import '../landing_state.dart';
@@ -51,7 +52,9 @@ class LandingHero extends StatelessWidget {
                     child: SingleChildScrollView(
                       physics: const NeverScrollableScrollPhysics(),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: responsive.horizontalPadding(size.width),
+                        ),
                         child: _HeroContent(
                           hero: hero,
                           onProjectInquiry: onProjectInquiry,

@@ -25,11 +25,8 @@ class SpotlightCtaSection extends StatelessWidget {
 
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 1100),
-              padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 52),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 52),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
                   colors: [Color(0xFF0EA5E9), Color(0xFF6366F1)],
@@ -52,7 +49,11 @@ class SpotlightCtaSection extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
-                            child: _SpotlightCopy(theme: theme, data: data),
+                            child: _SpotlightCopy(
+                              theme: theme,
+                              data: data,
+                              isWide: isWide,
+                            ),
                           ),
                           const SizedBox(width: 40),
                           _SpotlightActions(
@@ -66,7 +67,11 @@ class SpotlightCtaSection extends StatelessWidget {
                       : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _SpotlightCopy(theme: theme, data: data),
+                          _SpotlightCopy(
+                            theme: theme,
+                            data: data,
+                            isWide: isWide,
+                          ),
                           const SizedBox(height: 32),
                           _SpotlightActions(
                             onPrimary: onPrimary,
@@ -78,18 +83,22 @@ class SpotlightCtaSection extends StatelessWidget {
                         ],
                       ),
             ),
-          ),
-        );
+          );
       },
     );
   }
 }
 
 class _SpotlightCopy extends StatelessWidget {
-  const _SpotlightCopy({required this.theme, required this.data});
+  const _SpotlightCopy({
+    required this.theme,
+    required this.data,
+    required this.isWide,
+  });
 
   final ThemeData theme;
   final PrimaryCta data;
+  final bool isWide;
 
   @override
   Widget build(BuildContext context) {
@@ -112,6 +121,7 @@ class _SpotlightCopy extends StatelessWidget {
             fontWeight: FontWeight.w800,
             letterSpacing: -0.4,
             height: 1.2,
+            fontSize: isWide ? 56 : 32,
           ),
         ),
         const SizedBox(height: 18),

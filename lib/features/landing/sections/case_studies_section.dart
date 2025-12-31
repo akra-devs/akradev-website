@@ -44,11 +44,7 @@ class CaseStudiesSection extends StatelessWidget {
               horizontalPadding,
               80,
             ),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1200),
-                child: Column(
+            child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -65,6 +61,7 @@ class CaseStudiesSection extends StatelessWidget {
                       style: theme.textTheme.headlineMedium?.copyWith(
                         color: AppColors.textPrimary,
                         fontWeight: FontWeight.w700,
+                        fontSize: width >= 1024 ? 48 : 32,
                         letterSpacing: -0.5,
                       ),
                     ),
@@ -99,9 +96,7 @@ class CaseStudiesSection extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-            ),
-          );
+              );
         },
       ),
     );
