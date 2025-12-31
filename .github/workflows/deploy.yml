@@ -1,9 +1,8 @@
-name: Build and Deploy Flutter Web to RefinedStone.github.io
+name: Deploy Flutter Web to akra-devs.github.io
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -11,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source repo
+      - name: Checkout source
         uses: actions/checkout@v4
 
       - name: Setup Flutter
@@ -22,29 +21,8 @@ jobs:
       - name: Flutter Pub Get
         run: flutter pub get
 
-      - name: Compute deploy subdir and base href
-        env:
-          CUSTOM_SUBDIR: ${{ vars.PAGES_SUBDIR }}
-        run: |
-          SUBDIR="${CUSTOM_SUBDIR:-.}"
-
-          SUBDIR="${SUBDIR#/}"
-          SUBDIR="${SUBDIR%/}"
-          if [ -z "$SUBDIR" ]; then
-            SUBDIR="."
-            BASE_HREF="/"
-          elif [ "$SUBDIR" = "." ]; then
-            BASE_HREF="/"
-          else
-            BASE_HREF="/${SUBDIR}/"
-          fi
-
-          echo "DEPLOY_SUBDIR=$SUBDIR" >> "$GITHUB_ENV"
-          echo "BASE_HREF=$BASE_HREF" >> "$GITHUB_ENV"
-          echo "Using subdir: $SUBDIR with base href $BASE_HREF"
-
-      - name: Build Flutter Web
-        run: flutter build web --release --base-href "$BASE_HREF"
+      - name: Build Flutter Web (root)
+        run: flutter build web --release --base-href "/"
 
       - name: Add .nojekyll
         run: echo "" > build/web/.nojekyll
@@ -57,52 +35,17 @@ jobs:
           path: site
           fetch-depth: 1
 
-      - name: Copy build output into docs subdir
+      - name: Replace docs contents (keep CNAME)
         run: |
-          TARGET_DIR="site/docs"
-          if [ "$DEPLOY_SUBDIR" != "." ]; then
-            TARGET_DIR="$TARGET_DIR/$DEPLOY_SUBDIR"
-          fi
-          if [ "$TARGET_DIR" = "site/docs" ]; then
-            mkdir -p "$TARGET_DIR"
-            find "$TARGET_DIR" -mindepth 1 ! -name 'CNAME' -exec rm -rf {} +
-          else
-            rm -rf "$TARGET_DIR"
-            mkdir -p "$TARGET_DIR"
-          fi
-          cp -R build/web/* "$TARGET_DIR/"
+          mkdir -p site/docs
+          find site/docs -mindepth 1 ! -name 'CNAME' -exec rm -rf {} +
+          cp -R build/web/* site/docs/
 
-      - name: (Optional) Create root redirect to subdir
-        if: env.DEPLOY_SUBDIR != '.'
-        env:
-          TARGET_SUBDIR: ${{ env.DEPLOY_SUBDIR }}
-        run: |
-          ROOT_INDEX="site/docs/index.html"
-          mkdir -p "$(dirname "$ROOT_INDEX")"
-          cat > "$ROOT_INDEX" <<EOF
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="refresh" content="0; url=/${TARGET_SUBDIR}/">
-    <link rel="canonical" href="https://akra.kr/${TARGET_SUBDIR}/">
-    <title>Redirecting…</title>
-  </head>
-  <body>
-    <p>Redirecting to <a href="/${TARGET_SUBDIR}/">/${TARGET_SUBDIR}/</a></p>
-  </body>
-</html>
-EOF
-
-      - name: Commit and push to akra-devs.github.io
+      - name: Commit and push
         run: |
           cd site
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if [ "$DEPLOY_SUBDIR" = "." ]; then
-            git add docs
-          else
-            git add "docs/$DEPLOY_SUBDIR"
-          fi
-          git commit -m "Deploy ${DEPLOY_SUBDIR} from CI" || echo "No changes to commit"
+          git add docs
+          git commit -m "Deploy root from CI" || echo "No changes to commit"
           git push origin main
