@@ -1,4 +1,4 @@
-name: Deploy Flutter Web to Pages
+name: Build and Deploy Flutter Web to RefinedStone.github.io
 
 on:
   push:
@@ -6,22 +6,12 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
-  build:
-    name: Build
+  build-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout source repo
         uses: actions/checkout@v4
 
       - name: Setup Flutter
@@ -32,32 +22,62 @@ jobs:
       - name: Flutter Pub Get
         run: flutter pub get
 
-      - name: Determine base href for GitHub Pages
+      - name: Compute deploy subdir and base href
+        env:
+          CUSTOM_SUBDIR: ${{ vars.PAGES_SUBDIR }}
         run: |
-          REPO_NAME="${GITHUB_REPOSITORY#*/}"
-          USER_SITE="${GITHUB_REPOSITORY_OWNER}.github.io"
-          if [ "$REPO_NAME" = "$USER_SITE" ]; then
-            echo "BASE_HREF=/" >> "$GITHUB_ENV"
+          SOURCE_REPO="${GITHUB_REPOSITORY#*/}"
+          SUBDIR="${CUSTOM_SUBDIR:-$SOURCE_REPO}"
+
+          SUBDIR="${SUBDIR#/}"
+          SUBDIR="${SUBDIR%/}"
+          if [ -z "$SUBDIR" ]; then
+            SUBDIR="."
+            BASE_HREF="/"
+          elif [ "$SUBDIR" = "." ]; then
+            BASE_HREF="/"
           else
-            echo "BASE_HREF=/${REPO_NAME}/" >> "$GITHUB_ENV"
+            BASE_HREF="/${SUBDIR}/"
           fi
+
+          echo "DEPLOY_SUBDIR=$SUBDIR" >> "$GITHUB_ENV"
+          echo "BASE_HREF=$BASE_HREF" >> "$GITHUB_ENV"
+          echo "Using subdir: $SUBDIR with base href $BASE_HREF"
 
       - name: Build Flutter Web
         run: flutter build web --release --base-href "$BASE_HREF"
 
-      - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: build/web
+      - name: Add .nojekyll
+        run: echo "" > build/web/.nojekyll
 
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Checkout RefinedStone.github.io
+        uses: actions/checkout@v4
+        with:
+          repository: RefinedStone/RefinedStone.github.io
+          token: ${{ secrets.PERSONAL_TOKEN }}
+          path: site
+          fetch-depth: 1
+
+      - name: Copy build output into docs subdir
+        run: |
+          TARGET_DIR="site/docs"
+          if [ "$DEPLOY_SUBDIR" != "." ]; then
+            TARGET_DIR="$TARGET_DIR/$DEPLOY_SUBDIR"
+          fi
+
+          rm -rf "$TARGET_DIR"
+          mkdir -p "$TARGET_DIR"
+          cp -R build/web/* "$TARGET_DIR/"
+
+      - name: Commit and push to RefinedStone.github.io
+        run: |
+          cd site
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ "$DEPLOY_SUBDIR" = "." ]; then
+            git add docs
+          else
+            git add "docs/$DEPLOY_SUBDIR"
+          fi
+          git commit -m "Deploy ${DEPLOY_SUBDIR} from CI" || echo "No changes to commit"
+          git push origin main
