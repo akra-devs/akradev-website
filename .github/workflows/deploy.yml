@@ -50,10 +50,10 @@ jobs:
       - name: Add .nojekyll
         run: echo "" > build/web/.nojekyll
 
-      - name: Checkout RefinedStone.github.io
+      - name: Checkout akra-devs.github.io
         uses: actions/checkout@v4
         with:
-          repository: RefinedStone/RefinedStone.github.io
+          repository: akra-devs/akra-devs.github.io
           token: ${{ secrets.PERSONAL_TOKEN }}
           path: site
           fetch-depth: 1
@@ -69,7 +69,7 @@ jobs:
           mkdir -p "$TARGET_DIR"
           cp -R build/web/* "$TARGET_DIR/"
 
-      - name: Commit and push to RefinedStone.github.io
+      - name: Commit and push to akra-devs.github.io
         run: |
           cd site
           git config user.name "github-actions[bot]"
