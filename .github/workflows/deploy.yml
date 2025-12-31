@@ -26,8 +26,7 @@ jobs:
         env:
           CUSTOM_SUBDIR: ${{ vars.PAGES_SUBDIR }}
         run: |
-          SOURCE_REPO="${GITHUB_REPOSITORY#*/}"
-          SUBDIR="${CUSTOM_SUBDIR:-$SOURCE_REPO}"
+          SUBDIR="${CUSTOM_SUBDIR:-.}"
 
           SUBDIR="${SUBDIR#/}"
           SUBDIR="${SUBDIR%/}"
@@ -64,10 +63,36 @@ jobs:
           if [ "$DEPLOY_SUBDIR" != "." ]; then
             TARGET_DIR="$TARGET_DIR/$DEPLOY_SUBDIR"
           fi
-
-          rm -rf "$TARGET_DIR"
-          mkdir -p "$TARGET_DIR"
+          if [ "$TARGET_DIR" = "site/docs" ]; then
+            mkdir -p "$TARGET_DIR"
+            find "$TARGET_DIR" -mindepth 1 ! -name 'CNAME' -exec rm -rf {} +
+          else
+            rm -rf "$TARGET_DIR"
+            mkdir -p "$TARGET_DIR"
+          fi
           cp -R build/web/* "$TARGET_DIR/"
+
+      - name: (Optional) Create root redirect to subdir
+        if: env.DEPLOY_SUBDIR != '.'
+        env:
+          TARGET_SUBDIR: ${{ env.DEPLOY_SUBDIR }}
+        run: |
+          ROOT_INDEX="site/docs/index.html"
+          mkdir -p "$(dirname "$ROOT_INDEX")"
+          cat > "$ROOT_INDEX" <<EOF
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content="0; url=/${TARGET_SUBDIR}/">
+    <link rel="canonical" href="https://akra.kr/${TARGET_SUBDIR}/">
+    <title>Redirecting…</title>
+  </head>
+  <body>
+    <p>Redirecting to <a href="/${TARGET_SUBDIR}/">/${TARGET_SUBDIR}/</a></p>
+  </body>
+</html>
+EOF
 
       - name: Commit and push to akra-devs.github.io
         run: |
