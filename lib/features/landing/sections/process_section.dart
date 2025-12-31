@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import '../../../shared/theme/app_colors.dart';
-import '../../../shared/utils/responsive.dart' as responsive;
 import '../../../shared/widgets/fade_in_up.dart';
+import '../widgets/section_layout.dart';
 import '../landing_state.dart';
 
 class ProcessSection extends StatelessWidget {
@@ -13,70 +13,56 @@ class ProcessSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      color: AppColors.background,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final width = constraints.maxWidth;
-          final horizontalPadding = responsive.horizontalPadding(width);
-          final isDesktop = width >= 1024;
+    final isDesktop = MediaQuery.of(context).size.width >= 1024;
 
-          return Padding(
-            padding: EdgeInsets.fromLTRB(
-              horizontalPadding,
-              120,
-              horizontalPadding,
-              120,
+    return SectionLayout(
+      backgroundColor: AppColors.background,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '프로세스',
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: AppColors.accent,
+              letterSpacing: 0.8,
+              fontWeight: FontWeight.w600,
             ),
-            child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '프로세스',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: AppColors.accent,
-                        letterSpacing: 0.8,
-                        fontWeight: FontWeight.w600,
-                      ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            '성공을 위한 최적의 경로',
+            style: theme.textTheme.headlineMedium?.copyWith(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w700,
+              fontSize: isDesktop ? 48 : 32,
+              letterSpacing: -0.5,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            '각 단계별로 필요한 팀과 실행 항목을 정리해 두어 빠르게 착수하고, 데이터를 기반으로 다음 단계를 설계합니다.',
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: AppColors.textSecondary,
+              height: 1.6,
+            ),
+          ),
+          const SizedBox(height: 80),
+          if (isDesktop)
+            _DesktopTimeline(steps: steps)
+          else
+            Column(
+              children: [
+                for (var i = 0; i < steps.length; i++)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 24),
+                    child: FadeInUp(
+                      delay: Duration(milliseconds: 100 * i),
+                      child: _ProcessCard(step: steps[i]),
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      '성공을 위한 최적의 경로',
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w700,
-                        fontSize: isDesktop ? 48 : 32,
-                        letterSpacing: -0.5,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      '각 단계별로 필요한 팀과 실행 항목을 정리해 두어 빠르게 착수하고, 데이터를 기반으로 다음 단계를 설계합니다.',
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.6,
-                      ),
-                    ),
-                    const SizedBox(height: 80),
-                    if (isDesktop)
-                      _DesktopTimeline(steps: steps)
-                    else
-                      Column(
-                        children: [
-                          for (var i = 0; i < steps.length; i++)
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 24),
-                              child: FadeInUp(
-                                delay: Duration(milliseconds: 100 * i),
-                                child: _ProcessCard(step: steps[i]),
-                              ),
-                            ),
-                        ],
-                      ),
-                  ],
-                ),
-              );
-        },
+                  ),
+              ],
+            ),
+        ],
       ),
     );
   }

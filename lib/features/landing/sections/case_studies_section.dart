@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../../shared/theme/app_colors.dart';
-import '../../../shared/utils/responsive.dart' as responsive;
 import '../../../shared/widgets/fade_in_up.dart';
+import '../widgets/section_layout.dart';
 import '../landing_state.dart';
 
 class CaseStudiesSection extends StatelessWidget {
@@ -18,7 +18,7 @@ class CaseStudiesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
+    return SectionLayout(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xFF0B1228), Color(0xFF0F1E36), Color(0xFF101B2F)],
@@ -26,78 +26,67 @@ class CaseStudiesSection extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
       ),
+      verticalPadding: 80,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final width = constraints.maxWidth;
-          final horizontalPadding = responsive.horizontalPadding(width);
-          final double rawAvailable =
-              (width - (horizontalPadding * 2)).clamp(0.0, width).toDouble();
-          final double contentWidth = math.min(rawAvailable, 1200.0);
+          final width = MediaQuery.of(context).size.width;
+          final contentWidth = constraints.maxWidth;
           final isWide = contentWidth >= 900;
-          final double cardWidth =
-              isWide ? (contentWidth - 40) / 2 : contentWidth;
+          final cardWidth = isWide ? (contentWidth - 40) / 2 : contentWidth;
 
-          return Padding(
-            padding: EdgeInsets.fromLTRB(
-              horizontalPadding,
-              80,
-              horizontalPadding,
-              80,
-            ),
-            child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '프로젝트 스토리',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: AppColors.accent,
-                        letterSpacing: 0.8,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      '실제 파트너와 함께 만들어낸 성과를 확인해 보세요.',
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w700,
-                        fontSize: width >= 1024 ? 48 : 32,
-                        letterSpacing: -0.5,
-                      ),
-                    ),
-                    const SizedBox(height: 18),
-                    Text(
-                      '아이디어 검증부터 운영 고도화까지, akradev studio가 어떤 방식으로 문제를 풀어냈는지 스냅샷으로 담았습니다.',
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.6,
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    Wrap(
-                      spacing: 24,
-                      runSpacing: 24,
-                      children: [
-                        for (var i = 0; i < studies.length; i++)
-                          SizedBox(
-                            width: cardWidth,
-                            child: FadeInUp(
-                              delay: Duration(milliseconds: 100 * i),
-                              child: _CaseStudyCard(study: studies[i]),
-                            ),
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: 40),
-                    ElevatedButton.icon(
-                      onPressed: onProjectInquiry,
-                      icon: const Icon(Icons.calendar_today_outlined),
-                      label: const Text('프로젝트 미팅 잡기'),
-                    ),
-                  ],
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '프로젝트 스토리',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: AppColors.accent,
+                  letterSpacing: 0.8,
+                  fontWeight: FontWeight.w600,
                 ),
-              );
-        },
+              ),
+              const SizedBox(height: 16),
+              Text(
+                '실제 파트너와 함께 만들어낸 성과를 확인해 보세요.',
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: width >= 1024 ? 48 : 32,
+                  letterSpacing: -0.5,
+                ),
+              ),
+              const SizedBox(height: 18),
+              Text(
+                '아이디어 검증부터 운영 고도화까지, akradev studio가 어떤 방식으로 문제를 풀어냈는지 스냅샷으로 담았습니다.',
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: AppColors.textSecondary,
+                  height: 1.6,
+                ),
+              ),
+              const SizedBox(height: 40),
+              Wrap(
+                spacing: 24,
+                runSpacing: 24,
+                children: [
+                  for (var i = 0; i < studies.length; i++)
+                    SizedBox(
+                      width: cardWidth,
+                      child: FadeInUp(
+                        delay: Duration(milliseconds: 100 * i),
+                        child: _CaseStudyCard(study: studies[i]),
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 40),
+              ElevatedButton.icon(
+                onPressed: onProjectInquiry,
+                icon: const Icon(Icons.calendar_today_outlined),
+                label: const Text('프로젝트 미팅 잡기'),
+              ),
+            ],
+          );
+        }
       ),
     );
   }

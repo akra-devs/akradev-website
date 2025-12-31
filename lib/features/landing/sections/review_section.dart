@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../../shared/theme/app_colors.dart';
-import '../../../shared/utils/responsive.dart' as responsive;
+import '../widgets/section_layout.dart';
 import '../landing_state.dart';
 
 class ReviewSection extends StatelessWidget {
@@ -18,131 +18,123 @@ class ReviewSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final horizontalPadding = responsive.horizontalPadding(width);
-        final double rawAvailable =
-            (width - (horizontalPadding * 2)).clamp(0.0, width).toDouble();
-        final double contentWidth = math.min(rawAvailable, 1200.0);
-        final isWide = contentWidth >= 900;
-        final isMedium = contentWidth >= 600;
+    final width = MediaQuery.of(context).size.width;
+    final isWide = width >= 900;
+    final isMedium =  width >= 600;
 
-        return Container(
-          color: const Color(0xFF070B14),
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(
-              horizontalPadding,
-              80,
-              horizontalPadding,
-              80,
-            ),
-            child: Column(
+    return SectionLayout(
+      backgroundColor: const Color(0xFF070B14),
+      verticalPadding: 80,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '클라이언트 리뷰',
-                                style: theme.textTheme.titleMedium?.copyWith(
-                                  color: AppColors.accent,
-                                  letterSpacing: 0.8,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              Text(
-                                '함께 제품을 만든 파트너들의 평가',
-                                style: theme.textTheme.displaySmall?.copyWith(
-                                  color: AppColors.textPrimary,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: isWide ? 42 : 28,
-                                  height: 1.2,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 24),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 16,
-                          ),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                AppColors.accent.withValues(alpha: 0.15),
-                                AppColors.accent.withValues(alpha: 0.05),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: AppColors.accent.withValues(alpha: 0.3),
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    averageRating.toStringAsFixed(1),
-                                    style: theme.textTheme.displayMedium
-                                        ?.copyWith(
-                                          color: AppColors.accent,
-                                          fontWeight: FontWeight.w800,
-                                          height: 1.0,
-                                        ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  const Icon(
-                                    Icons.star,
-                                    color: AppColors.accent,
-                                    size: 28,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                '${reviews.length}개 리뷰',
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: AppColors.textSecondary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                    Text(
+                      '클라이언트 리뷰',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: AppColors.accent,
+                        letterSpacing: 0.8,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                    const SizedBox(height: 48),
-                    Wrap(
-                      spacing: 24,
-                      runSpacing: 24,
-                      children:
-                          reviews.map((review) {
-                            final cardWidth =
-                                isWide
-                                    ? (contentWidth - 48) / 3
-                                    : isMedium
-                                    ? (contentWidth - 24) / 2
-                                    : contentWidth;
-                            return SizedBox(
-                              width: cardWidth,
-                              child: _ReviewCard(review: review),
-                            );
-                          }).toList(),
+                    const SizedBox(height: 16),
+                    Text(
+                      '함께 제품을 만든 파트너들의 평가',
+                      style: theme.textTheme.displaySmall?.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w700,
+                        fontSize: isWide ? 42 : 28,
+                        height: 1.2,
+                      ),
                     ),
                   ],
                 ),
+              ),
+              const SizedBox(width: 24),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 16,
+                ),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      AppColors.accent.withValues(alpha: 0.15),
+                      AppColors.accent.withValues(alpha: 0.05),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: AppColors.accent.withValues(alpha: 0.3),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          averageRating.toStringAsFixed(1),
+                          style: theme.textTheme.displayMedium
+                              ?.copyWith(
+                                color: AppColors.accent,
+                                fontWeight: FontWeight.w800,
+                                height: 1.0,
+                              ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Icon(
+                          Icons.star,
+                          color: AppColors.accent,
+                          size: 28,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${reviews.length}개 리뷰',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        );
-      },
+          const SizedBox(height: 48),
+          LayoutBuilder(
+            builder: (context, constraints) {
+               // Calculate card width based on available width in the container
+               // The constraints here are already padded by SectionLayout
+               final contentWidth = constraints.maxWidth;
+               final cardWidth = isWide 
+                 ? (contentWidth - 48) / 3 
+                 : isMedium 
+                   ? (contentWidth - 24) / 2 
+                   : contentWidth;
+                   
+               return Wrap(
+                spacing: 24,
+                runSpacing: 24,
+                children:
+                    reviews.map((review) {
+                      return SizedBox(
+                        width: cardWidth,
+                        child: _ReviewCard(review: review),
+                      );
+                    }).toList(),
+              );
+            }
+          ),
+        ],
+      ),
     );
   }
 }

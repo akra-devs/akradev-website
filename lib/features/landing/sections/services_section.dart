@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../shared/theme/app_colors.dart';
-import '../../../shared/utils/responsive.dart' as responsive;
+import '../widgets/section_layout.dart';
 import '../landing_state.dart';
 
 class LandingServices extends StatefulWidget {
@@ -18,98 +18,84 @@ class _LandingServicesState extends State<LandingServices> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      color: AppColors.background,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final width = constraints.maxWidth;
-          final horizontalPadding = responsive.horizontalPadding(width);
-          final isDesktop = width >= 1024;
+    final isDesktop = MediaQuery.of(context).size.width >= 1024;
 
-          return Padding(
-            padding: EdgeInsets.fromLTRB(
-              horizontalPadding,
-              120,
-              horizontalPadding,
-              120,
+    return SectionLayout(
+      backgroundColor: AppColors.background,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '서비스',
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: AppColors.accent,
+              letterSpacing: 0.8,
+              fontWeight: FontWeight.w600,
             ),
-            child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '서비스',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: AppColors.accent,
-                        letterSpacing: 0.8,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      '비즈니스 성공을 위한\n완전한 제품 개발',
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w700,
-                        fontSize: isDesktop ? 48 : 32,
-                        letterSpacing: -0.5,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      '아이디어 검증부터 디자인, 개발, 앱스토어 출시까지 완전한 제품 개발 경험을 제공합니다. '
-                      'Flutter로 iOS·Android·Web을 동시에 개발하고, 필요시 백엔드까지 함께 구축합니다.',
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.6,
-                      ),
-                    ),
-                    const SizedBox(height: 60),
-                    // Bento Grid Layout
-                    if (isDesktop)
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: _BentoCard(
-                              service: widget.services[0],
-                              isLarge: true,
-                            ),
-                          ),
-                          const SizedBox(width: 24),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                _BentoCard(
-                                  service: widget.services[1],
-                                  isLarge: false,
-                                ),
-                                const SizedBox(height: 24),
-                                _TechStackCard(),
-                              ],
-                            ),
-                          ),
-                        ],
-                      )
-                    else
-                      Column(
-                        children: [
-                          _BentoCard(
-                            service: widget.services[0],
-                            isLarge: false,
-                          ),
-                          const SizedBox(height: 24),
-                          _BentoCard(
-                            service: widget.services[1],
-                            isLarge: false,
-                          ),
-                          const SizedBox(height: 24),
-                          _TechStackCard(),
-                        ],
-                      ),
-                  ],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            '비즈니스 성공을 위한\n완전한 제품 개발',
+            style: theme.textTheme.headlineMedium?.copyWith(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w700,
+              fontSize: isDesktop ? 48 : 32,
+              letterSpacing: -0.5,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            '아이디어 검증부터 디자인, 개발, 앱스토어 출시까지 완전한 제품 개발 경험을 제공합니다. '
+            'Flutter로 iOS·Android·Web을 동시에 개발하고, 필요시 백엔드까지 함께 구축합니다.',
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: AppColors.textSecondary,
+              height: 1.6,
+            ),
+          ),
+          const SizedBox(height: 60),
+          // Bento Grid Layout
+          if (isDesktop)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: _BentoCard(
+                    service: widget.services[0],
+                    isLarge: true,
+                  ),
                 ),
-              );
-        },
+                const SizedBox(width: 24),
+                Expanded(
+                  child: Column(
+                    children: [
+                      _BentoCard(
+                        service: widget.services[1],
+                        isLarge: false,
+                      ),
+                      const SizedBox(height: 24),
+                      _TechStackCard(),
+                    ],
+                  ),
+                ),
+              ],
+            )
+          else
+            Column(
+              children: [
+                _BentoCard(
+                  service: widget.services[0],
+                  isLarge: false,
+                ),
+                const SizedBox(height: 24),
+                _BentoCard(
+                  service: widget.services[1],
+                  isLarge: false,
+                ),
+                const SizedBox(height: 24),
+                _TechStackCard(),
+              ],
+            ),
+        ],
       ),
     );
   }

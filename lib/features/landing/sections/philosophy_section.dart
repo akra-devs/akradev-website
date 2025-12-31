@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../shared/theme/app_colors.dart';
-import '../../../shared/utils/responsive.dart' as responsive;
+import '../widgets/section_layout.dart';
 
 class PhilosophySection extends StatelessWidget {
   const PhilosophySection({super.key});
@@ -9,83 +9,87 @@ class PhilosophySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      color: AppColors.background,
+    return SectionLayout(
+      backgroundColor: AppColors.background,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final width = constraints.maxWidth;
-          final horizontalPadding = responsive.horizontalPadding(width);
-
-          return Padding(
-            padding: EdgeInsets.fromLTRB(
-              horizontalPadding,
-              120,
-              horizontalPadding,
-              120,
-            ),
-            child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '우리의 철학',
-                      style: GoogleFonts.notoSansKr(
-                        color: AppColors.accent,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 2.0,
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                    Text(
-                      '기술의 깊이가\n비즈니스의 높이를 결정합니다',
-                      style: theme.textTheme.displayMedium?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w800,
-                        fontSize: width >= 1024 ? 64 : 36,
-                        height: 1.2,
-                        letterSpacing: -1.0,
-                      ),
-                    ),
-                    const SizedBox(height: 48),
-                    Row(
-                      children: [
-                        Container(
-                          width: 4,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                AppColors.accent,
-                                AppColors.secondary,
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            ),
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                        const SizedBox(width: 32),
-                        Expanded(
-                          child: Text(
-                            '우리는 코드가 단순한 기능 구현을 넘어, 비즈니스 성장을 견인하는 핵심 자산이라고 믿습니다.\n'
-                            '치열한 고민과 정교한 설계를 통해, 시장에서 증명되는\n'
-                            '압도적인 디지털 경쟁력을 창조합니다.',
-                            style: theme.textTheme.headlineSmall?.copyWith(
-                              color: AppColors.textSecondary,
-                              fontWeight: FontWeight.w400,
-                              height: 1.6,
-                              fontSize: width >= 1024 ? 24 : 18,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 80),
-                    _PhilosophyGrid(),
-                  ],
+           final width = MediaQuery.of(context).size.width;
+           // The content logic here depends on width.
+           // SectionLayout handles padding, but the child might need to know width?
+           // Yes, existing logic uses constraints.maxWidth for text scaling sometimes, or mediaquery.
+           // The existing code uses `width` variable which comes from constraints.maxWidth.
+           // BUT `SectionLayout`'s padding reduces the maxWidth available to the child.
+           // If the code logic `width >= 1024` was intended for SCREEN width for font size, using `constraints.maxWidth` INSIDE padding is slightly different (smaller).
+           // However, usually font breakpoints are based on screen width.
+           // Looking at previous code: `width = constraints.maxWidth`.
+           // Responsive padding changes with screen width.
+           // If we use SectionLayout, constraints.maxWidth will be (Screen - Padding).
+           // If we want font size to react to SCREEN width, we should use MediaQuery.
+           
+           // I will use MediaQuery for the font sizing logic to be safe and consistent with "responsive" concept generally.
+           
+           return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '우리의 철학',
+                style: GoogleFonts.notoSansKr(
+                  color: AppColors.accent,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 2.0,
                 ),
-              );
-        },
+              ),
+              const SizedBox(height: 32),
+              Text(
+                '기술의 깊이가\n비즈니스의 높이를 결정합니다',
+                style: theme.textTheme.displayMedium?.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w800,
+                  fontSize: width >= 1024 ? 64 : 36,
+                  height: 1.2,
+                  letterSpacing: -1.0,
+                ),
+              ),
+              const SizedBox(height: 48),
+              Row(
+                children: [
+                  Container(
+                    width: 4,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.accent,
+                          AppColors.secondary,
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(width: 32),
+                  Expanded(
+                    child: Text(
+                      '우리는 코드가 단순한 기능 구현을 넘어, 비즈니스 성장을 견인하는 핵심 자산이라고 믿습니다.\n'
+                      '치열한 고민과 정교한 설계를 통해, 시장에서 증명되는\n'
+                      '압도적인 디지털 경쟁력을 창조합니다.',
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w400,
+                        height: 1.6,
+                        fontSize: width >= 1024 ? 24 : 18,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 80),
+              _PhilosophyGrid(),
+            ],
+          );
+        }
       ),
     );
   }

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../shared/theme/app_colors.dart';
-import '../../../shared/utils/responsive.dart' as responsive;
+import '../widgets/section_layout.dart';
 import '../landing_cubit.dart';
 import '../landing_state.dart';
 
@@ -56,48 +56,44 @@ class _ProjectGallerySectionState extends State<ProjectGallerySection> {
                     )
                     .toList();
 
-        return LayoutBuilder(
-          builder: (context, constraints) {
-            final width = constraints.maxWidth;
-            final horizontalPadding = responsive.horizontalPadding(width);
+        final width = MediaQuery.of(context).size.width; 
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '프로젝트 갤러리',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: AppColors.accent,
-                            letterSpacing: 0.8,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          '다양한 산업에서 수익 내는 앱 사례를 확인하세요',
-                          style: theme.textTheme.headlineMedium?.copyWith(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w700,
-                            fontSize: width >= 1024 ? 48 : 32,
-                            letterSpacing: -0.4,
-                          ),
-                        ),
-                        const SizedBox(height: 18),
-                        Text(
-                          'Flutter로 구축한 다양한 산업군의 모바일 앱 포트폴리오입니다. 아이디어 검증부터 디자인, 개발, 앱스토어 출시까지 전 과정을 직접 리드했습니다.',
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            color: AppColors.textSecondary,
-                            height: 1.6,
-                          ),
-                        ),
-                        const SizedBox(height: 32),
-                        // Filter Buttons
-                        Wrap(
+        return SectionLayout(
+          verticalPadding: 0, 
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '프로젝트 갤러리',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: AppColors.accent,
+                        letterSpacing: 0.8,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      '다양한 산업에서 수익 내는 앱 사례를 확인하세요',
+                      style: theme.textTheme.headlineMedium?.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w700,
+                        fontSize: width >= 1024 ? 48 : 32,
+                        letterSpacing: -0.4,
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+                    Text(
+                      'Flutter로 구축한 다양한 산업군의 모바일 앱 포트폴리오입니다. 아이디어 검증부터 디자인, 개발, 앱스토어 출시까지 전 과정을 직접 리드했습니다.',
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: AppColors.textSecondary,
+                        height: 1.6,
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                     Wrap(
                           spacing: 12,
                           runSpacing: 12,
                           children:
@@ -113,55 +109,48 @@ class _ProjectGallerySectionState extends State<ProjectGallerySection> {
                                 );
                               }).toList(),
                         ),
-                      ],
-                    ),
-
+                  ],
                 ),
-                const SizedBox(height: 32),
-                SizedBox(
-                  height: 420,
-                  child:
-                      filteredProjects.isEmpty
-                          ? Center(
-                            child: Text(
-                              '해당 카테고리의 프로젝트가 없습니다',
-                              style: theme.textTheme.bodyLarge?.copyWith(
-                                color: AppColors.textSecondary,
-                              ),
-                            ),
-                          )
-                          : Scrollbar(
-                            controller: _scrollController,
-                            thumbVisibility: true,
-                            thickness: 4,
-                            radius: const Radius.circular(8),
-                            child: ListView.builder(
-                              controller: _scrollController,
-                              scrollDirection: Axis.horizontal,
-                              physics: const BouncingScrollPhysics(),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: horizontalPadding,
-                              ),
-                              itemCount: filteredProjects.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: EdgeInsets.only(
-                                    right:
-                                        index < filteredProjects.length - 1
-                                            ? 24
-                                            : 0,
-                                  ),
-                                  child: _ProjectCard(
-                                    project: filteredProjects[index],
-                                  ),
-                                );
-                              },
+              const SizedBox(height: 32),
+              SizedBox(
+                height: 420,
+                child: filteredProjects.isEmpty
+                    ? Center(
+                          child: Text(
+                            '해당 카테고리의 프로젝트가 없습니다',
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              color: AppColors.textSecondary,
                             ),
                           ),
-                ),
-              ],
-            );
-          },
+                        )
+                    : Scrollbar(
+                        controller: _scrollController,
+                        thumbVisibility: true,
+                        thickness: 4,
+                        radius: const Radius.circular(8),
+                        child: ListView.builder(
+                          controller: _scrollController,
+                          scrollDirection: Axis.horizontal,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: filteredProjects.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                right:
+                                    index < filteredProjects.length - 1
+                                        ? 24
+                                        : 0,
+                              ),
+                              child: _ProjectCard(
+                                project: filteredProjects[index],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+              ),
+            ],
+          ),
         );
       },
     );

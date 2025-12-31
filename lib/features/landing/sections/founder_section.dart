@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../../shared/theme/app_colors.dart';
-import '../../../shared/utils/responsive.dart' as responsive;
+import '../widgets/section_layout.dart';
 import '../landing_state.dart';
 
 class FounderSection extends StatelessWidget {
@@ -11,7 +11,7 @@ class FounderSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SectionLayout(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xFF0B1426), Color(0xFF111F39)],
@@ -19,51 +19,42 @@ class FounderSection extends StatelessWidget {
           end: Alignment.bottomRight,
         ),
       ),
+      verticalPadding: 56,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final width = constraints.maxWidth;
-          final horizontalPadding = responsive.horizontalPadding(width);
-          final double rawAvailable =
-              (width - (horizontalPadding * 2)).clamp(0.0, width).toDouble();
-          final double contentWidth = math.min(rawAvailable, 1100.0);
+          final width = MediaQuery.of(context).size.width;
+          final contentWidth = constraints.maxWidth;
+          // Note: Previous code used `constraints.maxWidth` of OUTER container for `rawAvailable`.
+          // Here `contentWidth` is already constrained by padding.
+          // The previous code had `rawAvailable = width - padding*2`.
+          // So `contentWidth` here IS `rawAvailable`.
           final isWide = contentWidth >= 820;
 
-          final content =
-              isWide
-                  ? Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: _FounderSummary(
-                          profile: profile,
-                          isWide: isWide,
-                        ),
-                      ),
-                      const SizedBox(width: 48),
-                      Expanded(child: _FounderHighlights(profile: profile)),
-                    ],
-                  )
-                  : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _FounderSummary(
-                        profile: profile,
-                        isWide: isWide,
-                      ),
-                      const SizedBox(height: 32),
-                      _FounderHighlights(profile: profile),
-                    ],
-                  );
-
-          return Padding(
-            padding: EdgeInsets.fromLTRB(
-              horizontalPadding,
-              56,
-              horizontalPadding,
-              56,
-            ),
-            child: content,
-          );
+          return isWide
+              ? Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: _FounderSummary(
+                      profile: profile,
+                      isWide: isWide,
+                    ),
+                  ),
+                  const SizedBox(width: 48),
+                  Expanded(child: _FounderHighlights(profile: profile)),
+                ],
+              )
+              : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _FounderSummary(
+                    profile: profile,
+                    isWide: isWide,
+                  ),
+                  const SizedBox(height: 32),
+                  _FounderHighlights(profile: profile),
+                ],
+              );
         },
       ),
     );

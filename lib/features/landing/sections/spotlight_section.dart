@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../shared/utils/responsive.dart' as responsive;
+import '../widgets/section_layout.dart';
 import '../landing_state.dart';
 
 class SpotlightCtaSection extends StatelessWidget {
@@ -17,74 +17,69 @@ class SpotlightCtaSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final horizontalPadding = responsive.horizontalPadding(width);
-        final isWide = width >= 900;
+    final width = MediaQuery.of(context).size.width;
+    final isWide = width >= 900;
 
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 52),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF0EA5E9), Color(0xFF6366F1)],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
-                borderRadius: BorderRadius.circular(32),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.3),
-                    blurRadius: 40,
-                    offset: const Offset(0, 22),
-                    spreadRadius: -18,
-                  ),
-                ],
-              ),
-              child:
-                  isWide
-                      ? Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: _SpotlightCopy(
-                              theme: theme,
-                              data: data,
-                              isWide: isWide,
-                            ),
-                          ),
-                          const SizedBox(width: 40),
-                          _SpotlightActions(
-                            onPrimary: onPrimary,
-                            onSecondary: onSecondary,
-                            primaryLabel: data.primaryLabel,
-                            secondaryLabel: data.secondaryLabel,
-                          ),
-                        ],
-                      )
-                      : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _SpotlightCopy(
-                            theme: theme,
-                            data: data,
-                            isWide: isWide,
-                          ),
-                          const SizedBox(height: 32),
-                          _SpotlightActions(
-                            onPrimary: onPrimary,
-                            onSecondary: onSecondary,
-                            primaryLabel: data.primaryLabel,
-                            secondaryLabel: data.secondaryLabel,
-                            isHorizontal: false,
-                          ),
-                        ],
-                      ),
+    return SectionLayout(
+      verticalPadding: 0,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 52),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFF0EA5E9), Color(0xFF6366F1)],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
             ),
-          );
-      },
+            borderRadius: BorderRadius.circular(32),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.3),
+                blurRadius: 40,
+                offset: const Offset(0, 22),
+                spreadRadius: -18,
+              ),
+            ],
+          ),
+          child:
+              isWide
+                  ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: _SpotlightCopy(
+                          theme: theme,
+                          data: data,
+                          isWide: isWide,
+                        ),
+                      ),
+                      const SizedBox(width: 40),
+                      _SpotlightActions(
+                        onPrimary: onPrimary,
+                        onSecondary: onSecondary,
+                        primaryLabel: data.primaryLabel,
+                        secondaryLabel: data.secondaryLabel,
+                      ),
+                    ],
+                  )
+                  : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _SpotlightCopy(
+                        theme: theme,
+                        data: data,
+                        isWide: isWide,
+                      ),
+                      const SizedBox(height: 32),
+                      _SpotlightActions(
+                        onPrimary: onPrimary,
+                        onSecondary: onSecondary,
+                        primaryLabel: data.primaryLabel,
+                        secondaryLabel: data.secondaryLabel,
+                        isHorizontal: false,
+                      ),
+                    ],
+                  ),
+        ),
     );
   }
 }
